@@ -9,8 +9,86 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TendersRouteImport } from './routes/tenders'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as PackagesRouteImport } from './routes/packages'
+import { Route as MobileAppRouteImport } from './routes/mobile-app'
+import { Route as IvanOsRouteImport } from './routes/ivan-os'
+import { Route as IndustriesRouteImport } from './routes/industries'
+import { Route as EnterpriseAiRouteImport } from './routes/enterprise-ai'
+import { Route as CrmRouteImport } from './routes/crm'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ComplianceRouteImport } from './routes/compliance'
+import { Route as ClientPortalRouteImport } from './routes/client-portal'
+import { Route as BusinessRegistrationRouteImport } from './routes/business-registration'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TendersRoute = TendersRouteImport.update({
+  id: '/tenders',
+  path: '/tenders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PackagesRoute = PackagesRouteImport.update({
+  id: '/packages',
+  path: '/packages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MobileAppRoute = MobileAppRouteImport.update({
+  id: '/mobile-app',
+  path: '/mobile-app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IvanOsRoute = IvanOsRouteImport.update({
+  id: '/ivan-os',
+  path: '/ivan-os',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndustriesRoute = IndustriesRouteImport.update({
+  id: '/industries',
+  path: '/industries',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnterpriseAiRoute = EnterpriseAiRouteImport.update({
+  id: '/enterprise-ai',
+  path: '/enterprise-ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CrmRoute = CrmRouteImport.update({
+  id: '/crm',
+  path: '/crm',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComplianceRoute = ComplianceRouteImport.update({
+  id: '/compliance',
+  path: '/compliance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClientPortalRoute = ClientPortalRouteImport.update({
+  id: '/client-portal',
+  path: '/client-portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessRegistrationRoute = BusinessRegistrationRouteImport.update({
+  id: '/business-registration',
+  path: '/business-registration',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +97,214 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/business-registration': typeof BusinessRegistrationRoute
+  '/client-portal': typeof ClientPortalRoute
+  '/compliance': typeof ComplianceRoute
+  '/contact': typeof ContactRoute
+  '/crm': typeof CrmRoute
+  '/enterprise-ai': typeof EnterpriseAiRoute
+  '/industries': typeof IndustriesRoute
+  '/ivan-os': typeof IvanOsRoute
+  '/mobile-app': typeof MobileAppRoute
+  '/packages': typeof PackagesRoute
+  '/services': typeof ServicesRoute
+  '/tenders': typeof TendersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/business-registration': typeof BusinessRegistrationRoute
+  '/client-portal': typeof ClientPortalRoute
+  '/compliance': typeof ComplianceRoute
+  '/contact': typeof ContactRoute
+  '/crm': typeof CrmRoute
+  '/enterprise-ai': typeof EnterpriseAiRoute
+  '/industries': typeof IndustriesRoute
+  '/ivan-os': typeof IvanOsRoute
+  '/mobile-app': typeof MobileAppRoute
+  '/packages': typeof PackagesRoute
+  '/services': typeof ServicesRoute
+  '/tenders': typeof TendersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/business-registration': typeof BusinessRegistrationRoute
+  '/client-portal': typeof ClientPortalRoute
+  '/compliance': typeof ComplianceRoute
+  '/contact': typeof ContactRoute
+  '/crm': typeof CrmRoute
+  '/enterprise-ai': typeof EnterpriseAiRoute
+  '/industries': typeof IndustriesRoute
+  '/ivan-os': typeof IvanOsRoute
+  '/mobile-app': typeof MobileAppRoute
+  '/packages': typeof PackagesRoute
+  '/services': typeof ServicesRoute
+  '/tenders': typeof TendersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/business-registration'
+    | '/client-portal'
+    | '/compliance'
+    | '/contact'
+    | '/crm'
+    | '/enterprise-ai'
+    | '/industries'
+    | '/ivan-os'
+    | '/mobile-app'
+    | '/packages'
+    | '/services'
+    | '/tenders'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/business-registration'
+    | '/client-portal'
+    | '/compliance'
+    | '/contact'
+    | '/crm'
+    | '/enterprise-ai'
+    | '/industries'
+    | '/ivan-os'
+    | '/mobile-app'
+    | '/packages'
+    | '/services'
+    | '/tenders'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/business-registration'
+    | '/client-portal'
+    | '/compliance'
+    | '/contact'
+    | '/crm'
+    | '/enterprise-ai'
+    | '/industries'
+    | '/ivan-os'
+    | '/mobile-app'
+    | '/packages'
+    | '/services'
+    | '/tenders'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  BusinessRegistrationRoute: typeof BusinessRegistrationRoute
+  ClientPortalRoute: typeof ClientPortalRoute
+  ComplianceRoute: typeof ComplianceRoute
+  ContactRoute: typeof ContactRoute
+  CrmRoute: typeof CrmRoute
+  EnterpriseAiRoute: typeof EnterpriseAiRoute
+  IndustriesRoute: typeof IndustriesRoute
+  IvanOsRoute: typeof IvanOsRoute
+  MobileAppRoute: typeof MobileAppRoute
+  PackagesRoute: typeof PackagesRoute
+  ServicesRoute: typeof ServicesRoute
+  TendersRoute: typeof TendersRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tenders': {
+      id: '/tenders'
+      path: '/tenders'
+      fullPath: '/tenders'
+      preLoaderRoute: typeof TendersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/packages': {
+      id: '/packages'
+      path: '/packages'
+      fullPath: '/packages'
+      preLoaderRoute: typeof PackagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mobile-app': {
+      id: '/mobile-app'
+      path: '/mobile-app'
+      fullPath: '/mobile-app'
+      preLoaderRoute: typeof MobileAppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ivan-os': {
+      id: '/ivan-os'
+      path: '/ivan-os'
+      fullPath: '/ivan-os'
+      preLoaderRoute: typeof IvanOsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/industries': {
+      id: '/industries'
+      path: '/industries'
+      fullPath: '/industries'
+      preLoaderRoute: typeof IndustriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/enterprise-ai': {
+      id: '/enterprise-ai'
+      path: '/enterprise-ai'
+      fullPath: '/enterprise-ai'
+      preLoaderRoute: typeof EnterpriseAiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/crm': {
+      id: '/crm'
+      path: '/crm'
+      fullPath: '/crm'
+      preLoaderRoute: typeof CrmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compliance': {
+      id: '/compliance'
+      path: '/compliance'
+      fullPath: '/compliance'
+      preLoaderRoute: typeof ComplianceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/client-portal': {
+      id: '/client-portal'
+      path: '/client-portal'
+      fullPath: '/client-portal'
+      preLoaderRoute: typeof ClientPortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/business-registration': {
+      id: '/business-registration'
+      path: '/business-registration'
+      fullPath: '/business-registration'
+      preLoaderRoute: typeof BusinessRegistrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +317,19 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  BusinessRegistrationRoute: BusinessRegistrationRoute,
+  ClientPortalRoute: ClientPortalRoute,
+  ComplianceRoute: ComplianceRoute,
+  ContactRoute: ContactRoute,
+  CrmRoute: CrmRoute,
+  EnterpriseAiRoute: EnterpriseAiRoute,
+  IndustriesRoute: IndustriesRoute,
+  IvanOsRoute: IvanOsRoute,
+  MobileAppRoute: MobileAppRoute,
+  PackagesRoute: PackagesRoute,
+  ServicesRoute: ServicesRoute,
+  TendersRoute: TendersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
