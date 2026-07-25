@@ -9,14 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TendersRouteImport } from './routes/tenders'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as RefundRouteImport } from './routes/refund'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PopiaRouteImport } from './routes/popia'
 import { Route as PackagesRouteImport } from './routes/packages'
 import { Route as MobileAppRouteImport } from './routes/mobile-app'
 import { Route as IvanOsRouteImport } from './routes/ivan-os'
 import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as EnterpriseAiRouteImport } from './routes/enterprise-ai'
 import { Route as CrmRouteImport } from './routes/crm'
+import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ComplianceRouteImport } from './routes/compliance'
 import { Route as ClientPortalRouteImport } from './routes/client-portal'
@@ -24,14 +31,44 @@ import { Route as BusinessRegistrationRouteImport } from './routes/business-regi
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TendersRoute = TendersRouteImport.update({
   id: '/tenders',
   path: '/tenders',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShippingRoute = ShippingRouteImport.update({
+  id: '/shipping',
+  path: '/shipping',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundRoute = RefundRouteImport.update({
+  id: '/refund',
+  path: '/refund',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PopiaRoute = PopiaRouteImport.update({
+  id: '/popia',
+  path: '/popia',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PackagesRoute = PackagesRouteImport.update({
@@ -62,6 +99,11 @@ const EnterpriseAiRoute = EnterpriseAiRouteImport.update({
 const CrmRoute = CrmRouteImport.update({
   id: '/crm',
   path: '/crm',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -102,14 +144,21 @@ export interface FileRoutesByFullPath {
   '/client-portal': typeof ClientPortalRoute
   '/compliance': typeof ComplianceRoute
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/crm': typeof CrmRoute
   '/enterprise-ai': typeof EnterpriseAiRoute
   '/industries': typeof IndustriesRoute
   '/ivan-os': typeof IvanOsRoute
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
+  '/popia': typeof PopiaRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund': typeof RefundRoute
   '/services': typeof ServicesRoute
+  '/shipping': typeof ShippingRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tenders': typeof TendersRoute
+  '/terms': typeof TermsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -118,14 +167,21 @@ export interface FileRoutesByTo {
   '/client-portal': typeof ClientPortalRoute
   '/compliance': typeof ComplianceRoute
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/crm': typeof CrmRoute
   '/enterprise-ai': typeof EnterpriseAiRoute
   '/industries': typeof IndustriesRoute
   '/ivan-os': typeof IvanOsRoute
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
+  '/popia': typeof PopiaRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund': typeof RefundRoute
   '/services': typeof ServicesRoute
+  '/shipping': typeof ShippingRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tenders': typeof TendersRoute
+  '/terms': typeof TermsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -135,14 +191,21 @@ export interface FileRoutesById {
   '/client-portal': typeof ClientPortalRoute
   '/compliance': typeof ComplianceRoute
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/crm': typeof CrmRoute
   '/enterprise-ai': typeof EnterpriseAiRoute
   '/industries': typeof IndustriesRoute
   '/ivan-os': typeof IvanOsRoute
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
+  '/popia': typeof PopiaRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund': typeof RefundRoute
   '/services': typeof ServicesRoute
+  '/shipping': typeof ShippingRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tenders': typeof TendersRoute
+  '/terms': typeof TermsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -153,14 +216,21 @@ export interface FileRouteTypes {
     | '/client-portal'
     | '/compliance'
     | '/contact'
+    | '/cookies'
     | '/crm'
     | '/enterprise-ai'
     | '/industries'
     | '/ivan-os'
     | '/mobile-app'
     | '/packages'
+    | '/popia'
+    | '/privacy'
+    | '/refund'
     | '/services'
+    | '/shipping'
+    | '/sitemap.xml'
     | '/tenders'
+    | '/terms'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -169,14 +239,21 @@ export interface FileRouteTypes {
     | '/client-portal'
     | '/compliance'
     | '/contact'
+    | '/cookies'
     | '/crm'
     | '/enterprise-ai'
     | '/industries'
     | '/ivan-os'
     | '/mobile-app'
     | '/packages'
+    | '/popia'
+    | '/privacy'
+    | '/refund'
     | '/services'
+    | '/shipping'
+    | '/sitemap.xml'
     | '/tenders'
+    | '/terms'
   id:
     | '__root__'
     | '/'
@@ -185,14 +262,21 @@ export interface FileRouteTypes {
     | '/client-portal'
     | '/compliance'
     | '/contact'
+    | '/cookies'
     | '/crm'
     | '/enterprise-ai'
     | '/industries'
     | '/ivan-os'
     | '/mobile-app'
     | '/packages'
+    | '/popia'
+    | '/privacy'
+    | '/refund'
     | '/services'
+    | '/shipping'
+    | '/sitemap.xml'
     | '/tenders'
+    | '/terms'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -202,18 +286,32 @@ export interface RootRouteChildren {
   ClientPortalRoute: typeof ClientPortalRoute
   ComplianceRoute: typeof ComplianceRoute
   ContactRoute: typeof ContactRoute
+  CookiesRoute: typeof CookiesRoute
   CrmRoute: typeof CrmRoute
   EnterpriseAiRoute: typeof EnterpriseAiRoute
   IndustriesRoute: typeof IndustriesRoute
   IvanOsRoute: typeof IvanOsRoute
   MobileAppRoute: typeof MobileAppRoute
   PackagesRoute: typeof PackagesRoute
+  PopiaRoute: typeof PopiaRoute
+  PrivacyRoute: typeof PrivacyRoute
+  RefundRoute: typeof RefundRoute
   ServicesRoute: typeof ServicesRoute
+  ShippingRoute: typeof ShippingRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TendersRoute: typeof TendersRoute
+  TermsRoute: typeof TermsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tenders': {
       id: '/tenders'
       path: '/tenders'
@@ -221,11 +319,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TendersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shipping': {
+      id: '/shipping'
+      path: '/shipping'
+      fullPath: '/shipping'
+      preLoaderRoute: typeof ShippingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund': {
+      id: '/refund'
+      path: '/refund'
+      fullPath: '/refund'
+      preLoaderRoute: typeof RefundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/popia': {
+      id: '/popia'
+      path: '/popia'
+      fullPath: '/popia'
+      preLoaderRoute: typeof PopiaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/packages': {
@@ -268,6 +401,13 @@ declare module '@tanstack/react-router' {
       path: '/crm'
       fullPath: '/crm'
       preLoaderRoute: typeof CrmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -322,15 +462,32 @@ const rootRouteChildren: RootRouteChildren = {
   ClientPortalRoute: ClientPortalRoute,
   ComplianceRoute: ComplianceRoute,
   ContactRoute: ContactRoute,
+  CookiesRoute: CookiesRoute,
   CrmRoute: CrmRoute,
   EnterpriseAiRoute: EnterpriseAiRoute,
   IndustriesRoute: IndustriesRoute,
   IvanOsRoute: IvanOsRoute,
   MobileAppRoute: MobileAppRoute,
   PackagesRoute: PackagesRoute,
+  PopiaRoute: PopiaRoute,
+  PrivacyRoute: PrivacyRoute,
+  RefundRoute: RefundRoute,
   ServicesRoute: ServicesRoute,
+  ShippingRoute: ShippingRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TendersRoute: TendersRoute,
+  TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
