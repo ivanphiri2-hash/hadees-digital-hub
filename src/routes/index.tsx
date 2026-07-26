@@ -6,7 +6,7 @@ import { WEBSITE_PACKAGES, SERVICES, COMPANY } from "@/lib/company";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Hadees Trading — Enterprise digital infrastructure for South African business" },
+      { title: "Enterprise digital infrastructure for SA business" },
       { name: "description", content: "Websites, business registration, tender assistance, compliance, CRM and enterprise AI — one partner for SA SMEs. Est. 2025, based in Mahikeng." },
       { property: "og:title", content: "Hadees Trading — Enterprise digital infrastructure for SA" },
       { property: "og:description", content: "Websites, CIPC registration, tenders, compliance and enterprise AI, delivered from Mahikeng, South Africa." },
