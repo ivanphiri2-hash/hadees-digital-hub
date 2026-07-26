@@ -20,7 +20,7 @@ export const Route = createFileRoute("/services")({
 function ServicesPage() {
   return (
     <>
-      <Section
+      <Section as="h1"
         eyebrow="Services"
         title={<>Fourteen enterprise services, one team.</>}
         intro="Every service is delivered by senior specialists, priced transparently, and integrated into the same IVAN OS operating system."

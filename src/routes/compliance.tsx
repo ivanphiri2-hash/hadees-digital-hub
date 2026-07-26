@@ -29,7 +29,7 @@ const areas = [
 function Compliance() {
   return (
     <>
-      <Section
+      <Section as="h1"
         eyebrow="Compliance"
         title={<>Company health, monitored all year.</>}
         intro="A single dashboard for every regulator your SA business must answer to."
