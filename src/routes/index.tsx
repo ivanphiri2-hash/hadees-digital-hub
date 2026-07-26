@@ -3,6 +3,25 @@ import { ArrowRight, ShieldCheck, Sparkles, Building2, FileCheck2, Bot, Users, L
 import { Section, GlassCard, GradientOrbs, Stat, CTAButton, BigCTA } from "@/components/site/ui";
 import { WEBSITE_PACKAGES, SERVICES, COMPANY } from "@/lib/company";
 
+const FAQS = [
+  { q: "Where is Hadees Trading based?", a: `We're based in ${COMPANY.city}, South Africa, and serve clients nationally as well as across SADC.` },
+  { q: "Do I have to pay VAT on your prices?", a: "All published prices are in South African Rand (ZAR). Where VAT applies, it will be shown clearly on your quote." },
+  { q: "Can you help if I'm not yet registered as a company?", a: "Yes. Company registration is R950 and takes about 24–72 hours through CIPC." },
+  { q: "Do you help with tenders and CIDB / CSD?", a: "Yes — we assist with CSD registration, CIDB, tender documentation, submissions and post-award compliance." },
+  { q: "Will my website be SEO-ready?", a: "Every website ships with technical SEO, schema markup, sitemap, robots.txt and mobile-first design." },
+  { q: "Is my data safe with you?", a: "We are POPIA-aligned. Your data is treated confidentially and stored on secure infrastructure." },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -13,6 +32,7 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: "/" },
     ],
     links: [{ rel: "canonical", href: "/" }],
+    scripts: [{ type: "application/ld+json", children: JSON.stringify(faqJsonLd) }],
   }),
   component: Home,
 });
