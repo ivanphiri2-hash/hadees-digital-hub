@@ -75,7 +75,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#030712" },
-      { title: "Hadees Trading — Enterprise digital infrastructure for South African business" },
+      { title: "Hadees Trading (Pty) Ltd" },
       { name: "description", content: "Hadees Trading (Pty) Ltd builds websites, handles CIPC & tender compliance, and deploys enterprise AI automation for South African businesses." },
       { name: "author", content: "Hadees Trading (Pty) Ltd" },
       { property: "og:site_name", content: "Hadees Trading" },
