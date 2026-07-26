@@ -45,7 +45,7 @@ function Contact() {
 
   return (
     <>
-      <Section
+      <Section as="h1"
         eyebrow="Contact"
         title={<>Talk to Hadees Trading.</>}
         intro="Send a message, WhatsApp us, or drop by our Mahikeng office."

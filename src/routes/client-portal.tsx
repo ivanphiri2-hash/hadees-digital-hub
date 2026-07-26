@@ -32,7 +32,7 @@ const items = [
 function Portal() {
   return (
     <>
-      <Section
+      <Section as="h1"
         eyebrow="Client Portal"
         title={<>Your clients, self-served.</>}
         intro="A secure, branded portal that reduces support load and increases client trust."

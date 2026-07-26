@@ -29,7 +29,7 @@ const ind = [
 function Industries() {
   return (
     <>
-      <Section eyebrow="Industries" title={<>Purpose-built for South African sectors.</>}>
+      <Section as="h1" eyebrow="Industries" title={<>Purpose-built for South African sectors.</>}>
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {ind.map((i) => (
             <GlassCard key={i.t}>

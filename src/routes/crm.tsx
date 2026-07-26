@@ -36,7 +36,7 @@ const modules = [
 function CRM() {
   return (
     <>
-      <Section
+      <Section as="h1"
         eyebrow="CRM"
         title={<>An enterprise CRM you actually enjoy using.</>}
         intro="Every module is designed around the SA sales & delivery workflow — from a WhatsApp lead to a signed-off project."

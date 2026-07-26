@@ -5,7 +5,7 @@ import { Bot, Brain, Network, Gauge, Sparkles, Workflow } from "lucide-react";
 export const Route = createFileRoute("/ivan-os")({
   head: () => ({
     meta: [
-      { title: "IVAN OS — Intelligent Virtual Automation Network — Hadees Trading" },
+      { title: "IVAN OS — 27 AI Agents for SA Business" },
       { name: "description", content: "IVAN OS: 27 AI agents, decision console, knowledge graph, predictive analytics and business intelligence — built for South African business." },
       { property: "og:title", content: "IVAN OS — 27 AI Agents for SA Business" },
       { property: "og:description", content: "Enterprise AI, automation, CRM and compliance in one operating system." },

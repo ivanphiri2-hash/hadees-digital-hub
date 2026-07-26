@@ -8,6 +8,7 @@ export function Section({
   intro,
   children,
   className = "",
+  as = "h2",
 }: {
   id?: string;
   eyebrow?: string;
@@ -15,7 +16,9 @@ export function Section({
   intro?: ReactNode;
   children?: ReactNode;
   className?: string;
+  as?: "h1" | "h2";
 }) {
+  const Heading = as;
   return (
     <section id={id} className={`relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 ${className}`}>
       {(eyebrow || title || intro) && (
@@ -25,7 +28,7 @@ export function Section({
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" /> {eyebrow}
             </div>
           )}
-          {title && <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">{title}</h2>}
+          {title && <Heading className="text-balance text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">{title}</Heading>}
           {intro && <p className="mt-4 text-pretty text-base text-muted-foreground sm:text-lg">{intro}</p>}
         </div>
       )}

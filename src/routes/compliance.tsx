@@ -5,7 +5,7 @@ import { ShieldCheck } from "lucide-react";
 export const Route = createFileRoute("/compliance")({
   head: () => ({
     meta: [
-      { title: "Compliance — CIPC · SARS · COIDA · CIDB · B-BBEE · NHBRC · POPIA" },
+      { title: "Compliance — CIPC, SARS, COIDA, B-BBEE, POPIA" },
       { name: "description", content: "Enterprise compliance management for South African business: CIPC, SARS, COIDA, CIDB, B-BBEE, NHBRC and POPIA — monitored all year." },
       { property: "og:title", content: "Compliance — Hadees Trading" },
       { property: "og:description", content: "One dashboard for your company health across every SA regulator." },
@@ -29,7 +29,7 @@ const areas = [
 function Compliance() {
   return (
     <>
-      <Section
+      <Section as="h1"
         eyebrow="Compliance"
         title={<>Company health, monitored all year.</>}
         intro="A single dashboard for every regulator your SA business must answer to."

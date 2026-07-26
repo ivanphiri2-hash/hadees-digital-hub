@@ -33,7 +33,7 @@ const covers = [
 function BizReg() {
   return (
     <>
-      <Section
+      <Section as="h1"
         eyebrow="Business Registration"
         title={<>From idea to fully-registered (Pty) Ltd.</>}
         intro="We handle every South African registration and compliance step, so you can focus on winning work."
