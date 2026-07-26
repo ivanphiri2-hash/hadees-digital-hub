@@ -1,0 +1,29 @@
+# Hadees Trading (Pty) Ltd
+
+> Enterprise digital infrastructure for South African business — websites, CIPC & tender compliance, CRM, client portal and enterprise AI automation, delivered from Mahikeng.
+
+## Pages
+
+- [Home](/): Overview of Hadees Trading's services and platform.
+- [About](/about): Company story, mission, values and timeline.
+- [Services](/services): Fourteen enterprise services under one roof.
+- [Website Packages](/packages): Fixed-price website packages in ZAR.
+- [Business Registration](/business-registration): CIPC, COIDA, NHBRC, CIDB, CSD, tax and B-BBEE registration pricing.
+- [Compliance](/compliance): Ongoing CIPC, SARS, COIDA, CIDB, B-BBEE, NHBRC and POPIA compliance.
+- [Tenders](/tenders): Tender matching, documentation and post-award compliance.
+- [IVAN OS](/ivan-os): 27 AI agents, decision console and knowledge graph.
+- [Enterprise AI](/enterprise-ai): Document, tender, proposal, invoice and compliance AI.
+- [CRM](/crm): Leads, clients, projects, quotes, invoices and pipeline.
+- [Client Portal](/client-portal): Secure client-facing portal for invoices, projects and documents.
+- [Mobile App](/mobile-app): IVAN Mobile for Android and iOS.
+- [Industries](/industries): Sectors we serve across South Africa.
+- [Contact](/contact): Get in touch with the Mahikeng office.
+
+## Optional
+
+- [Privacy Policy](/privacy)
+- [Terms of Service](/terms)
+- [Refund Policy](/refund)
+- [Shipping Policy](/shipping)
+- [Cookie Policy](/cookies)
+- [POPIA](/popia)

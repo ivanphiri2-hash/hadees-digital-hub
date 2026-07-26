@@ -5,7 +5,7 @@ import { Brain, FileSearch, MessageSquare, Sparkles, BarChart3, ShieldAlert, Bot
 export const Route = createFileRoute("/enterprise-ai")({
   head: () => ({
     meta: [
-      { title: "Enterprise AI — Document, Tender, Proposal & Invoice AI — Hadees Trading" },
+      { title: "Enterprise AI — Document, Tender & Invoice AI" },
       { name: "description", content: "Enterprise AI stack: Document AI, Tender AI, Proposal AI, Invoice AI, OCR, Speech, Compliance AI, Predictive AI and Multi-Agent Workflows for South African business." },
       { property: "og:title", content: "Enterprise AI — Hadees Trading" },
       { property: "og:description", content: "Production-grade AI for South African business — deployed, integrated and operated." },
