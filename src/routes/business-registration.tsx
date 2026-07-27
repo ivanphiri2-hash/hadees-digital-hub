@@ -56,7 +56,10 @@ function BizReg() {
                 <div className="rounded-full bg-[var(--color-gold)]/15 px-3 py-1 text-sm font-bold text-[var(--color-gold)]">{r.price}</div>
               </div>
               <p className="mt-2 text-sm text-muted-foreground">{r.desc}</p>
-              <Link to="/contact" className="mt-4 inline-flex items-center rounded-full border border-border/70 px-3 py-1.5 text-xs font-semibold">Order now</Link>
+              <div className="mt-4 flex items-center gap-2">
+                <Link to="/checkout" search={{ service: r.slug }} className="inline-flex flex-1 items-center justify-center rounded-full bg-[var(--color-royal)] px-3 py-1.5 text-xs font-semibold text-white">Pay Now</Link>
+                <Link to="/contact" className="inline-flex items-center rounded-full border border-border/70 px-3 py-1.5 text-xs font-semibold">Enquire</Link>
+              </div>
             </GlassCard>
           ))}
         </div>
