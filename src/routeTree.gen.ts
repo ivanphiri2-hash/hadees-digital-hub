@@ -9,31 +9,45 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WhyChooseUsRouteImport } from './routes/why-choose-us'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TendersRouteImport } from './routes/tenders'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as RefundRouteImport } from './routes/refund'
+import { Route as PsiraRegistrationRouteImport } from './routes/psira-registration'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PopiaRouteImport } from './routes/popia'
 import { Route as PackagesRouteImport } from './routes/packages'
 import { Route as MobileAppRouteImport } from './routes/mobile-app'
 import { Route as IvanOsRouteImport } from './routes/ivan-os'
 import { Route as IndustriesRouteImport } from './routes/industries'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as EnterpriseAiRouteImport } from './routes/enterprise-ai'
 import { Route as CrmRouteImport } from './routes/crm'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ComplianceRouteImport } from './routes/compliance'
 import { Route as ClientPortalRouteImport } from './routes/client-portal'
+import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as BusinessRegistrationRouteImport } from './routes/business-registration'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
+import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
+import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as ApiPublicPayfastItnRouteImport } from './routes/api/public/payfast-itn'
 
+const WhyChooseUsRoute = WhyChooseUsRouteImport.update({
+  id: '/why-choose-us',
+  path: '/why-choose-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -64,9 +78,19 @@ const RefundRoute = RefundRouteImport.update({
   path: '/refund',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PsiraRegistrationRoute = PsiraRegistrationRouteImport.update({
+  id: '/psira-registration',
+  path: '/psira-registration',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PopiaRoute = PopiaRouteImport.update({
@@ -92,6 +116,11 @@ const IvanOsRoute = IvanOsRouteImport.update({
 const IndustriesRoute = IndustriesRouteImport.update({
   id: '/industries',
   path: '/industries',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EnterpriseAiRoute = EnterpriseAiRouteImport.update({
@@ -124,6 +153,11 @@ const ClientPortalRoute = ClientPortalRouteImport.update({
   path: '/client-portal',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BusinessRegistrationRoute = BusinessRegistrationRouteImport.update({
   id: '/business-registration',
   path: '/business-registration',
@@ -149,10 +183,30 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const PaymentSuccessRoute = PaymentSuccessRouteImport.update({
+  id: '/payment/success',
+  path: '/payment/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentCancelledRoute = PaymentCancelledRouteImport.update({
+  id: '/payment/cancelled',
+  path: '/payment/cancelled',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => AdminRoute,
+} as any)
+const ApiPublicPayfastItnRoute = ApiPublicPayfastItnRouteImport.update({
+  id: '/api/public/payfast-itn',
+  path: '/api/public/payfast-itn',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -160,51 +214,69 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/business-registration': typeof BusinessRegistrationRoute
+  '/checkout': typeof CheckoutRoute
   '/client-portal': typeof ClientPortalRoute
   '/compliance': typeof ComplianceRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/crm': typeof CrmRoute
   '/enterprise-ai': typeof EnterpriseAiRoute
+  '/faq': typeof FaqRoute
   '/industries': typeof IndustriesRoute
   '/ivan-os': typeof IvanOsRoute
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
   '/popia': typeof PopiaRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/psira-registration': typeof PsiraRegistrationRoute
   '/refund': typeof RefundRoute
   '/services': typeof ServicesRoute
   '/shipping': typeof ShippingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tenders': typeof TendersRoute
   '/terms': typeof TermsRoute
+  '/why-choose-us': typeof WhyChooseUsRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/payments': typeof AdminPaymentsRoute
+  '/payment/cancelled': typeof PaymentCancelledRoute
+  '/payment/success': typeof PaymentSuccessRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/payfast-itn': typeof ApiPublicPayfastItnRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/business-registration': typeof BusinessRegistrationRoute
+  '/checkout': typeof CheckoutRoute
   '/client-portal': typeof ClientPortalRoute
   '/compliance': typeof ComplianceRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/crm': typeof CrmRoute
   '/enterprise-ai': typeof EnterpriseAiRoute
+  '/faq': typeof FaqRoute
   '/industries': typeof IndustriesRoute
   '/ivan-os': typeof IvanOsRoute
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
   '/popia': typeof PopiaRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/psira-registration': typeof PsiraRegistrationRoute
   '/refund': typeof RefundRoute
   '/services': typeof ServicesRoute
   '/shipping': typeof ShippingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tenders': typeof TendersRoute
   '/terms': typeof TermsRoute
+  '/why-choose-us': typeof WhyChooseUsRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/payments': typeof AdminPaymentsRoute
+  '/payment/cancelled': typeof PaymentCancelledRoute
+  '/payment/success': typeof PaymentSuccessRoute
   '/admin': typeof AdminIndexRoute
+  '/api/public/payfast-itn': typeof ApiPublicPayfastItnRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -212,26 +284,35 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/business-registration': typeof BusinessRegistrationRoute
+  '/checkout': typeof CheckoutRoute
   '/client-portal': typeof ClientPortalRoute
   '/compliance': typeof ComplianceRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/crm': typeof CrmRoute
   '/enterprise-ai': typeof EnterpriseAiRoute
+  '/faq': typeof FaqRoute
   '/industries': typeof IndustriesRoute
   '/ivan-os': typeof IvanOsRoute
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
   '/popia': typeof PopiaRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/psira-registration': typeof PsiraRegistrationRoute
   '/refund': typeof RefundRoute
   '/services': typeof ServicesRoute
   '/shipping': typeof ShippingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tenders': typeof TendersRoute
   '/terms': typeof TermsRoute
+  '/why-choose-us': typeof WhyChooseUsRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/payments': typeof AdminPaymentsRoute
+  '/payment/cancelled': typeof PaymentCancelledRoute
+  '/payment/success': typeof PaymentSuccessRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/payfast-itn': typeof ApiPublicPayfastItnRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -240,77 +321,104 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/business-registration'
+    | '/checkout'
     | '/client-portal'
     | '/compliance'
     | '/contact'
     | '/cookies'
     | '/crm'
     | '/enterprise-ai'
+    | '/faq'
     | '/industries'
     | '/ivan-os'
     | '/mobile-app'
     | '/packages'
     | '/popia'
+    | '/pricing'
     | '/privacy'
+    | '/psira-registration'
     | '/refund'
     | '/services'
     | '/shipping'
     | '/sitemap.xml'
     | '/tenders'
     | '/terms'
+    | '/why-choose-us'
     | '/admin/login'
+    | '/admin/payments'
+    | '/payment/cancelled'
+    | '/payment/success'
     | '/admin/'
+    | '/api/public/payfast-itn'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/business-registration'
+    | '/checkout'
     | '/client-portal'
     | '/compliance'
     | '/contact'
     | '/cookies'
     | '/crm'
     | '/enterprise-ai'
+    | '/faq'
     | '/industries'
     | '/ivan-os'
     | '/mobile-app'
     | '/packages'
     | '/popia'
+    | '/pricing'
     | '/privacy'
+    | '/psira-registration'
     | '/refund'
     | '/services'
     | '/shipping'
     | '/sitemap.xml'
     | '/tenders'
     | '/terms'
+    | '/why-choose-us'
     | '/admin/login'
+    | '/admin/payments'
+    | '/payment/cancelled'
+    | '/payment/success'
     | '/admin'
+    | '/api/public/payfast-itn'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/admin'
     | '/business-registration'
+    | '/checkout'
     | '/client-portal'
     | '/compliance'
     | '/contact'
     | '/cookies'
     | '/crm'
     | '/enterprise-ai'
+    | '/faq'
     | '/industries'
     | '/ivan-os'
     | '/mobile-app'
     | '/packages'
     | '/popia'
+    | '/pricing'
     | '/privacy'
+    | '/psira-registration'
     | '/refund'
     | '/services'
     | '/shipping'
     | '/sitemap.xml'
     | '/tenders'
     | '/terms'
+    | '/why-choose-us'
     | '/admin/login'
+    | '/admin/payments'
+    | '/payment/cancelled'
+    | '/payment/success'
     | '/admin/'
+    | '/api/public/payfast-itn'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -318,28 +426,43 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
   BusinessRegistrationRoute: typeof BusinessRegistrationRoute
+  CheckoutRoute: typeof CheckoutRoute
   ClientPortalRoute: typeof ClientPortalRoute
   ComplianceRoute: typeof ComplianceRoute
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   CrmRoute: typeof CrmRoute
   EnterpriseAiRoute: typeof EnterpriseAiRoute
+  FaqRoute: typeof FaqRoute
   IndustriesRoute: typeof IndustriesRoute
   IvanOsRoute: typeof IvanOsRoute
   MobileAppRoute: typeof MobileAppRoute
   PackagesRoute: typeof PackagesRoute
   PopiaRoute: typeof PopiaRoute
+  PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
+  PsiraRegistrationRoute: typeof PsiraRegistrationRoute
   RefundRoute: typeof RefundRoute
   ServicesRoute: typeof ServicesRoute
   ShippingRoute: typeof ShippingRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TendersRoute: typeof TendersRoute
   TermsRoute: typeof TermsRoute
+  WhyChooseUsRoute: typeof WhyChooseUsRoute
+  PaymentCancelledRoute: typeof PaymentCancelledRoute
+  PaymentSuccessRoute: typeof PaymentSuccessRoute
+  ApiPublicPayfastItnRoute: typeof ApiPublicPayfastItnRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/why-choose-us': {
+      id: '/why-choose-us'
+      path: '/why-choose-us'
+      fullPath: '/why-choose-us'
+      preLoaderRoute: typeof WhyChooseUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -382,11 +505,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RefundRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/psira-registration': {
+      id: '/psira-registration'
+      path: '/psira-registration'
+      fullPath: '/psira-registration'
+      preLoaderRoute: typeof PsiraRegistrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/popia': {
@@ -422,6 +559,13 @@ declare module '@tanstack/react-router' {
       path: '/industries'
       fullPath: '/industries'
       preLoaderRoute: typeof IndustriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/enterprise-ai': {
@@ -466,6 +610,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientPortalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/business-registration': {
       id: '/business-registration'
       path: '/business-registration'
@@ -501,6 +652,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/payment/success': {
+      id: '/payment/success'
+      path: '/payment/success'
+      fullPath: '/payment/success'
+      preLoaderRoute: typeof PaymentSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment/cancelled': {
+      id: '/payment/cancelled'
+      path: '/payment/cancelled'
+      fullPath: '/payment/cancelled'
+      preLoaderRoute: typeof PaymentCancelledRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/payments': {
+      id: '/admin/payments'
+      path: '/payments'
+      fullPath: '/admin/payments'
+      preLoaderRoute: typeof AdminPaymentsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/login': {
       id: '/admin/login'
       path: '/login'
@@ -508,16 +680,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/api/public/payfast-itn': {
+      id: '/api/public/payfast-itn'
+      path: '/api/public/payfast-itn'
+      fullPath: '/api/public/payfast-itn'
+      preLoaderRoute: typeof ApiPublicPayfastItnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AdminRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
+  AdminPaymentsRoute: AdminPaymentsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
@@ -528,35 +709,33 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
   BusinessRegistrationRoute: BusinessRegistrationRoute,
+  CheckoutRoute: CheckoutRoute,
   ClientPortalRoute: ClientPortalRoute,
   ComplianceRoute: ComplianceRoute,
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   CrmRoute: CrmRoute,
   EnterpriseAiRoute: EnterpriseAiRoute,
+  FaqRoute: FaqRoute,
   IndustriesRoute: IndustriesRoute,
   IvanOsRoute: IvanOsRoute,
   MobileAppRoute: MobileAppRoute,
   PackagesRoute: PackagesRoute,
   PopiaRoute: PopiaRoute,
+  PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
+  PsiraRegistrationRoute: PsiraRegistrationRoute,
   RefundRoute: RefundRoute,
   ServicesRoute: ServicesRoute,
   ShippingRoute: ShippingRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TendersRoute: TendersRoute,
   TermsRoute: TermsRoute,
+  WhyChooseUsRoute: WhyChooseUsRoute,
+  PaymentCancelledRoute: PaymentCancelledRoute,
+  PaymentSuccessRoute: PaymentSuccessRoute,
+  ApiPublicPayfastItnRoute: ApiPublicPayfastItnRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

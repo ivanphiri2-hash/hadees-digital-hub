@@ -70,16 +70,14 @@ export const Route = createFileRoute("/api/public/payfast-itn")({
         else if (pfStatus === "CANCELLED") status = "cancelled";
         else if (pfStatus === "REFUNDED") status = "refunded";
 
-        const patch: Record<string, unknown> = {
-          status,
-          pf_payment_id: posted.pf_payment_id ?? null,
-          itn_payload: posted,
-        };
-        if (status === "paid") patch.paid_at = new Date().toISOString();
-
         const { error: updateErr } = await supabaseAdmin
           .from("orders")
-          .update(patch)
+          .update({
+            status,
+            pf_payment_id: posted.pf_payment_id ?? null,
+            itn_payload: posted,
+            ...(status === "paid" ? { paid_at: new Date().toISOString() } : {}),
+          })
           .eq("id", order.id);
         if (updateErr) {
           console.error("PayFast ITN: DB update failed", updateErr);
