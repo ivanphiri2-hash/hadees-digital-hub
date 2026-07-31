@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Section, GlassCard } from "@/components/site/ui";
 import { COMPANY } from "@/lib/company";
 import { Mail, Phone, MapPin, MessageCircle, Navigation } from "lucide-react";
+import { SocialLinks } from "@/components/site/SocialLinks";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
