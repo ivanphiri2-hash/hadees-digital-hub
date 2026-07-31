@@ -10,8 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WhyChooseUsRouteImport } from './routes/why-choose-us'
+import { Route as WebsiteDesignRouteImport } from './routes/website-design'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TendersRouteImport } from './routes/tenders'
+import { Route as TenderSupportRouteImport } from './routes/tender-support'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as ServicesRouteImport } from './routes/services'
@@ -29,6 +31,7 @@ import { Route as EnterpriseAiRouteImport } from './routes/enterprise-ai'
 import { Route as CrmRouteImport } from './routes/crm'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ConstructionServicesRouteImport } from './routes/construction-services'
 import { Route as ComplianceRouteImport } from './routes/compliance'
 import { Route as ClientPortalRouteImport } from './routes/client-portal'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -48,6 +51,11 @@ const WhyChooseUsRoute = WhyChooseUsRouteImport.update({
   path: '/why-choose-us',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WebsiteDesignRoute = WebsiteDesignRouteImport.update({
+  id: '/website-design',
+  path: '/website-design',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -56,6 +64,11 @@ const TermsRoute = TermsRouteImport.update({
 const TendersRoute = TendersRouteImport.update({
   id: '/tenders',
   path: '/tenders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TenderSupportRoute = TenderSupportRouteImport.update({
+  id: '/tender-support',
+  path: '/tender-support',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -143,6 +156,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConstructionServicesRoute = ConstructionServicesRouteImport.update({
+  id: '/construction-services',
+  path: '/construction-services',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ComplianceRoute = ComplianceRouteImport.update({
   id: '/compliance',
   path: '/compliance',
@@ -217,6 +235,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/client-portal': typeof ClientPortalRoute
   '/compliance': typeof ComplianceRoute
+  '/construction-services': typeof ConstructionServicesRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/crm': typeof CrmRoute
@@ -234,8 +253,10 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/shipping': typeof ShippingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tender-support': typeof TenderSupportRoute
   '/tenders': typeof TendersRoute
   '/terms': typeof TermsRoute
+  '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
@@ -251,6 +272,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/client-portal': typeof ClientPortalRoute
   '/compliance': typeof ComplianceRoute
+  '/construction-services': typeof ConstructionServicesRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/crm': typeof CrmRoute
@@ -268,8 +290,10 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/shipping': typeof ShippingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tender-support': typeof TenderSupportRoute
   '/tenders': typeof TendersRoute
   '/terms': typeof TermsRoute
+  '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
@@ -287,6 +311,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/client-portal': typeof ClientPortalRoute
   '/compliance': typeof ComplianceRoute
+  '/construction-services': typeof ConstructionServicesRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/crm': typeof CrmRoute
@@ -304,8 +329,10 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/shipping': typeof ShippingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tender-support': typeof TenderSupportRoute
   '/tenders': typeof TendersRoute
   '/terms': typeof TermsRoute
+  '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
@@ -324,6 +351,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/client-portal'
     | '/compliance'
+    | '/construction-services'
     | '/contact'
     | '/cookies'
     | '/crm'
@@ -341,8 +369,10 @@ export interface FileRouteTypes {
     | '/services'
     | '/shipping'
     | '/sitemap.xml'
+    | '/tender-support'
     | '/tenders'
     | '/terms'
+    | '/website-design'
     | '/why-choose-us'
     | '/admin/login'
     | '/admin/payments'
@@ -358,6 +388,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/client-portal'
     | '/compliance'
+    | '/construction-services'
     | '/contact'
     | '/cookies'
     | '/crm'
@@ -375,8 +406,10 @@ export interface FileRouteTypes {
     | '/services'
     | '/shipping'
     | '/sitemap.xml'
+    | '/tender-support'
     | '/tenders'
     | '/terms'
+    | '/website-design'
     | '/why-choose-us'
     | '/admin/login'
     | '/admin/payments'
@@ -393,6 +426,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/client-portal'
     | '/compliance'
+    | '/construction-services'
     | '/contact'
     | '/cookies'
     | '/crm'
@@ -410,8 +444,10 @@ export interface FileRouteTypes {
     | '/services'
     | '/shipping'
     | '/sitemap.xml'
+    | '/tender-support'
     | '/tenders'
     | '/terms'
+    | '/website-design'
     | '/why-choose-us'
     | '/admin/login'
     | '/admin/payments'
@@ -429,6 +465,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   ClientPortalRoute: typeof ClientPortalRoute
   ComplianceRoute: typeof ComplianceRoute
+  ConstructionServicesRoute: typeof ConstructionServicesRoute
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   CrmRoute: typeof CrmRoute
@@ -446,8 +483,10 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   ShippingRoute: typeof ShippingRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TenderSupportRoute: typeof TenderSupportRoute
   TendersRoute: typeof TendersRoute
   TermsRoute: typeof TermsRoute
+  WebsiteDesignRoute: typeof WebsiteDesignRoute
   WhyChooseUsRoute: typeof WhyChooseUsRoute
   PaymentCancelledRoute: typeof PaymentCancelledRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
@@ -463,6 +502,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WhyChooseUsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/website-design': {
+      id: '/website-design'
+      path: '/website-design'
+      fullPath: '/website-design'
+      preLoaderRoute: typeof WebsiteDesignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -475,6 +521,13 @@ declare module '@tanstack/react-router' {
       path: '/tenders'
       fullPath: '/tenders'
       preLoaderRoute: typeof TendersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tender-support': {
+      id: '/tender-support'
+      path: '/tender-support'
+      fullPath: '/tender-support'
+      preLoaderRoute: typeof TenderSupportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -596,6 +649,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/construction-services': {
+      id: '/construction-services'
+      path: '/construction-services'
+      fullPath: '/construction-services'
+      preLoaderRoute: typeof ConstructionServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/compliance': {
       id: '/compliance'
       path: '/compliance'
@@ -712,6 +772,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   ClientPortalRoute: ClientPortalRoute,
   ComplianceRoute: ComplianceRoute,
+  ConstructionServicesRoute: ConstructionServicesRoute,
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   CrmRoute: CrmRoute,
@@ -729,8 +790,10 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   ShippingRoute: ShippingRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TenderSupportRoute: TenderSupportRoute,
   TendersRoute: TendersRoute,
   TermsRoute: TermsRoute,
+  WebsiteDesignRoute: WebsiteDesignRoute,
   WhyChooseUsRoute: WhyChooseUsRoute,
   PaymentCancelledRoute: PaymentCancelledRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
