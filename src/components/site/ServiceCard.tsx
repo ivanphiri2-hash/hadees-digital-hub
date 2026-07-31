@@ -76,7 +76,6 @@ export function ServiceCard({ service }: { service: CatalogService }) {
         <div className="grid grid-cols-2 gap-2">
           <Link
             to="/contact"
-            search={{ service: service.slug }}
             className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full border border-border/70 px-3 text-xs font-semibold text-foreground hover:bg-card"
           >
             <FileText aria-hidden className="h-3.5 w-3.5" /> Request Quote
