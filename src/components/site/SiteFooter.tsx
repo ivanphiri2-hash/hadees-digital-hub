@@ -15,11 +15,13 @@ const cols = [
   {
     title: "Services",
     links: [
-      { label: "Services", to: "/services" },
-      { label: "Website Packages", to: "/packages" },
+      { label: "All Services", to: "/services" },
+      { label: "Pricing", to: "/pricing" },
       { label: "Business Registration", to: "/business-registration" },
+      { label: "Construction Services", to: "/construction-services" },
+      { label: "Tender Support", to: "/tender-support" },
+      { label: "Website Design", to: "/website-design" },
       { label: "Compliance", to: "/compliance" },
-      { label: "Tenders", to: "/tenders" },
     ],
   },
   {
