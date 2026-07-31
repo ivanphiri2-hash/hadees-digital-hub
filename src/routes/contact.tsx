@@ -96,7 +96,12 @@ function Contact() {
                 </a>
               </div>
             </GlassCard>
+            <GlassCard>
+              <div className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Follow Hadees Trading</div>
+              <SocialLinks size="sm" className="mt-4" />
+            </GlassCard>
           </div>
+
         </div>
 
         <div className="mt-8 overflow-hidden rounded-3xl border border-border/60">
