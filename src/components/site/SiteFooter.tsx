@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { COMPANY } from "@/lib/company";
+import { SocialLinks } from "@/components/site/SocialLinks";
 
 const cols = [
   {
