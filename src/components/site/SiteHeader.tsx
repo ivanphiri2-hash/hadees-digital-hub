@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, Moon, Sun } from "lucide-react";
 import { NAV, COMPANY } from "@/lib/company";
+import { SocialLinks } from "@/components/site/SocialLinks";
 import { useTheme } from "./theme";
 
 export function SiteHeader() {
@@ -51,6 +52,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <SocialLinks size="sm" className="hidden xl:flex" only={["whatsapp", "facebook", "instagram", "linkedin"]} />
           <button
             aria-label="Toggle theme"
             onClick={toggle}

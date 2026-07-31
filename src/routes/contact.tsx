@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Section, GlassCard } from "@/components/site/ui";
 import { COMPANY } from "@/lib/company";
 import { Mail, Phone, MapPin, MessageCircle, Navigation } from "lucide-react";
+import { SocialLinks } from "@/components/site/SocialLinks";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -96,7 +97,12 @@ function Contact() {
                 </a>
               </div>
             </GlassCard>
+            <GlassCard>
+              <div className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Follow Hadees Trading</div>
+              <SocialLinks size="sm" className="mt-4" />
+            </GlassCard>
           </div>
+
         </div>
 
         <div className="mt-8 overflow-hidden rounded-3xl border border-border/60">

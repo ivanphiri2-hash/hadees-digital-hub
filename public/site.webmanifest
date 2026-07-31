@@ -1,0 +1,13 @@
+{
+  "name": "Hadees Trading (Pty) Ltd",
+  "short_name": "Hadees",
+  "description": "Your Complete Business Growth Partner — registration, compliance, tenders, websites and automation.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030712",
+  "theme_color": "#0A2540",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "64x64", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

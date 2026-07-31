@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { COMPANY } from "@/lib/company";
+import { SocialLinks } from "@/components/site/SocialLinks";
 
 const cols = [
   {
@@ -14,11 +15,13 @@ const cols = [
   {
     title: "Services",
     links: [
-      { label: "Services", to: "/services" },
-      { label: "Website Packages", to: "/packages" },
+      { label: "All Services", to: "/services" },
+      { label: "Pricing", to: "/pricing" },
       { label: "Business Registration", to: "/business-registration" },
+      { label: "Construction Services", to: "/construction-services" },
+      { label: "Tender Support", to: "/tender-support" },
+      { label: "Website Design", to: "/website-design" },
       { label: "Compliance", to: "/compliance" },
-      { label: "Tenders", to: "/tenders" },
     ],
   },
   {
@@ -57,14 +60,16 @@ export function SiteFooter() {
               <div className="font-display text-base font-bold">Hadees Trading (Pty) Ltd</div>
             </div>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-              Enterprise digital infrastructure — websites, compliance, tenders and AI automation — engineered for South African business.
+              Your Complete Business Growth Partner — registration, compliance, tenders, websites and automation for South African business.
             </p>
             <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
               <li className="flex items-center gap-2"><MapPin className="h-4 w-4" /> {COMPANY.city}, {COMPANY.country}</li>
               <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> <a href={`tel:${COMPANY.phoneIntl}`} className="hover:text-foreground">{COMPANY.phone}</a></li>
               <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> <a href={`mailto:${COMPANY.email}`} className="hover:text-foreground">{COMPANY.email}</a></li>
             </ul>
+            <SocialLinks size="sm" className="mt-6" />
           </div>
+
 
           {cols.map((c) => (
             <div key={c.title}>
