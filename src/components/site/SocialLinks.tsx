@@ -37,12 +37,21 @@ const ICONS: Record<SocialKey, ComponentType<{ className?: string }>> = {
   discord: DiscordIcon,
 };
 
-export function SocialLinks({ size = "md", className = "" }: { size?: "sm" | "md"; className?: string }) {
+export function SocialLinks({
+  size = "md",
+  className = "",
+  only,
+}: {
+  size?: "sm" | "md";
+  className?: string;
+  only?: readonly SocialKey[];
+}) {
   const box = size === "sm" ? "h-9 w-9" : "h-11 w-11";
   const icon = size === "sm" ? "h-4 w-4" : "h-[18px] w-[18px]";
+  const items = only ? SOCIALS.filter((s) => only.includes(s.key)) : SOCIALS;
   return (
     <ul className={`flex flex-wrap items-center gap-2 ${className}`}>
-      {SOCIALS.map((s) => {
+      {items.map((s) => {
         const Icon = ICONS[s.key];
         return (
           <li key={s.key}>
