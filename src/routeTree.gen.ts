@@ -36,14 +36,17 @@ import { Route as ComplianceRouteImport } from './routes/compliance'
 import { Route as ClientPortalRouteImport } from './routes/client-portal'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as BusinessRegistrationRouteImport } from './routes/business-registration'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
 import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
 import { Route as ApiPublicPayfastItnRouteImport } from './routes/api/public/payfast-itn'
 
 const WhyChooseUsRoute = WhyChooseUsRouteImport.update({
@@ -181,6 +184,11 @@ const BusinessRegistrationRoute = BusinessRegistrationRouteImport.update({
   path: '/business-registration',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -189,6 +197,10 @@ const AdminRoute = AdminRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -221,6 +233,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AdminRoute,
 } as any)
+const AuthenticatedPortalRoute = AuthenticatedPortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const ApiPublicPayfastItnRoute = ApiPublicPayfastItnRouteImport.update({
   id: '/api/public/payfast-itn',
   path: '/api/public/payfast-itn',
@@ -231,6 +248,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/auth': typeof AuthRoute
   '/business-registration': typeof BusinessRegistrationRoute
   '/checkout': typeof CheckoutRoute
   '/client-portal': typeof ClientPortalRoute
@@ -258,6 +276,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
+  '/portal': typeof AuthenticatedPortalRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
@@ -268,6 +287,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/business-registration': typeof BusinessRegistrationRoute
   '/checkout': typeof CheckoutRoute
   '/client-portal': typeof ClientPortalRoute
@@ -295,6 +315,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
+  '/portal': typeof AuthenticatedPortalRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
@@ -305,8 +326,10 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/auth': typeof AuthRoute
   '/business-registration': typeof BusinessRegistrationRoute
   '/checkout': typeof CheckoutRoute
   '/client-portal': typeof ClientPortalRoute
@@ -334,6 +357,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
+  '/_authenticated/portal': typeof AuthenticatedPortalRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
@@ -347,6 +371,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/auth'
     | '/business-registration'
     | '/checkout'
     | '/client-portal'
@@ -374,6 +399,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/website-design'
     | '/why-choose-us'
+    | '/portal'
     | '/admin/login'
     | '/admin/payments'
     | '/payment/cancelled'
@@ -384,6 +410,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/auth'
     | '/business-registration'
     | '/checkout'
     | '/client-portal'
@@ -411,6 +438,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/website-design'
     | '/why-choose-us'
+    | '/portal'
     | '/admin/login'
     | '/admin/payments'
     | '/payment/cancelled'
@@ -420,8 +448,10 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
     | '/admin'
+    | '/auth'
     | '/business-registration'
     | '/checkout'
     | '/client-portal'
@@ -449,6 +479,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/website-design'
     | '/why-choose-us'
+    | '/_authenticated/portal'
     | '/admin/login'
     | '/admin/payments'
     | '/payment/cancelled'
@@ -459,8 +490,10 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
+  AuthRoute: typeof AuthRoute
   BusinessRegistrationRoute: typeof BusinessRegistrationRoute
   CheckoutRoute: typeof CheckoutRoute
   ClientPortalRoute: typeof ClientPortalRoute
@@ -684,6 +717,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BusinessRegistrationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -696,6 +736,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -740,6 +787,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_authenticated/portal': {
+      id: '/_authenticated/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof AuthenticatedPortalRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/api/public/payfast-itn': {
       id: '/api/public/payfast-itn'
       path: '/api/public/payfast-itn'
@@ -749,6 +803,17 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedPortalRoute: typeof AuthenticatedPortalRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedPortalRoute: AuthenticatedPortalRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface AdminRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
@@ -766,8 +831,10 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
+  AuthRoute: AuthRoute,
   BusinessRegistrationRoute: BusinessRegistrationRoute,
   CheckoutRoute: CheckoutRoute,
   ClientPortalRoute: ClientPortalRoute,
