@@ -39,12 +39,14 @@ import { Route as BusinessRegistrationRouteImport } from './routes/business-regi
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
 import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
 import { Route as ApiPublicPayfastItnRouteImport } from './routes/api/public/payfast-itn'
 
 const WhyChooseUsRoute = WhyChooseUsRouteImport.update({
@@ -197,6 +199,10 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -226,6 +232,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => AdminRoute,
+} as any)
+const AuthenticatedPortalRoute = AuthenticatedPortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const ApiPublicPayfastItnRoute = ApiPublicPayfastItnRouteImport.update({
   id: '/api/public/payfast-itn',
@@ -265,6 +276,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
+  '/portal': typeof AuthenticatedPortalRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
@@ -303,6 +315,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
+  '/portal': typeof AuthenticatedPortalRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
@@ -313,6 +326,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
@@ -343,6 +357,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
+  '/_authenticated/portal': typeof AuthenticatedPortalRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
@@ -384,6 +399,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/website-design'
     | '/why-choose-us'
+    | '/portal'
     | '/admin/login'
     | '/admin/payments'
     | '/payment/cancelled'
@@ -422,6 +438,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/website-design'
     | '/why-choose-us'
+    | '/portal'
     | '/admin/login'
     | '/admin/payments'
     | '/payment/cancelled'
@@ -431,6 +448,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
     | '/admin'
     | '/auth'
@@ -461,6 +479,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/website-design'
     | '/why-choose-us'
+    | '/_authenticated/portal'
     | '/admin/login'
     | '/admin/payments'
     | '/payment/cancelled'
@@ -471,6 +490,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
@@ -718,6 +738,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -760,6 +787,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_authenticated/portal': {
+      id: '/_authenticated/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof AuthenticatedPortalRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/api/public/payfast-itn': {
       id: '/api/public/payfast-itn'
       path: '/api/public/payfast-itn'
@@ -769,6 +803,17 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedPortalRoute: typeof AuthenticatedPortalRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedPortalRoute: AuthenticatedPortalRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface AdminRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
@@ -786,6 +831,7 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
