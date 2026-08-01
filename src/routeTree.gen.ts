@@ -36,6 +36,7 @@ import { Route as ComplianceRouteImport } from './routes/compliance'
 import { Route as ClientPortalRouteImport } from './routes/client-portal'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as BusinessRegistrationRouteImport } from './routes/business-registration'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -181,6 +182,11 @@ const BusinessRegistrationRoute = BusinessRegistrationRouteImport.update({
   path: '/business-registration',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -231,6 +237,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/auth': typeof AuthRoute
   '/business-registration': typeof BusinessRegistrationRoute
   '/checkout': typeof CheckoutRoute
   '/client-portal': typeof ClientPortalRoute
@@ -268,6 +275,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/business-registration': typeof BusinessRegistrationRoute
   '/checkout': typeof CheckoutRoute
   '/client-portal': typeof ClientPortalRoute
@@ -307,6 +315,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/auth': typeof AuthRoute
   '/business-registration': typeof BusinessRegistrationRoute
   '/checkout': typeof CheckoutRoute
   '/client-portal': typeof ClientPortalRoute
@@ -347,6 +356,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/auth'
     | '/business-registration'
     | '/checkout'
     | '/client-portal'
@@ -384,6 +394,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/auth'
     | '/business-registration'
     | '/checkout'
     | '/client-portal'
@@ -422,6 +433,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/auth'
     | '/business-registration'
     | '/checkout'
     | '/client-portal'
@@ -461,6 +473,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
+  AuthRoute: typeof AuthRoute
   BusinessRegistrationRoute: typeof BusinessRegistrationRoute
   CheckoutRoute: typeof CheckoutRoute
   ClientPortalRoute: typeof ClientPortalRoute
@@ -684,6 +697,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BusinessRegistrationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -768,6 +788,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
+  AuthRoute: AuthRoute,
   BusinessRegistrationRoute: BusinessRegistrationRoute,
   CheckoutRoute: CheckoutRoute,
   ClientPortalRoute: ClientPortalRoute,

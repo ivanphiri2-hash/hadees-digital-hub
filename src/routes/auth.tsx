@@ -3,7 +3,6 @@ import { useEffect, useState, type FormEvent } from "react";
 import { ShieldCheck, ArrowRight } from "lucide-react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { GradientOrbs } from "@/components/site/ui";
 
 export const Route = createFileRoute("/auth")({
@@ -77,13 +76,7 @@ function AuthPage() {
             </div>
           </div>
 
-          <button
-            onClick={() => void lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin })}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-full border border-border/70 bg-card/40 px-4 py-2.5 text-sm font-semibold">
-            Continue with Google
-          </button>
-
-          <div className="my-5 flex items-center gap-3 text-[10px] uppercase tracking-widest text-muted-foreground">
+          <div className="my-6 flex items-center gap-3 text-[10px] uppercase tracking-widest text-muted-foreground">
             <span className="h-px flex-1 bg-border/60" /> or email <span className="h-px flex-1 bg-border/60" />
           </div>
 
