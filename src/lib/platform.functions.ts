@@ -490,3 +490,352 @@ export const updateSocialLink = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true as const };
   });
+
+/* --------------------------- v4.1 CRM EXTENSIONS --------------------------- */
+
+/** Rich lead editing (contact details, budget, follow-up, notes, assignment). */
+export const patchLead = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({
+    id: uuid,
+    name: z.string().trim().min(1).max(120).optional(),
+    company: z.string().trim().max(160).nullable().optional(),
+    email: z.string().trim().max(255).nullable().optional(),
+    phone: z.string().trim().max(40).nullable().optional(),
+    service_name: z.string().trim().max(160).nullable().optional(),
+    value_cents: z.number().int().min(0).max(100_000_000).optional(),
+    stage: z.enum(STAGES).optional(),
+    source: z.enum(SOURCES).optional(),
+    next_follow_up: z.string().max(20).nullable().optional(),
+    notes: z.string().max(8000).nullable().optional(),
+    assigned_to: uuid.nullable().optional(),
+  }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const { id, ...patch } = data;
+    const { error } = await context.supabase.from("leads").update(patch).eq("id", id);
+    if (error) throw new Error(error.message);
+    await context.supabase.from("activity_logs").insert({
+      actor_id: context.userId, action: "lead.updated", entity_type: "lead", entity_id: id, meta: patch,
+    });
+    return { ok: true as const };
+  });
+
+/** Promote a lead into a full client record and link them. */
+export const convertLeadToClient = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({ id: uuid }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const { supabase } = context;
+    const { data: lead, error } = await supabase.from("leads").select("*").eq("id", data.id).maybeSingle();
+    if (error || !lead) throw new Error("Lead not found");
+    if (lead.client_id) return { clientId: lead.client_id };
+
+    const { data: client, error: insErr } = await supabase.from("clients").insert({
+      full_name: lead.name,
+      email: lead.email ?? `${lead.id}@no-email.local`,
+      phone: lead.phone,
+      company_name: lead.company,
+      notes: lead.notes,
+      assigned_to: lead.assigned_to,
+      status: "active",
+    }).select("id").single();
+    if (insErr) throw new Error(insErr.message);
+
+    await supabase.from("leads").update({ client_id: client.id, stage: "deposit_received" }).eq("id", lead.id);
+    await supabase.from("activity_logs").insert({
+      actor_id: context.userId, action: "lead.converted", entity_type: "client", entity_id: client.id,
+      meta: { lead_id: lead.id },
+    });
+    return { clientId: client.id };
+  });
+
+export const setClientStatus = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({
+    id: uuid,
+    status: z.enum(["active", "prospect", "dormant", "suspended", "archived"]),
+  }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase.from("clients").update({ status: data.status }).eq("id", data.id);
+    if (error) throw new Error(error.message);
+    await context.supabase.from("activity_logs").insert({
+      actor_id: context.userId, action: `client.${data.status}`, entity_type: "client", entity_id: data.id, meta: {},
+    });
+    return { ok: true as const };
+  });
+
+/** Admin-only hard delete (RLS enforces the admin policy on clients). */
+export const deleteClient = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({ id: uuid }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase.from("clients").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    await context.supabase.from("activity_logs").insert({
+      actor_id: context.userId, action: "client.deleted", entity_type: "client", entity_id: data.id, meta: {},
+    });
+    return { ok: true as const };
+  });
+
+/* ------------------------------- PROJECTS -------------------------------- */
+
+export const getProjectDetail = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({ id: uuid }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const { supabase } = context;
+    const [project, tasks, comments, documents] = await Promise.all([
+      supabase.from("projects").select("*, clients(full_name, company_name, email)").eq("id", data.id).maybeSingle(),
+      supabase.from("project_tasks").select("*").eq("project_id", data.id).order("position"),
+      supabase.from("project_comments").select("*").eq("project_id", data.id).order("created_at", { ascending: false }),
+      supabase.from("documents").select("*").eq("project_id", data.id).order("created_at", { ascending: false }),
+    ]);
+    if (!project.data) throw new Error("Project not found");
+    return {
+      project: project.data,
+      tasks: tasks.data ?? [],
+      comments: comments.data ?? [],
+      documents: documents.data ?? [],
+    };
+  });
+
+export const upsertProjectTask = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({
+    id: uuid.optional(),
+    project_id: uuid,
+    title: z.string().trim().min(1).max(200),
+    status: z.enum(["todo", "in_progress", "done"]).default("todo"),
+    due_date: z.string().max(20).nullable().optional(),
+    position: z.number().int().min(0).max(999).default(0),
+  }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const { id, ...patch } = data;
+    if (id) {
+      const { error } = await context.supabase.from("project_tasks").update(patch).eq("id", id);
+      if (error) throw new Error(error.message);
+      return { id };
+    }
+    const { data: row, error } = await context.supabase.from("project_tasks").insert(patch).select("id").single();
+    if (error) throw new Error(error.message);
+    return { id: row.id };
+  });
+
+export const deleteProjectTask = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({ id: uuid }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase.from("project_tasks").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true as const };
+  });
+
+export const addProjectComment = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({
+    project_id: uuid,
+    body: z.string().trim().min(1).max(4000),
+  }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase.from("project_comments").insert({
+      project_id: data.project_id, body: data.body, author_id: context.userId,
+    });
+    if (error) throw new Error(error.message);
+    return { ok: true as const };
+  });
+
+/* -------------------------------- BILLING -------------------------------- */
+
+export const createInvoice = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({
+    client_id: uuid.nullable().optional(),
+    title: z.string().trim().min(1).max(160),
+    line_items: z.array(z.object({
+      description: z.string().trim().min(1).max(200),
+      qty: z.number().int().min(1).max(999),
+      unit_cents: z.number().int().min(0).max(100_000_000),
+    })).min(1).max(50),
+    vat: z.boolean().default(false),
+    due_date: z.string().max(20).nullable().optional(),
+    notes: z.string().max(2000).optional(),
+  }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const subtotal = data.line_items.reduce((s, l) => s + l.qty * l.unit_cents, 0);
+    const vat = data.vat ? Math.round(subtotal * 0.15) : 0;
+    const { data: number } = await context.supabase.rpc("next_doc_number", { _prefix: "INV" });
+    const { data: row, error } = await context.supabase.from("invoices").insert({
+      number: number ?? `INV-${Date.now()}`,
+      client_id: data.client_id ?? null,
+      title: data.title,
+      line_items: data.line_items,
+      subtotal_cents: subtotal,
+      vat_cents: vat,
+      total_cents: subtotal + vat,
+      due_date: data.due_date ?? null,
+      notes: data.notes ?? null,
+      status: "sent",
+    }).select().single();
+    if (error) throw new Error(error.message);
+    await context.supabase.from("activity_logs").insert({
+      actor_id: context.userId, action: "invoice.created", entity_type: "invoice", entity_id: row.id,
+      meta: { number: row.number, total_cents: row.total_cents },
+    });
+    return row;
+  });
+
+export const setInvoiceStatus = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({ id: uuid, status: z.enum(DOC_STATUS) }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase.from("invoices").update({
+      status: data.status,
+      ...(data.status === "paid" ? { paid_at: new Date().toISOString() } : {}),
+    }).eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true as const };
+  });
+
+/** Manual payment capture (EFT, cash, card machine) + auto receipt. */
+export const recordPayment = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({
+    invoice_id: uuid,
+    amount_cents: z.number().int().min(1).max(100_000_000),
+    method: z.enum(["eft", "cash", "card", "payfast", "other"]).default("eft"),
+    reference: z.string().trim().max(120).optional(),
+  }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const { supabase } = context;
+    const { data: inv, error } = await supabase.from("invoices").select("*").eq("id", data.invoice_id).maybeSingle();
+    if (error || !inv) throw new Error("Invoice not found");
+
+    const now = new Date().toISOString();
+    const { data: payment, error: payErr } = await supabase.from("payments").insert({
+      invoice_id: inv.id,
+      client_id: inv.client_id,
+      amount_cents: data.amount_cents,
+      method: data.method,
+      status: "paid",
+      reference: data.reference ?? null,
+      paid_at: now,
+    }).select("id").single();
+    if (payErr) throw new Error(payErr.message);
+
+    const paid = inv.amount_paid_cents + data.amount_cents;
+    await supabase.from("invoices").update({
+      amount_paid_cents: paid,
+      status: paid >= inv.total_cents ? "paid" : inv.status,
+      ...(paid >= inv.total_cents ? { paid_at: now } : {}),
+    }).eq("id", inv.id);
+
+    const { data: receiptNo } = await supabase.rpc("next_doc_number", { _prefix: "REC" });
+    await supabase.from("receipts").insert({
+      number: receiptNo ?? `REC-${Date.now()}`,
+      payment_id: payment.id,
+      invoice_id: inv.id,
+      client_id: inv.client_id,
+      amount_cents: data.amount_cents,
+      issued_at: now,
+    });
+
+    await supabase.from("activity_logs").insert({
+      actor_id: context.userId, action: "payment.recorded", entity_type: "invoice", entity_id: inv.id,
+      meta: { amount_cents: data.amount_cents, method: data.method },
+    });
+    return { ok: true as const };
+  });
+
+/* ------------------------------- DOCUMENTS -------------------------------- */
+
+/** Register a file already uploaded to the private `documents` bucket. */
+export const registerDocument = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({
+    name: z.string().trim().min(1).max(200),
+    category: z.string().trim().min(1).max(60),
+    storage_path: z.string().trim().min(1).max(400),
+    mime_type: z.string().trim().max(120).optional(),
+    size_bytes: z.number().int().min(0).max(200_000_000).optional(),
+    client_id: uuid.nullable().optional(),
+    project_id: uuid.nullable().optional(),
+    parent_id: uuid.nullable().optional(),
+    version: z.number().int().min(1).max(999).default(1),
+  }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const { data: row, error } = await context.supabase.from("documents").insert({
+      ...data,
+      uploaded_by: context.userId,
+    }).select("id").single();
+    if (error) throw new Error(error.message);
+    await context.supabase.from("activity_logs").insert({
+      actor_id: context.userId, action: "document.uploaded", entity_type: "document", entity_id: row.id,
+      meta: { name: data.name, category: data.category },
+    });
+    return { id: row.id };
+  });
+
+export const deleteDocument = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({ id: uuid, path: z.string().min(1).max(400) }).parse(raw))
+  .handler(async ({ data, context }) => {
+    await context.supabase.storage.from("documents").remove([data.path]);
+    const { error } = await context.supabase.from("documents").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true as const };
+  });
+
+/* --------------------------------- SUPPORT -------------------------------- */
+
+export const upsertTicket = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({
+    id: uuid.optional(),
+    client_id: uuid.nullable().optional(),
+    subject: z.string().trim().min(1).max(200),
+    body: z.string().trim().min(1).max(6000),
+    priority: z.enum(["low", "medium", "high", "urgent"]).default("medium"),
+    status: z.enum(["open", "in_progress", "waiting_client", "resolved", "closed"]).default("open"),
+    assigned_to: uuid.nullable().optional(),
+  }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const { id, ...patch } = data;
+    if (id) {
+      const { error } = await context.supabase.from("support_tickets").update(patch).eq("id", id);
+      if (error) throw new Error(error.message);
+      return { id };
+    }
+    const { data: row, error } = await context.supabase.from("support_tickets")
+      .insert({ ...patch, created_by: context.userId }).select("id").single();
+    if (error) throw new Error(error.message);
+    return { id: row.id };
+  });
+
+/* ----------------------------- GLOBAL SEARCH ------------------------------ */
+
+export const globalSearch = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({ q: z.string().trim().min(2).max(120) }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const { supabase } = context;
+    const like = `%${data.q.replace(/[%_]/g, "")}%`;
+    const [clients, leads, invoices, projects, orders] = await Promise.all([
+      supabase.from("clients").select("id, full_name, company_name, email, phone")
+        .or(`full_name.ilike.${like},company_name.ilike.${like},email.ilike.${like},phone.ilike.${like}`).limit(8),
+      supabase.from("leads").select("id, name, company, email, phone, stage")
+        .or(`name.ilike.${like},company.ilike.${like},email.ilike.${like},phone.ilike.${like}`).limit(8),
+      supabase.from("invoices").select("id, number, title, total_cents, status")
+        .or(`number.ilike.${like},title.ilike.${like}`).limit(8),
+      supabase.from("projects").select("id, name, status")
+        .ilike("name", like).limit(8),
+      supabase.from("orders").select("id, reference, service_name, customer_email, status")
+        .or(`reference.ilike.${like},service_name.ilike.${like},customer_email.ilike.${like}`).limit(8),
+    ]);
+    return {
+      clients: clients.data ?? [],
+      leads: leads.data ?? [],
+      invoices: invoices.data ?? [],
+      projects: projects.data ?? [],
+      orders: orders.data ?? [],
+    };
+  });
