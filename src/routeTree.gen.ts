@@ -44,12 +44,16 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
 import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
+import { Route as AdminSupportRouteImport } from './routes/admin.support'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminProjectsRouteImport } from './routes/admin.projects'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as AdminDocumentsRouteImport } from './routes/admin.documents'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AdminBillingRouteImport } from './routes/admin.billing'
+import { Route as AdminActivityRouteImport } from './routes/admin.activity'
 import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
 import { Route as ApiPublicPayfastItnRouteImport } from './routes/api/public/payfast-itn'
 
@@ -227,6 +231,16 @@ const PaymentCancelledRoute = PaymentCancelledRouteImport.update({
   path: '/payment/cancelled',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSupportRoute = AdminSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminProjectsRoute = AdminProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
@@ -247,6 +261,11 @@ const AdminLeadsRoute = AdminLeadsRouteImport.update({
   path: '/leads',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminDocumentsRoute = AdminDocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminClientsRoute = AdminClientsRouteImport.update({
   id: '/clients',
   path: '/clients',
@@ -255,6 +274,11 @@ const AdminClientsRoute = AdminClientsRouteImport.update({
 const AdminBillingRoute = AdminBillingRouteImport.update({
   id: '/billing',
   path: '/billing',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminActivityRoute = AdminActivityRouteImport.update({
+  id: '/activity',
+  path: '/activity',
   getParentRoute: () => AdminRoute,
 } as any)
 const AuthenticatedPortalRoute = AuthenticatedPortalRouteImport.update({
@@ -301,12 +325,16 @@ export interface FileRoutesByFullPath {
   '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
   '/portal': typeof AuthenticatedPortalRoute
+  '/admin/activity': typeof AdminActivityRoute
   '/admin/billing': typeof AdminBillingRoute
   '/admin/clients': typeof AdminClientsRoute
+  '/admin/documents': typeof AdminDocumentsRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/projects': typeof AdminProjectsRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/support': typeof AdminSupportRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/admin/': typeof AdminIndexRoute
@@ -344,12 +372,16 @@ export interface FileRoutesByTo {
   '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
   '/portal': typeof AuthenticatedPortalRoute
+  '/admin/activity': typeof AdminActivityRoute
   '/admin/billing': typeof AdminBillingRoute
   '/admin/clients': typeof AdminClientsRoute
+  '/admin/documents': typeof AdminDocumentsRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/projects': typeof AdminProjectsRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/support': typeof AdminSupportRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/admin': typeof AdminIndexRoute
@@ -390,12 +422,16 @@ export interface FileRoutesById {
   '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
   '/_authenticated/portal': typeof AuthenticatedPortalRoute
+  '/admin/activity': typeof AdminActivityRoute
   '/admin/billing': typeof AdminBillingRoute
   '/admin/clients': typeof AdminClientsRoute
+  '/admin/documents': typeof AdminDocumentsRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/projects': typeof AdminProjectsRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/support': typeof AdminSupportRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/admin/': typeof AdminIndexRoute
@@ -436,12 +472,16 @@ export interface FileRouteTypes {
     | '/website-design'
     | '/why-choose-us'
     | '/portal'
+    | '/admin/activity'
     | '/admin/billing'
     | '/admin/clients'
+    | '/admin/documents'
     | '/admin/leads'
     | '/admin/login'
     | '/admin/payments'
     | '/admin/projects'
+    | '/admin/settings'
+    | '/admin/support'
     | '/payment/cancelled'
     | '/payment/success'
     | '/admin/'
@@ -479,12 +519,16 @@ export interface FileRouteTypes {
     | '/website-design'
     | '/why-choose-us'
     | '/portal'
+    | '/admin/activity'
     | '/admin/billing'
     | '/admin/clients'
+    | '/admin/documents'
     | '/admin/leads'
     | '/admin/login'
     | '/admin/payments'
     | '/admin/projects'
+    | '/admin/settings'
+    | '/admin/support'
     | '/payment/cancelled'
     | '/payment/success'
     | '/admin'
@@ -524,12 +568,16 @@ export interface FileRouteTypes {
     | '/website-design'
     | '/why-choose-us'
     | '/_authenticated/portal'
+    | '/admin/activity'
     | '/admin/billing'
     | '/admin/clients'
+    | '/admin/documents'
     | '/admin/leads'
     | '/admin/login'
     | '/admin/payments'
     | '/admin/projects'
+    | '/admin/settings'
+    | '/admin/support'
     | '/payment/cancelled'
     | '/payment/success'
     | '/admin/'
@@ -821,6 +869,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PaymentCancelledRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/support': {
+      id: '/admin/support'
+      path: '/support'
+      fullPath: '/admin/support'
+      preLoaderRoute: typeof AdminSupportRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/projects': {
       id: '/admin/projects'
       path: '/projects'
@@ -849,6 +911,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLeadsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/documents': {
+      id: '/admin/documents'
+      path: '/documents'
+      fullPath: '/admin/documents'
+      preLoaderRoute: typeof AdminDocumentsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/clients': {
       id: '/admin/clients'
       path: '/clients'
@@ -861,6 +930,13 @@ declare module '@tanstack/react-router' {
       path: '/billing'
       fullPath: '/admin/billing'
       preLoaderRoute: typeof AdminBillingRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/activity': {
+      id: '/admin/activity'
+      path: '/activity'
+      fullPath: '/admin/activity'
+      preLoaderRoute: typeof AdminActivityRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_authenticated/portal': {
@@ -892,22 +968,30 @@ const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface AdminRouteChildren {
+  AdminActivityRoute: typeof AdminActivityRoute
   AdminBillingRoute: typeof AdminBillingRoute
   AdminClientsRoute: typeof AdminClientsRoute
+  AdminDocumentsRoute: typeof AdminDocumentsRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminProjectsRoute: typeof AdminProjectsRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminSupportRoute: typeof AdminSupportRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminActivityRoute: AdminActivityRoute,
   AdminBillingRoute: AdminBillingRoute,
   AdminClientsRoute: AdminClientsRoute,
+  AdminDocumentsRoute: AdminDocumentsRoute,
   AdminLeadsRoute: AdminLeadsRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminProjectsRoute: AdminProjectsRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminSupportRoute: AdminSupportRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 

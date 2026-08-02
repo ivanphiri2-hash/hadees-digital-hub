@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { submitEnquiry } from "@/lib/public.functions";
 import { Section, GlassCard } from "@/components/site/ui";
 import { COMPANY } from "@/lib/company";
 import { Mail, Phone, MapPin, MessageCircle, Navigation } from "lucide-react";
@@ -32,14 +34,23 @@ export const Route = createFileRoute("/contact")({
 
 function Contact() {
   const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const send = useServerFn(submitEnquiry);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Website enquiry — ${form.name || "New lead"}`);
-    const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\n${form.message}`);
-    window.location.href = `mailto:${COMPANY.email}?subject=${subject}&body=${body}`;
-    setSent(true);
+    setBusy(true); setError("");
+    try {
+      await send({ data: { ...form, company: "", service: "", source: "website" } });
+      setSent(true);
+      setForm({ name: "", email: "", phone: "", message: "" });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not send your message. Please WhatsApp us instead.");
+    } finally {
+      setBusy(false);
+    }
   };
 
   const mapsQ = encodeURIComponent(`${COMPANY.city}, ${COMPANY.country}`);
@@ -54,7 +65,7 @@ function Contact() {
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <GlassCard>
-              <form onSubmit={onSubmit} className="grid gap-4">
+              <form onSubmit={(e) => void onSubmit(e)} className="grid gap-4">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="grid gap-1.5">
                     <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Name</span>
@@ -73,10 +84,11 @@ function Contact() {
                   <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Message</span>
                   <textarea required maxLength={2000} rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-royal)]/40" />
                 </label>
-                <button type="submit" className="inline-flex items-center justify-center rounded-full bg-[var(--color-royal)] px-5 py-2.5 text-sm font-semibold text-white">
-                  Send message
+                <button type="submit" disabled={busy} className="inline-flex items-center justify-center rounded-full bg-[var(--color-royal)] px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-60">
+                  {busy ? "Sending…" : "Send message"}
                 </button>
-                {sent && <div className="rounded-xl border border-emerald-400/40 bg-emerald-400/10 px-4 py-2 text-sm text-emerald-300">Thanks — your email client should now open. We reply within one business day.</div>}
+                {sent && <div className="rounded-xl border border-emerald-400/40 bg-emerald-400/10 px-4 py-2 text-sm text-emerald-300">Thanks — your enquiry is logged with our team. We reply within one business day.</div>}
+                {error && <div className="rounded-xl border border-red-400/40 bg-red-400/10 px-4 py-2 text-sm text-red-300">{error}</div>}
               </form>
             </GlassCard>
           </div>
