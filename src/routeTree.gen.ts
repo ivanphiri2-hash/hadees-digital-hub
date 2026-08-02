@@ -46,6 +46,8 @@ import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
 import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
 import { Route as ApiPublicPayfastItnRouteImport } from './routes/api/public/payfast-itn'
 
@@ -233,6 +235,16 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminLeadsRoute = AdminLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClientsRoute = AdminClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AuthenticatedPortalRoute = AuthenticatedPortalRouteImport.update({
   id: '/portal',
   path: '/portal',
@@ -277,6 +289,8 @@ export interface FileRoutesByFullPath {
   '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
   '/portal': typeof AuthenticatedPortalRoute
+  '/admin/clients': typeof AdminClientsRoute
+  '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
@@ -316,6 +330,8 @@ export interface FileRoutesByTo {
   '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
   '/portal': typeof AuthenticatedPortalRoute
+  '/admin/clients': typeof AdminClientsRoute
+  '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
@@ -358,6 +374,8 @@ export interface FileRoutesById {
   '/website-design': typeof WebsiteDesignRoute
   '/why-choose-us': typeof WhyChooseUsRoute
   '/_authenticated/portal': typeof AuthenticatedPortalRoute
+  '/admin/clients': typeof AdminClientsRoute
+  '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
@@ -400,6 +418,8 @@ export interface FileRouteTypes {
     | '/website-design'
     | '/why-choose-us'
     | '/portal'
+    | '/admin/clients'
+    | '/admin/leads'
     | '/admin/login'
     | '/admin/payments'
     | '/payment/cancelled'
@@ -439,6 +459,8 @@ export interface FileRouteTypes {
     | '/website-design'
     | '/why-choose-us'
     | '/portal'
+    | '/admin/clients'
+    | '/admin/leads'
     | '/admin/login'
     | '/admin/payments'
     | '/payment/cancelled'
@@ -480,6 +502,8 @@ export interface FileRouteTypes {
     | '/website-design'
     | '/why-choose-us'
     | '/_authenticated/portal'
+    | '/admin/clients'
+    | '/admin/leads'
     | '/admin/login'
     | '/admin/payments'
     | '/payment/cancelled'
@@ -787,6 +811,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/leads': {
+      id: '/admin/leads'
+      path: '/leads'
+      fullPath: '/admin/leads'
+      preLoaderRoute: typeof AdminLeadsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/clients': {
+      id: '/admin/clients'
+      path: '/clients'
+      fullPath: '/admin/clients'
+      preLoaderRoute: typeof AdminClientsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_authenticated/portal': {
       id: '/_authenticated/portal'
       path: '/portal'
@@ -816,12 +854,16 @@ const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface AdminRouteChildren {
+  AdminClientsRoute: typeof AdminClientsRoute
+  AdminLeadsRoute: typeof AdminLeadsRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminClientsRoute: AdminClientsRoute,
+  AdminLeadsRoute: AdminLeadsRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminIndexRoute: AdminIndexRoute,

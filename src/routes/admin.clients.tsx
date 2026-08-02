@@ -19,6 +19,20 @@ export const Route = createFileRoute("/admin/clients")({
   component: ClientsPage,
 });
 
+interface ClientInput {
+  full_name: string;
+  email: string;
+  phone?: string;
+  whatsapp?: string;
+  company_name?: string;
+  registration_number?: string;
+  vat_number?: string;
+  address?: string;
+  industry?: string;
+  notes?: string;
+  status: "active" | "prospect" | "dormant";
+}
+
 function ClientsPage() {
   const qc = useQueryClient();
   const { user } = useAdminAuth();
@@ -40,7 +54,7 @@ function ClientsPage() {
   });
   const invalidate = () => { void qc.invalidateQueries({ queryKey: ["admin", "clients"] }); void qc.invalidateQueries({ queryKey: ["admin", "client"] }); };
 
-  const mSave = useMutation({ mutationFn: (v: Parameters<typeof save>[0]["data"]) => save({ data: v }), onSuccess: () => { setOpen(false); invalidate(); } });
+  const mSave = useMutation({ mutationFn: (v: ClientInput) => save({ data: v }), onSuccess: () => { setOpen(false); invalidate(); } });
   const mStatus = useMutation({ mutationFn: (v: { id: string; status: "active" | "prospect" | "dormant" | "suspended" | "archived" }) => setStatus({ data: v }), onSuccess: invalidate });
   const mDelete = useMutation({ mutationFn: (id: string) => remove({ data: { id } }), onSuccess: () => { setSelected(null); invalidate(); } });
 
@@ -170,7 +184,7 @@ function MiniList({ title, items }: { title: string; items: { id: string; main: 
   );
 }
 
-function ClientForm({ onSubmit, pending }: { onSubmit: (v: { full_name: string; email: string; phone?: string; whatsapp?: string; company_name?: string; registration_number?: string; vat_number?: string; address?: string; industry?: string; notes?: string; status: "active" }) => void; pending: boolean }) {
+function ClientForm({ onSubmit, pending }: { onSubmit: (v: ClientInput) => void; pending: boolean }) {
   const [f, setF] = useState({ full_name: "", email: "", phone: "", whatsapp: "", company_name: "", registration_number: "", vat_number: "", address: "", industry: "", notes: "" });
   return (
     <form

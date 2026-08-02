@@ -20,6 +20,25 @@ export const Route = createFileRoute("/admin/leads")({
 
 type Lead = Awaited<ReturnType<typeof listLeads>>[number];
 
+interface LeadPatch {
+  id: string;
+  stage?: (typeof LEAD_STAGES)[number];
+  notes?: string;
+  next_follow_up?: string | null;
+  value_cents?: number;
+}
+
+interface NewLead {
+  name: string;
+  company?: string;
+  email?: string;
+  phone?: string;
+  service_name?: string;
+  value_cents: number;
+  notes?: string;
+  source: "manual";
+}
+
 function LeadsPage() {
   const qc = useQueryClient();
   const fetchLeads = useServerFn(listLeads);
@@ -35,8 +54,8 @@ function LeadsPage() {
   const q = useQuery({ queryKey: ["admin", "leads"], queryFn: () => fetchLeads({}) });
   const invalidate = () => void qc.invalidateQueries({ queryKey: ["admin", "leads"] });
 
-  const mPatch = useMutation({ mutationFn: (v: Parameters<typeof patch>[0]["data"]) => patch({ data: v }), onSuccess: invalidate });
-  const mCreate = useMutation({ mutationFn: (v: Parameters<typeof create>[0]["data"]) => create({ data: v }), onSuccess: () => { setOpen(false); invalidate(); } });
+  const mPatch = useMutation({ mutationFn: (v: LeadPatch) => patch({ data: v }), onSuccess: invalidate });
+  const mCreate = useMutation({ mutationFn: (v: NewLead) => create({ data: v }), onSuccess: () => { setOpen(false); invalidate(); } });
   const mConvert = useMutation({ mutationFn: (id: string) => convert({ data: { id } }), onSuccess: invalidate });
 
   const rows = useMemo(() => {
@@ -111,7 +130,7 @@ function LeadsPage() {
   );
 }
 
-function NewLeadForm({ onSubmit, pending }: { onSubmit: (v: { name: string; company?: string; email?: string; phone?: string; service_name?: string; value_cents: number; notes?: string; source: "manual" }) => void; pending: boolean }) {
+function NewLeadForm({ onSubmit, pending }: { onSubmit: (v: NewLead) => void; pending: boolean }) {
   const [f, setF] = useState({ name: "", company: "", email: "", phone: "", service_name: "", value: "", notes: "" });
   return (
     <form
