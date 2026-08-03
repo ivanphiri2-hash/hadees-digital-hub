@@ -44,7 +44,9 @@ export const Route = createFileRoute("/api/public/payfast-itn")({
 
         const { data: order, error: fetchErr } = await supabaseAdmin
           .from("orders")
-          .select("id, amount_cents, status")
+          .select(
+            "id, amount_cents, status, reference, service_slug, service_name, currency, customer_name, customer_email, customer_phone, notes",
+          )
           .eq("reference", reference)
           .maybeSingle();
         if (fetchErr || !order) {
@@ -70,6 +72,9 @@ export const Route = createFileRoute("/api/public/payfast-itn")({
         else if (pfStatus === "CANCELLED") status = "cancelled";
         else if (pfStatus === "REFUNDED") status = "refunded";
 
+        // Duplicate ITN protection: already-paid orders skip the automation chain.
+        const alreadyPaid = order.status === "paid";
+
         const { error: updateErr } = await supabaseAdmin
           .from("orders")
           .update({
@@ -84,8 +89,27 @@ export const Route = createFileRoute("/api/public/payfast-itn")({
           return new Response("DB error", { status: 500 });
         }
 
-        // 6. PayFast requires a plain 200 OK response to consider the ITN handled.
+        // 6. Post-payment CRM automation.
+        if (status === "paid" && !alreadyPaid) {
+          try {
+            const { runPaymentAutomation } = await import("@/lib/automation.server");
+            await runPaymentAutomation(supabaseAdmin, order);
+          } catch (e) {
+            console.error("PayFast ITN: automation chain failed", e);
+          }
+        } else if (status === "failed") {
+          await supabaseAdmin.from("notifications").insert({
+            audience: "staff",
+            type: "payment",
+            title: "Failed payment",
+            body: `Payment failed for ${order.service_name} (${order.reference}).`,
+            link: "/admin/payments",
+          });
+        }
+
+        // 7. PayFast requires a plain 200 OK response to consider the ITN handled.
         return new Response("OK", { status: 200 });
+
       },
     },
   },
