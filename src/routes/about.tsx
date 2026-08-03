@@ -1,3 +1,4 @@
+import { FounderSection } from "@/components/site/FounderSection";
 import { createFileRoute } from "@tanstack/react-router";
 import { Section, GlassCard, GradientOrbs, BigCTA } from "@/components/site/ui";
 import { COMPANY } from "@/lib/company";
@@ -119,6 +120,8 @@ function About() {
           Hadees Trading is led by a small, senior team of operators, developers and compliance specialists who have built and supported SA SMEs across construction, services, retail and the public sector. We deliberately stay lean so that our clients get direct access to the people building their systems.
         </div>
       </Section>
+
+      <FounderSection />
 
       <BigCTA
         title="Ready to work with us?"

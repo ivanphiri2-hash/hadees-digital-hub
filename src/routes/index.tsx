@@ -1,3 +1,4 @@
+import { FounderSection } from "@/components/site/FounderSection";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ShieldCheck, Sparkles, Building2, FileCheck2, Bot, Users, Layers, Cloud, Cpu, GraduationCap, BookOpen, Zap, Award, Star } from "lucide-react";
 import { Section, GlassCard, GradientOrbs, Stat, CTAButton, BigCTA } from "@/components/site/ui";
@@ -268,6 +269,8 @@ function Home() {
           ))}
         </div>
       </Section>
+
+      <FounderSection />
 
       <BigCTA
         title="Ready to build your enterprise stack?"
