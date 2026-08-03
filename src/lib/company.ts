@@ -651,3 +651,14 @@ export const SERVICES = [
   { slug: "training", name: "Training", desc: "Team training on tools, compliance & AI adoption.", icon: "graduation" },
   { slug: "business-documentation", name: "Business Documentation", desc: "Policies, procedures, contracts & templates.", icon: "book" },
 ] as const;
+
+/** Founder / leadership profile used by the trust section. */
+export const FOUNDER = {
+  name: "Ivan Tshepiso Phiri",
+  title: "Founder & Director",
+  bio: "Ivan Tshepiso Phiri founded Hadees Trading (Pty) Ltd to build practical digital and business solutions that help entrepreneurs, startups, SMEs and growing companies establish stronger business operations and a credible online presence. From CIPC registration and compliance to enterprise websites, CRM and AI automation, every engagement is delivered personally accountable to the founder.",
+  mission:
+    "To equip every South African business with the digital, compliance and AI infrastructure it needs to compete, comply and win contracts.",
+  vision:
+    "A South Africa where any founder can run an enterprise-grade operation from one secure platform — affordably and transparently.",
+} as const;
