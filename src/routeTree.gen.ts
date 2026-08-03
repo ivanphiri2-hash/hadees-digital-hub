@@ -55,7 +55,6 @@ import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AdminBillingRouteImport } from './routes/admin.billing'
 import { Route as AdminActivityRouteImport } from './routes/admin.activity'
 import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
-import { Route as ApiPublicPayfastItnRouteImport } from './routes/api/public/payfast-itn'
 import { Route as ApiPublicPayfastVerifyRouteImport } from './routes/api/public/payfast/verify'
 import { Route as ApiPublicPayfastItnRouteImport } from './routes/api/public/payfast/itn'
 import { Route as ApiPublicPayfastCreatePaymentRouteImport } from './routes/api/public/payfast/create-payment'
@@ -289,11 +288,6 @@ const AuthenticatedPortalRoute = AuthenticatedPortalRouteImport.update({
   path: '/portal',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const ApiPublicPayfastItnRoute = ApiPublicPayfastItnRouteImport.update({
-  id: '/api/public/payfast-itn',
-  path: '/api/public/payfast-itn',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiPublicPayfastVerifyRoute = ApiPublicPayfastVerifyRouteImport.update({
   id: '/api/public/payfast/verify',
   path: '/api/public/payfast/verify',
@@ -357,7 +351,6 @@ export interface FileRoutesByFullPath {
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/admin/': typeof AdminIndexRoute
-  '/api/public/payfast-itn': typeof ApiPublicPayfastItnRoute
   '/api/public/payfast/create-payment': typeof ApiPublicPayfastCreatePaymentRoute
   '/api/public/payfast/itn': typeof ApiPublicPayfastItnRoute
   '/api/public/payfast/verify': typeof ApiPublicPayfastVerifyRoute
@@ -407,7 +400,6 @@ export interface FileRoutesByTo {
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/admin': typeof AdminIndexRoute
-  '/api/public/payfast-itn': typeof ApiPublicPayfastItnRoute
   '/api/public/payfast/create-payment': typeof ApiPublicPayfastCreatePaymentRoute
   '/api/public/payfast/itn': typeof ApiPublicPayfastItnRoute
   '/api/public/payfast/verify': typeof ApiPublicPayfastVerifyRoute
@@ -460,7 +452,6 @@ export interface FileRoutesById {
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/admin/': typeof AdminIndexRoute
-  '/api/public/payfast-itn': typeof ApiPublicPayfastItnRoute
   '/api/public/payfast/create-payment': typeof ApiPublicPayfastCreatePaymentRoute
   '/api/public/payfast/itn': typeof ApiPublicPayfastItnRoute
   '/api/public/payfast/verify': typeof ApiPublicPayfastVerifyRoute
@@ -513,7 +504,6 @@ export interface FileRouteTypes {
     | '/payment/cancelled'
     | '/payment/success'
     | '/admin/'
-    | '/api/public/payfast-itn'
     | '/api/public/payfast/create-payment'
     | '/api/public/payfast/itn'
     | '/api/public/payfast/verify'
@@ -563,7 +553,6 @@ export interface FileRouteTypes {
     | '/payment/cancelled'
     | '/payment/success'
     | '/admin'
-    | '/api/public/payfast-itn'
     | '/api/public/payfast/create-payment'
     | '/api/public/payfast/itn'
     | '/api/public/payfast/verify'
@@ -615,7 +604,6 @@ export interface FileRouteTypes {
     | '/payment/cancelled'
     | '/payment/success'
     | '/admin/'
-    | '/api/public/payfast-itn'
     | '/api/public/payfast/create-payment'
     | '/api/public/payfast/itn'
     | '/api/public/payfast/verify'
@@ -656,7 +644,6 @@ export interface RootRouteChildren {
   WhyChooseUsRoute: typeof WhyChooseUsRoute
   PaymentCancelledRoute: typeof PaymentCancelledRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
-  ApiPublicPayfastItnRoute: typeof ApiPublicPayfastItnRoute
   ApiPublicPayfastCreatePaymentRoute: typeof ApiPublicPayfastCreatePaymentRoute
   ApiPublicPayfastItnRoute: typeof ApiPublicPayfastItnRoute
   ApiPublicPayfastVerifyRoute: typeof ApiPublicPayfastVerifyRoute
@@ -986,13 +973,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortalRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/api/public/payfast-itn': {
-      id: '/api/public/payfast-itn'
-      path: '/api/public/payfast-itn'
-      fullPath: '/api/public/payfast-itn'
-      preLoaderRoute: typeof ApiPublicPayfastItnRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/public/payfast/verify': {
       id: '/api/public/payfast/verify'
       path: '/api/public/payfast/verify'
@@ -1093,7 +1073,6 @@ const rootRouteChildren: RootRouteChildren = {
   WhyChooseUsRoute: WhyChooseUsRoute,
   PaymentCancelledRoute: PaymentCancelledRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
-  ApiPublicPayfastItnRoute: ApiPublicPayfastItnRoute,
   ApiPublicPayfastCreatePaymentRoute: ApiPublicPayfastCreatePaymentRoute,
   ApiPublicPayfastItnRoute: ApiPublicPayfastItnRoute,
   ApiPublicPayfastVerifyRoute: ApiPublicPayfastVerifyRoute,
@@ -1101,3 +1080,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
