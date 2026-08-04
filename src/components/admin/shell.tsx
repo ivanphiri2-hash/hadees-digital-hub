@@ -1,23 +1,34 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import {
   LayoutDashboard, Users, Briefcase, FolderKanban, Receipt, FileArchive,
-  LifeBuoy, ScrollText, Settings, LogOut, CreditCard,
+  LifeBuoy, ScrollText, Settings, LogOut, CreditCard, ShoppingCart, FileText,
+  FileSignature, CalendarDays, BarChart3, UserCog, Search,
 } from "lucide-react";
 import { useAdminAuth } from "@/lib/admin-auth";
+import { globalSearch } from "@/lib/platform.functions";
 
 export const ADMIN_NAV = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { to: "/admin/leads", label: "Leads", icon: Users },
   { to: "/admin/clients", label: "Clients", icon: Briefcase },
   { to: "/admin/projects", label: "Projects", icon: FolderKanban },
-  { to: "/admin/billing", label: "Billing", icon: Receipt },
+  { to: "/admin/orders", label: "Orders", icon: ShoppingCart },
   { to: "/admin/payments", label: "Payments", icon: CreditCard },
+  { to: "/admin/invoices", label: "Invoices", icon: FileText },
+  { to: "/admin/quotations", label: "Quotations", icon: FileSignature },
+  { to: "/admin/billing", label: "Billing", icon: Receipt },
   { to: "/admin/documents", label: "Documents", icon: FileArchive },
   { to: "/admin/support", label: "Support", icon: LifeBuoy },
+  { to: "/admin/calendar", label: "Calendar", icon: CalendarDays },
+  { to: "/admin/reports", label: "Reports", icon: BarChart3 },
+  { to: "/admin/users", label: "Users", icon: UserCog },
   { to: "/admin/activity", label: "Activity", icon: ScrollText },
   { to: "/admin/settings", label: "Settings", icon: Settings },
 ] as const;
+
 
 export function money(cents: number | null | undefined) {
   return `R ${((cents ?? 0) / 100).toLocaleString("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
