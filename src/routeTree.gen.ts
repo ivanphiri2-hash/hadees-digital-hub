@@ -55,6 +55,7 @@ import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminInvoicesRouteImport } from './routes/admin.invoices'
 import { Route as AdminDocumentsRouteImport } from './routes/admin.documents'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
+import { Route as AdminCalendarRouteImport } from './routes/admin.calendar'
 import { Route as AdminBillingRouteImport } from './routes/admin.billing'
 import { Route as AdminActivityRouteImport } from './routes/admin.activity'
 import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
@@ -291,6 +292,11 @@ const AdminClientsRoute = AdminClientsRouteImport.update({
   path: '/clients',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCalendarRoute = AdminCalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminBillingRoute = AdminBillingRouteImport.update({
   id: '/billing',
   path: '/billing',
@@ -358,6 +364,7 @@ export interface FileRoutesByFullPath {
   '/portal': typeof AuthenticatedPortalRoute
   '/admin/activity': typeof AdminActivityRoute
   '/admin/billing': typeof AdminBillingRoute
+  '/admin/calendar': typeof AdminCalendarRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/documents': typeof AdminDocumentsRoute
   '/admin/invoices': typeof AdminInvoicesRoute
@@ -410,6 +417,7 @@ export interface FileRoutesByTo {
   '/portal': typeof AuthenticatedPortalRoute
   '/admin/activity': typeof AdminActivityRoute
   '/admin/billing': typeof AdminBillingRoute
+  '/admin/calendar': typeof AdminCalendarRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/documents': typeof AdminDocumentsRoute
   '/admin/invoices': typeof AdminInvoicesRoute
@@ -465,6 +473,7 @@ export interface FileRoutesById {
   '/_authenticated/portal': typeof AuthenticatedPortalRoute
   '/admin/activity': typeof AdminActivityRoute
   '/admin/billing': typeof AdminBillingRoute
+  '/admin/calendar': typeof AdminCalendarRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/documents': typeof AdminDocumentsRoute
   '/admin/invoices': typeof AdminInvoicesRoute
@@ -520,6 +529,7 @@ export interface FileRouteTypes {
     | '/portal'
     | '/admin/activity'
     | '/admin/billing'
+    | '/admin/calendar'
     | '/admin/clients'
     | '/admin/documents'
     | '/admin/invoices'
@@ -572,6 +582,7 @@ export interface FileRouteTypes {
     | '/portal'
     | '/admin/activity'
     | '/admin/billing'
+    | '/admin/calendar'
     | '/admin/clients'
     | '/admin/documents'
     | '/admin/invoices'
@@ -626,6 +637,7 @@ export interface FileRouteTypes {
     | '/_authenticated/portal'
     | '/admin/activity'
     | '/admin/billing'
+    | '/admin/calendar'
     | '/admin/clients'
     | '/admin/documents'
     | '/admin/invoices'
@@ -1009,6 +1021,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminClientsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/calendar': {
+      id: '/admin/calendar'
+      path: '/calendar'
+      fullPath: '/admin/calendar'
+      preLoaderRoute: typeof AdminCalendarRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/billing': {
       id: '/admin/billing'
       path: '/billing'
@@ -1068,6 +1087,7 @@ const AuthenticatedRouteRouteWithChildren =
 interface AdminRouteChildren {
   AdminActivityRoute: typeof AdminActivityRoute
   AdminBillingRoute: typeof AdminBillingRoute
+  AdminCalendarRoute: typeof AdminCalendarRoute
   AdminClientsRoute: typeof AdminClientsRoute
   AdminDocumentsRoute: typeof AdminDocumentsRoute
   AdminInvoicesRoute: typeof AdminInvoicesRoute
@@ -1085,6 +1105,7 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminActivityRoute: AdminActivityRoute,
   AdminBillingRoute: AdminBillingRoute,
+  AdminCalendarRoute: AdminCalendarRoute,
   AdminClientsRoute: AdminClientsRoute,
   AdminDocumentsRoute: AdminDocumentsRoute,
   AdminInvoicesRoute: AdminInvoicesRoute,
