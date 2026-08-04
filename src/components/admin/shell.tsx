@@ -155,3 +155,67 @@ export function AdminShell({ title, subtitle, children }: { title: string; subti
     </div>
   );
 }
+
+/** Cross-module search bar available on every admin screen. */
+export function GlobalSearch() {
+  const run = useServerFn(globalSearch);
+  const [term, setTerm] = useState("");
+  const [open, setOpen] = useState(false);
+  const q = term.trim();
+
+  const results = useQuery({
+    queryKey: ["admin", "search", q],
+    queryFn: () => run({ data: { q } }),
+    enabled: q.length >= 2,
+  });
+
+  const groups: { label: string; to: string; items: { key: string; primary: string; secondary: string }[] }[] = [
+    { label: "Clients", to: "/admin/clients", items: (results.data?.clients ?? []).map((c) => ({ key: c.id, primary: c.full_name, secondary: c.company_name ?? c.email ?? "" })) },
+    { label: "Leads", to: "/admin/leads", items: (results.data?.leads ?? []).map((l) => ({ key: l.id, primary: l.name, secondary: l.company ?? String(l.stage) })) },
+    { label: "Invoices", to: "/admin/invoices", items: (results.data?.invoices ?? []).map((i) => ({ key: i.id, primary: i.number, secondary: i.title })) },
+    { label: "Projects", to: "/admin/projects", items: (results.data?.projects ?? []).map((p) => ({ key: p.id, primary: p.name, secondary: String(p.status) })) },
+    { label: "Orders", to: "/admin/orders", items: (results.data?.orders ?? []).map((o) => ({ key: o.id, primary: o.reference, secondary: o.service_name })) },
+  ].filter((g) => g.items.length > 0);
+
+  return (
+    <div className="relative">
+      <div className="flex items-center gap-2 rounded-2xl border border-border/60 bg-card/40 px-3 py-2">
+        <Search className="h-4 w-4 text-muted-foreground" />
+        <input
+          value={term}
+          onChange={(e) => { setTerm(e.target.value); setOpen(true); }}
+          onFocus={() => setOpen(true)}
+          placeholder="Search clients, leads, invoices, projects, orders…"
+          className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+        />
+        {q.length >= 2 && (
+          <button onClick={() => { setTerm(""); setOpen(false); }} className="text-[11px] text-muted-foreground hover:text-foreground">Clear</button>
+        )}
+      </div>
+
+      {open && q.length >= 2 && (
+        <div className="absolute z-30 mt-2 w-full rounded-2xl border border-border/60 bg-[color-mix(in_oklab,var(--background)_96%,black)] p-3 shadow-2xl">
+          {results.isLoading && <p className="text-xs text-muted-foreground">Searching…</p>}
+          {!results.isLoading && groups.length === 0 && <p className="text-xs text-muted-foreground">No matches for “{q}”.</p>}
+          <div className="grid gap-3">
+            {groups.map((g) => (
+              <div key={g.label}>
+                <div className="mb-1 text-[10px] uppercase tracking-widest text-muted-foreground">{g.label}</div>
+                <ul className="grid gap-1">
+                  {g.items.map((it) => (
+                    <li key={it.key}>
+                      <Link to={g.to} onClick={() => setOpen(false)} className="flex items-center justify-between gap-3 rounded-xl px-2.5 py-1.5 text-sm hover:bg-white/5">
+                        <span className="truncate">{it.primary}</span>
+                        <span className="truncate text-[11px] text-muted-foreground">{it.secondary}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
