@@ -142,12 +142,16 @@ export function AdminShell({ title, subtitle, children }: { title: string; subti
       </aside>
 
       <main className="grid content-start gap-6">
-        <header>
-          <h1 className="font-display text-2xl font-black sm:text-3xl">{title}</h1>
-          {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
+        <header className="grid gap-4">
+          <GlobalSearch />
+          <div>
+            <h1 className="font-display text-2xl font-black sm:text-3xl">{title}</h1>
+            {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
+          </div>
         </header>
         {children}
       </main>
+
     </div>
   );
 }
