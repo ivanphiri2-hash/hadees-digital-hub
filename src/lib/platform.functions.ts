@@ -839,3 +839,92 @@ export const globalSearch = createServerFn({ method: "POST" })
       orders: orders.data ?? [],
     };
   });
+
+/* --------------------------- v4.2 OPS EXTENSIONS --------------------------- */
+
+/** Website orders (PayFast checkout) with their linked invoice/project state. */
+export const listOrders = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase } = context;
+    const [orders, invoices, projects] = await Promise.all([
+      supabase.from("orders").select("*").order("created_at", { ascending: false }).limit(500),
+      supabase.from("invoices").select("id, number, order_id, status, total_cents").limit(500),
+      supabase.from("projects").select("id, name, order_id, status, progress").limit(500),
+    ]);
+    return {
+      orders: orders.data ?? [],
+      invoices: invoices.data ?? [],
+      projects: projects.data ?? [],
+    };
+  });
+
+/** Unified business calendar feed: follow-ups, due dates, deliveries. */
+export const getCalendar = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase } = context;
+    const [leads, invoices, projects, tasks] = await Promise.all([
+      supabase.from("leads").select("id, name, company, next_follow_up, stage").not("next_follow_up", "is", null).limit(300),
+      supabase.from("invoices").select("id, number, title, due_date, status, total_cents").not("due_date", "is", null).limit(300),
+      supabase.from("projects").select("id, name, due_date, status").not("due_date", "is", null).limit(300),
+      supabase.from("project_tasks").select("id, title, due_date, status, project_id").not("due_date", "is", null).limit(300),
+    ]);
+    type Ev = { id: string; date: string; kind: "follow_up" | "invoice_due" | "project_due" | "task_due"; title: string; meta: string };
+    const events: Ev[] = [
+      ...(leads.data ?? []).map((l) => ({ id: `l-${l.id}`, date: l.next_follow_up as string, kind: "follow_up" as const, title: `Follow up: ${l.name}`, meta: l.company ?? String(l.stage) })),
+      ...(invoices.data ?? []).map((i) => ({ id: `i-${i.id}`, date: i.due_date as string, kind: "invoice_due" as const, title: `${i.number} due`, meta: i.title })),
+      ...(projects.data ?? []).map((p) => ({ id: `p-${p.id}`, date: p.due_date as string, kind: "project_due" as const, title: `Delivery: ${p.name}`, meta: String(p.status) })),
+      ...(tasks.data ?? []).map((t) => ({ id: `t-${t.id}`, date: t.due_date as string, kind: "task_due" as const, title: `Task: ${t.title}`, meta: String(t.status) })),
+    ];
+    events.sort((a, b) => a.date.localeCompare(b.date));
+    return events;
+  });
+
+/** Staff directory with role assignments. */
+export const listUsers = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const [profiles, roles] = await Promise.all([
+      context.supabase.from("profiles").select("id, full_name, email, phone, is_staff, created_at").limit(500),
+      context.supabase.from("user_roles").select("user_id, role"),
+    ]);
+    return (profiles.data ?? []).map((p) => ({
+      ...p,
+      roles: (roles.data ?? []).filter((r) => r.user_id === p.id).map((r) => r.role as string),
+    }));
+  });
+
+const APP_ROLES = ["super_admin", "administrator", "sales", "project_manager", "finance", "support", "client"] as const;
+export const ROLE_OPTIONS = APP_ROLES;
+
+/** Grant or revoke a role. Admin-only; writes bypass RLS after the role check. */
+export const setUserRole = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({
+    user_id: uuid,
+    role: z.enum(APP_ROLES),
+    grant: z.boolean(),
+  }).parse(raw))
+  .handler(async ({ data, context }) => {
+    const { data: isAdmin } = await context.supabase.rpc("is_admin", { _user_id: context.userId });
+    if (!isAdmin) throw new Error("Only administrators can change roles.");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    if (data.grant) {
+      const { error } = await supabaseAdmin.from("user_roles").insert({ user_id: data.user_id, role: data.role });
+      if (error && !error.message.includes("duplicate")) throw new Error(error.message);
+      await supabaseAdmin.from("profiles").update({ is_staff: data.role !== "client" }).eq("id", data.user_id);
+    } else {
+      const { error } = await supabaseAdmin.from("user_roles").delete().eq("user_id", data.user_id).eq("role", data.role);
+      if (error) throw new Error(error.message);
+    }
+    await supabaseAdmin.from("activity_logs").insert({
+      actor_id: context.userId,
+      action: data.grant ? "user.role_granted" : "user.role_revoked",
+      entity_type: "user",
+      entity_id: data.user_id,
+      meta: { role: data.role },
+    });
+    return { ok: true as const };
+  });
