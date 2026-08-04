@@ -51,6 +51,7 @@ import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as AdminInvoicesRouteImport } from './routes/admin.invoices'
 import { Route as AdminDocumentsRouteImport } from './routes/admin.documents'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AdminBillingRouteImport } from './routes/admin.billing'
@@ -269,6 +270,11 @@ const AdminLeadsRoute = AdminLeadsRouteImport.update({
   path: '/leads',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminInvoicesRoute = AdminInvoicesRouteImport.update({
+  id: '/invoices',
+  path: '/invoices',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminDocumentsRoute = AdminDocumentsRouteImport.update({
   id: '/documents',
   path: '/documents',
@@ -348,6 +354,7 @@ export interface FileRoutesByFullPath {
   '/admin/billing': typeof AdminBillingRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/documents': typeof AdminDocumentsRoute
+  '/admin/invoices': typeof AdminInvoicesRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRoute
@@ -398,6 +405,7 @@ export interface FileRoutesByTo {
   '/admin/billing': typeof AdminBillingRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/documents': typeof AdminDocumentsRoute
+  '/admin/invoices': typeof AdminInvoicesRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRoute
@@ -451,6 +459,7 @@ export interface FileRoutesById {
   '/admin/billing': typeof AdminBillingRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/documents': typeof AdminDocumentsRoute
+  '/admin/invoices': typeof AdminInvoicesRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRoute
@@ -504,6 +513,7 @@ export interface FileRouteTypes {
     | '/admin/billing'
     | '/admin/clients'
     | '/admin/documents'
+    | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
     | '/admin/orders'
@@ -554,6 +564,7 @@ export interface FileRouteTypes {
     | '/admin/billing'
     | '/admin/clients'
     | '/admin/documents'
+    | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
     | '/admin/orders'
@@ -606,6 +617,7 @@ export interface FileRouteTypes {
     | '/admin/billing'
     | '/admin/clients'
     | '/admin/documents'
+    | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
     | '/admin/orders'
@@ -957,6 +969,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLeadsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/invoices': {
+      id: '/admin/invoices'
+      path: '/invoices'
+      fullPath: '/admin/invoices'
+      preLoaderRoute: typeof AdminInvoicesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/documents': {
       id: '/admin/documents'
       path: '/documents'
@@ -1032,6 +1051,7 @@ interface AdminRouteChildren {
   AdminBillingRoute: typeof AdminBillingRoute
   AdminClientsRoute: typeof AdminClientsRoute
   AdminDocumentsRoute: typeof AdminDocumentsRoute
+  AdminInvoicesRoute: typeof AdminInvoicesRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminOrdersRoute: typeof AdminOrdersRoute
@@ -1047,6 +1067,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminBillingRoute: AdminBillingRoute,
   AdminClientsRoute: AdminClientsRoute,
   AdminDocumentsRoute: AdminDocumentsRoute,
+  AdminInvoicesRoute: AdminInvoicesRoute,
   AdminLeadsRoute: AdminLeadsRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminOrdersRoute: AdminOrdersRoute,
