@@ -17,6 +17,7 @@ import { Route as TenderSupportRouteImport } from './routes/tender-support'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RefundRouteImport } from './routes/refund'
 import { Route as PsiraRegistrationRouteImport } from './routes/psira-registration'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -35,6 +36,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ConstructionServicesRouteImport } from './routes/construction-services'
 import { Route as ComplianceRouteImport } from './routes/compliance'
 import { Route as ClientPortalRouteImport } from './routes/client-portal'
+import { Route as ClientDashboardRouteImport } from './routes/client-dashboard'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as BusinessRegistrationRouteImport } from './routes/business-registration'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -53,6 +55,7 @@ import { Route as AdminQuotationsRouteImport } from './routes/admin.quotations'
 import { Route as AdminProjectsRouteImport } from './routes/admin.projects'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
+import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminInvoicesRouteImport } from './routes/admin.invoices'
@@ -104,6 +107,11 @@ const ShippingRoute = ShippingRouteImport.update({
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RefundRoute = RefundRouteImport.update({
@@ -196,6 +204,11 @@ const ClientPortalRoute = ClientPortalRouteImport.update({
   path: '/client-portal',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClientDashboardRoute = ClientDashboardRouteImport.update({
+  id: '/client-dashboard',
+  path: '/client-dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CheckoutRoute = CheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
@@ -285,6 +298,11 @@ const AdminOrdersRoute = AdminOrdersRouteImport.update({
   path: '/orders',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminMessagesRoute = AdminMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -354,6 +372,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/business-registration': typeof BusinessRegistrationRoute
   '/checkout': typeof CheckoutRoute
+  '/client-dashboard': typeof ClientDashboardRoute
   '/client-portal': typeof ClientPortalRoute
   '/compliance': typeof ComplianceRoute
   '/construction-services': typeof ConstructionServicesRoute
@@ -372,6 +391,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/psira-registration': typeof PsiraRegistrationRoute
   '/refund': typeof RefundRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/shipping': typeof ShippingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -389,6 +409,7 @@ export interface FileRoutesByFullPath {
   '/admin/invoices': typeof AdminInvoicesRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/messages': typeof AdminMessagesRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/projects': typeof AdminProjectsRoute
@@ -410,6 +431,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/business-registration': typeof BusinessRegistrationRoute
   '/checkout': typeof CheckoutRoute
+  '/client-dashboard': typeof ClientDashboardRoute
   '/client-portal': typeof ClientPortalRoute
   '/compliance': typeof ComplianceRoute
   '/construction-services': typeof ConstructionServicesRoute
@@ -428,6 +450,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/psira-registration': typeof PsiraRegistrationRoute
   '/refund': typeof RefundRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/shipping': typeof ShippingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -445,6 +468,7 @@ export interface FileRoutesByTo {
   '/admin/invoices': typeof AdminInvoicesRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/messages': typeof AdminMessagesRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/projects': typeof AdminProjectsRoute
@@ -469,6 +493,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/business-registration': typeof BusinessRegistrationRoute
   '/checkout': typeof CheckoutRoute
+  '/client-dashboard': typeof ClientDashboardRoute
   '/client-portal': typeof ClientPortalRoute
   '/compliance': typeof ComplianceRoute
   '/construction-services': typeof ConstructionServicesRoute
@@ -487,6 +512,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/psira-registration': typeof PsiraRegistrationRoute
   '/refund': typeof RefundRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/shipping': typeof ShippingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -504,6 +530,7 @@ export interface FileRoutesById {
   '/admin/invoices': typeof AdminInvoicesRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/messages': typeof AdminMessagesRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/projects': typeof AdminProjectsRoute
@@ -528,6 +555,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/business-registration'
     | '/checkout'
+    | '/client-dashboard'
     | '/client-portal'
     | '/compliance'
     | '/construction-services'
@@ -546,6 +574,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/psira-registration'
     | '/refund'
+    | '/reset-password'
     | '/services'
     | '/shipping'
     | '/sitemap.xml'
@@ -563,6 +592,7 @@ export interface FileRouteTypes {
     | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
+    | '/admin/messages'
     | '/admin/orders'
     | '/admin/payments'
     | '/admin/projects'
@@ -584,6 +614,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/business-registration'
     | '/checkout'
+    | '/client-dashboard'
     | '/client-portal'
     | '/compliance'
     | '/construction-services'
@@ -602,6 +633,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/psira-registration'
     | '/refund'
+    | '/reset-password'
     | '/services'
     | '/shipping'
     | '/sitemap.xml'
@@ -619,6 +651,7 @@ export interface FileRouteTypes {
     | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
+    | '/admin/messages'
     | '/admin/orders'
     | '/admin/payments'
     | '/admin/projects'
@@ -642,6 +675,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/business-registration'
     | '/checkout'
+    | '/client-dashboard'
     | '/client-portal'
     | '/compliance'
     | '/construction-services'
@@ -660,6 +694,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/psira-registration'
     | '/refund'
+    | '/reset-password'
     | '/services'
     | '/shipping'
     | '/sitemap.xml'
@@ -677,6 +712,7 @@ export interface FileRouteTypes {
     | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
+    | '/admin/messages'
     | '/admin/orders'
     | '/admin/payments'
     | '/admin/projects'
@@ -701,6 +737,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BusinessRegistrationRoute: typeof BusinessRegistrationRoute
   CheckoutRoute: typeof CheckoutRoute
+  ClientDashboardRoute: typeof ClientDashboardRoute
   ClientPortalRoute: typeof ClientPortalRoute
   ComplianceRoute: typeof ComplianceRoute
   ConstructionServicesRoute: typeof ConstructionServicesRoute
@@ -719,6 +756,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   PsiraRegistrationRoute: typeof PsiraRegistrationRoute
   RefundRoute: typeof RefundRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ServicesRoute: typeof ServicesRoute
   ShippingRoute: typeof ShippingRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -790,6 +828,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/refund': {
@@ -918,6 +963,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientPortalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/client-dashboard': {
+      id: '/client-dashboard'
+      path: '/client-dashboard'
+      fullPath: '/client-dashboard'
+      preLoaderRoute: typeof ClientDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/checkout': {
       id: '/checkout'
       path: '/checkout'
@@ -1044,6 +1096,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminOrdersRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/messages': {
+      id: '/admin/messages'
+      path: '/messages'
+      fullPath: '/admin/messages'
+      preLoaderRoute: typeof AdminMessagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/login': {
       id: '/admin/login'
       path: '/login'
@@ -1151,6 +1210,7 @@ interface AdminRouteChildren {
   AdminInvoicesRoute: typeof AdminInvoicesRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminMessagesRoute: typeof AdminMessagesRoute
   AdminOrdersRoute: typeof AdminOrdersRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminProjectsRoute: typeof AdminProjectsRoute
@@ -1171,6 +1231,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminInvoicesRoute: AdminInvoicesRoute,
   AdminLeadsRoute: AdminLeadsRoute,
   AdminLoginRoute: AdminLoginRoute,
+  AdminMessagesRoute: AdminMessagesRoute,
   AdminOrdersRoute: AdminOrdersRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminProjectsRoute: AdminProjectsRoute,
@@ -1192,6 +1253,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BusinessRegistrationRoute: BusinessRegistrationRoute,
   CheckoutRoute: CheckoutRoute,
+  ClientDashboardRoute: ClientDashboardRoute,
   ClientPortalRoute: ClientPortalRoute,
   ComplianceRoute: ComplianceRoute,
   ConstructionServicesRoute: ConstructionServicesRoute,
@@ -1210,6 +1272,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   PsiraRegistrationRoute: PsiraRegistrationRoute,
   RefundRoute: RefundRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ServicesRoute: ServicesRoute,
   ShippingRoute: ShippingRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,

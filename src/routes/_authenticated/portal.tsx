@@ -5,6 +5,7 @@ import { FolderOpen, Receipt, FileText, LifeBuoy, LogOut } from "lucide-react";
 import { getPortalData } from "@/lib/portal.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { KpiCard, StatusPill, AdminPanel, money, shortDate } from "@/components/admin/shell";
+import { PortalMessages } from "@/components/portal/PortalMessages";
 
 export const Route = createFileRoute("/_authenticated/portal")({
   head: () => ({
@@ -145,6 +146,8 @@ function Portal() {
           </div>
         </AdminPanel>
       </div>
+
+      <PortalMessages />
     </div>
   );
 }

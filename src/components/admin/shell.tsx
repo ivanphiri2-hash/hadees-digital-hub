@@ -5,7 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import {
   LayoutDashboard, Users, Briefcase, FolderKanban, Receipt, FileArchive,
   LifeBuoy, ScrollText, Settings, LogOut, CreditCard, ShoppingCart, FileText,
-  FileSignature, CalendarDays, BarChart3, UserCog, Search,
+  FileSignature, CalendarDays, BarChart3, UserCog, Search, MessageSquare,
 } from "lucide-react";
 import { useAdminAuth } from "@/lib/admin-auth";
 import { globalSearch } from "@/lib/platform.functions";
@@ -22,6 +22,7 @@ export const ADMIN_NAV = [
   { to: "/admin/billing", label: "Billing", icon: Receipt },
   { to: "/admin/documents", label: "Documents", icon: FileArchive },
   { to: "/admin/support", label: "Support", icon: LifeBuoy },
+  { to: "/admin/messages", label: "Messages", icon: MessageSquare },
   { to: "/admin/calendar", label: "Calendar", icon: CalendarDays },
   { to: "/admin/reports", label: "Reports", icon: BarChart3 },
   { to: "/admin/users", label: "Users", icon: UserCog },
