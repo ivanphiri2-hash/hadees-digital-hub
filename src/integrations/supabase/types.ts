@@ -395,6 +395,47 @@ export type Database = {
           },
         ]
       }
+      messages: {
+        Row: {
+          body: string
+          client_id: string
+          created_at: string
+          from_staff: boolean
+          id: string
+          read_at: string | null
+          sender_id: string | null
+          sender_name: string | null
+        }
+        Insert: {
+          body: string
+          client_id: string
+          created_at?: string
+          from_staff?: boolean
+          id?: string
+          read_at?: string | null
+          sender_id?: string | null
+          sender_name?: string | null
+        }
+        Update: {
+          body?: string
+          client_id?: string
+          created_at?: string
+          from_staff?: boolean
+          id?: string
+          read_at?: string | null
+          sender_id?: string | null
+          sender_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           audience: string
