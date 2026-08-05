@@ -24,6 +24,7 @@ import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PopiaRouteImport } from './routes/popia'
 import { Route as PackagesRouteImport } from './routes/packages'
 import { Route as MobileAppRouteImport } from './routes/mobile-app'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IvanOsRouteImport } from './routes/ivan-os'
 import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as FaqRouteImport } from './routes/faq'
@@ -138,6 +139,11 @@ const PackagesRoute = PackagesRouteImport.update({
 const MobileAppRoute = MobileAppRouteImport.update({
   id: '/mobile-app',
   path: '/mobile-app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IvanOsRoute = IvanOsRouteImport.update({
@@ -358,6 +364,7 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/industries': typeof IndustriesRoute
   '/ivan-os': typeof IvanOsRoute
+  '/login': typeof LoginRoute
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
   '/popia': typeof PopiaRoute
@@ -413,6 +420,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/industries': typeof IndustriesRoute
   '/ivan-os': typeof IvanOsRoute
+  '/login': typeof LoginRoute
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
   '/popia': typeof PopiaRoute
@@ -471,6 +479,7 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/industries': typeof IndustriesRoute
   '/ivan-os': typeof IvanOsRoute
+  '/login': typeof LoginRoute
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
   '/popia': typeof PopiaRoute
@@ -529,6 +538,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/industries'
     | '/ivan-os'
+    | '/login'
     | '/mobile-app'
     | '/packages'
     | '/popia'
@@ -584,6 +594,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/industries'
     | '/ivan-os'
+    | '/login'
     | '/mobile-app'
     | '/packages'
     | '/popia'
@@ -641,6 +652,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/industries'
     | '/ivan-os'
+    | '/login'
     | '/mobile-app'
     | '/packages'
     | '/popia'
@@ -699,6 +711,7 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   IndustriesRoute: typeof IndustriesRoute
   IvanOsRoute: typeof IvanOsRoute
+  LoginRoute: typeof LoginRoute
   MobileAppRoute: typeof MobileAppRoute
   PackagesRoute: typeof PackagesRoute
   PopiaRoute: typeof PopiaRoute
@@ -826,6 +839,13 @@ declare module '@tanstack/react-router' {
       path: '/mobile-app'
       fullPath: '/mobile-app'
       preLoaderRoute: typeof MobileAppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ivan-os': {
@@ -1182,6 +1202,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   IndustriesRoute: IndustriesRoute,
   IvanOsRoute: IvanOsRoute,
+  LoginRoute: LoginRoute,
   MobileAppRoute: MobileAppRoute,
   PackagesRoute: PackagesRoute,
   PopiaRoute: PopiaRoute,
@@ -1206,13 +1227,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
