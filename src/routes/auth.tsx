@@ -129,6 +129,13 @@ function AuthPage() {
             {mode === "signin" ? "New client? Create an account" : "Already have an account? Sign in"}
           </button>
 
+          {mode === "signin" && (
+            <button onClick={() => void onForgotPassword()} disabled={busy}
+              className="mt-2 w-full text-center text-xs text-[var(--color-royal-soft)] hover:underline disabled:opacity-60">
+              Forgot password?
+            </button>
+          )}
+
           <div className="mt-4 text-center text-xs">
             <Link to="/" className="text-muted-foreground hover:text-foreground">← Back to site</Link>
           </div>
