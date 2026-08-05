@@ -61,6 +61,12 @@ export function SiteHeader() {
             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
           <Link
+            to="/login"
+            className="hidden rounded-full border border-border/60 px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground md:inline-flex"
+          >
+            Login
+          </Link>
+          <Link
             to="/contact"
             className="hidden rounded-full bg-[var(--color-royal)] px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-[color-mix(in_oklab,var(--color-royal)_35%,transparent)] transition-transform hover:-translate-y-0.5 md:inline-flex"
           >
@@ -89,6 +95,12 @@ export function SiteHeader() {
                   {n.label}
                 </Link>
               ))}
+              <Link
+                to="/login"
+                className="mt-2 inline-flex items-center justify-center rounded-xl border border-border/60 px-4 py-2.5 text-sm font-semibold text-foreground"
+              >
+                Login
+              </Link>
               <Link
                 to="/contact"
                 className="mt-2 inline-flex items-center justify-center rounded-xl bg-[var(--color-royal)] px-4 py-2.5 text-sm font-semibold text-white"

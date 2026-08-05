@@ -38,6 +38,23 @@ function AuthPage() {
     });
   }, [dest, navigate]);
 
+  async function onForgotPassword() {
+    setError(null); setNotice(null);
+    if (!email) { setError("Enter your email address first, then tap “Forgot password”."); return; }
+    setBusy(true);
+    try {
+      const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (err) throw err;
+      setNotice("Password reset link sent. Check your inbox.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not send the reset email.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null); setNotice(null); setBusy(true);
@@ -111,6 +128,13 @@ function AuthPage() {
             className="mt-4 w-full text-center text-xs text-muted-foreground hover:text-foreground">
             {mode === "signin" ? "New client? Create an account" : "Already have an account? Sign in"}
           </button>
+
+          {mode === "signin" && (
+            <button onClick={() => void onForgotPassword()} disabled={busy}
+              className="mt-2 w-full text-center text-xs text-[var(--color-royal-soft)] hover:underline disabled:opacity-60">
+              Forgot password?
+            </button>
+          )}
 
           <div className="mt-4 text-center text-xs">
             <Link to="/" className="text-muted-foreground hover:text-foreground">← Back to site</Link>
