@@ -38,6 +38,23 @@ function AuthPage() {
     });
   }, [dest, navigate]);
 
+  async function onForgotPassword() {
+    setError(null); setNotice(null);
+    if (!email) { setError("Enter your email address first, then tap “Forgot password”."); return; }
+    setBusy(true);
+    try {
+      const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (err) throw err;
+      setNotice("Password reset link sent. Check your inbox.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not send the reset email.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null); setNotice(null); setBusy(true);
