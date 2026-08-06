@@ -4,6 +4,8 @@ import { ArrowRight, ShieldCheck, Lock, CreditCard } from "lucide-react";
 
 import { Section, BigCTA } from "@/components/site/ui";
 import { ServiceCard } from "@/components/site/ServiceCard";
+import { PaymentButton } from "@/components/site/PaymentButton";
+
 import { SERVICE_CATALOG, FEATURED_PACKAGES, PRICED_SERVICES } from "@/lib/company";
 
 export const Route = createFileRoute("/services")({
