@@ -4,6 +4,8 @@ import { ArrowRight, ShieldCheck, Lock, CreditCard } from "lucide-react";
 
 import { Section, BigCTA } from "@/components/site/ui";
 import { ServiceCard } from "@/components/site/ServiceCard";
+import { PaymentButton } from "@/components/site/PaymentButton";
+
 import { SERVICE_CATALOG, FEATURED_PACKAGES, PRICED_SERVICES } from "@/lib/company";
 
 export const Route = createFileRoute("/services")({
@@ -97,13 +99,15 @@ export function FeaturedPackages() {
               </li>
             ))}
           </ul>
+          <PaymentButton slug={p.slug} name={p.name} className="mt-5 w-full" />
           <Link
             to="/checkout"
             search={{ service: p.checkoutSlug }}
-            className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--color-royal)] px-4 text-sm font-semibold text-white"
+            className="mt-2 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--color-royal)] px-4 text-sm font-semibold text-white"
           >
             Get Started <ArrowRight aria-hidden className="ml-1.5 h-4 w-4" />
           </Link>
+
         </div>
       ))}
     </div>
