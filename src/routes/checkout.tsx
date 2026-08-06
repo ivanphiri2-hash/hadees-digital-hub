@@ -1,12 +1,13 @@
 import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import { z } from "zod";
 import { ArrowRight, Lock, ShieldCheck, CreditCard, Loader2 } from "lucide-react";
 
 import { GradientOrbs, GlassCard } from "@/components/site/ui";
 import { findPricedService, PRICED_SERVICES } from "@/lib/company";
-import { createCheckout } from "@/lib/checkout.functions";
+import { paymentService, type CheckoutDetails } from "@/lib/payments/payment-service";
+
 
 const searchSchema = z.object({ service: z.string().optional() });
 
