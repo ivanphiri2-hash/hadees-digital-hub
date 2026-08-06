@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, MessageCircle, FileText } from "lucide-react";
 
+import { PaymentButton } from "@/components/site/PaymentButton";
 import { COMPANY, type CatalogService } from "@/lib/company";
+
 
 function whatsappHref(service: CatalogService) {
   const text = `Hi Hadees Trading, I'm interested in the ${service.name} (${service.price}). Please assist.`;
@@ -66,6 +68,7 @@ export function ServiceCard({ service }: { service: CatalogService }) {
       <div className="mt-5 flex-1" />
 
       <div className="grid gap-2">
+        <PaymentButton slug={service.slug} name={service.name} className="w-full" />
         <Link
           to="/checkout"
           search={{ service: service.slug }}
@@ -74,6 +77,7 @@ export function ServiceCard({ service }: { service: CatalogService }) {
           {service.cta} <ArrowRight aria-hidden className="ml-1.5 h-4 w-4" />
         </Link>
         <div className="grid grid-cols-2 gap-2">
+
           <Link
             to="/contact"
             className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full border border-border/70 px-3 text-xs font-semibold text-foreground hover:bg-card"

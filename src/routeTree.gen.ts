@@ -47,6 +47,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
 import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
+import { Route as PaymentCancelRouteImport } from './routes/payment.cancel'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminSupportRouteImport } from './routes/admin.support'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
@@ -258,6 +259,11 @@ const PaymentCancelledRoute = PaymentCancelledRouteImport.update({
   path: '/payment/cancelled',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaymentCancelRoute = PaymentCancelRouteImport.update({
+  id: '/payment/cancel',
+  path: '/payment/cancel',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -418,6 +424,7 @@ export interface FileRoutesByFullPath {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/support': typeof AdminSupportRoute
   '/admin/users': typeof AdminUsersRoute
+  '/payment/cancel': typeof PaymentCancelRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/admin/': typeof AdminIndexRoute
@@ -477,6 +484,7 @@ export interface FileRoutesByTo {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/support': typeof AdminSupportRoute
   '/admin/users': typeof AdminUsersRoute
+  '/payment/cancel': typeof PaymentCancelRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/admin': typeof AdminIndexRoute
@@ -539,6 +547,7 @@ export interface FileRoutesById {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/support': typeof AdminSupportRoute
   '/admin/users': typeof AdminUsersRoute
+  '/payment/cancel': typeof PaymentCancelRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/admin/': typeof AdminIndexRoute
@@ -601,6 +610,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/support'
     | '/admin/users'
+    | '/payment/cancel'
     | '/payment/cancelled'
     | '/payment/success'
     | '/admin/'
@@ -660,6 +670,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/support'
     | '/admin/users'
+    | '/payment/cancel'
     | '/payment/cancelled'
     | '/payment/success'
     | '/admin'
@@ -721,6 +732,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/support'
     | '/admin/users'
+    | '/payment/cancel'
     | '/payment/cancelled'
     | '/payment/success'
     | '/admin/'
@@ -765,6 +777,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   WebsiteDesignRoute: typeof WebsiteDesignRoute
   WhyChooseUsRoute: typeof WhyChooseUsRoute
+  PaymentCancelRoute: typeof PaymentCancelRoute
   PaymentCancelledRoute: typeof PaymentCancelledRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
   ApiPublicPayfastCreatePaymentRoute: typeof ApiPublicPayfastCreatePaymentRoute
@@ -1040,6 +1053,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PaymentCancelledRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/payment/cancel': {
+      id: '/payment/cancel'
+      path: '/payment/cancel'
+      fullPath: '/payment/cancel'
+      preLoaderRoute: typeof PaymentCancelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/users': {
       id: '/admin/users'
       path: '/users'
@@ -1281,6 +1301,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   WebsiteDesignRoute: WebsiteDesignRoute,
   WhyChooseUsRoute: WhyChooseUsRoute,
+  PaymentCancelRoute: PaymentCancelRoute,
   PaymentCancelledRoute: PaymentCancelledRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
   ApiPublicPayfastCreatePaymentRoute: ApiPublicPayfastCreatePaymentRoute,
