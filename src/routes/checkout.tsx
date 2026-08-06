@@ -1,12 +1,13 @@
 import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import { z } from "zod";
 import { ArrowRight, Lock, ShieldCheck, CreditCard, Loader2 } from "lucide-react";
 
 import { GradientOrbs, GlassCard } from "@/components/site/ui";
 import { findPricedService, PRICED_SERVICES } from "@/lib/company";
-import { createCheckout } from "@/lib/checkout.functions";
+import { paymentService, type CheckoutDetails } from "@/lib/payments/payment-service";
+
 
 const searchSchema = z.object({ service: z.string().optional() });
 
@@ -32,25 +33,16 @@ function Checkout() {
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const formRef = useRef<HTMLFormElement | null>(null);
-  const [pending, setPending] = useState<{ process_url: string; fields: Record<string, string> } | null>(null);
+  const [redirecting, setRedirecting] = useState(false);
 
   const mutation = useMutation({
-    mutationFn: (data: {
-      service_slug: string;
-      customer_name: string;
-      customer_email: string;
-      customer_phone?: string;
-      notes?: string;
-    }) => createCheckout({ data }),
-    onSuccess: (res) => setPending({ process_url: res.process_url, fields: res.fields }),
+    mutationFn: (data: CheckoutDetails) => paymentService.startCheckout(data),
+    onSuccess: (res) => {
+      setRedirecting(true);
+      window.location.href = res.redirect_url;
+    },
     onError: (e: Error) => setError(e.message || "Something went wrong."),
   });
-
-  // As soon as we have PayFast fields, auto-submit the hidden form.
-  useEffect(() => {
-    if (pending && formRef.current) formRef.current.submit();
-  }, [pending]);
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -60,12 +52,14 @@ function Checkout() {
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { setError("Enter a valid email."); return; }
     mutation.mutate({
       service_slug: service.slug,
+      service_name: service.name,
       customer_name: name.trim(),
       customer_email: email.trim(),
       customer_phone: phone.trim() || undefined,
       notes: notes.trim() || undefined,
     });
   }
+
 
   return (
     <section className="relative overflow-hidden">
@@ -125,10 +119,10 @@ function Checkout() {
 
             <button
               type="submit"
-              disabled={mutation.isPending || !!pending}
+              disabled={mutation.isPending || redirecting}
               className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-royal)] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[color-mix(in_oklab,var(--color-royal)_35%,transparent)] disabled:opacity-70"
             >
-              {mutation.isPending || pending ? (
+              {mutation.isPending || redirecting ? (
                 <><Loader2 className="h-4 w-4 animate-spin" /> Redirecting to PayFast…</>
               ) : (
                 <>Pay {service?.price} securely <ArrowRight className="h-4 w-4" /></>
@@ -140,14 +134,6 @@ function Checkout() {
             </p>
           </form>
 
-          {/* Hidden auto-submitting form → PayFast */}
-          {pending && (
-            <form ref={formRef} action={pending.process_url} method="POST" className="hidden">
-              {Object.entries(pending.fields).map(([k, v]) => (
-                <input key={k} type="hidden" name={k} value={v} />
-              ))}
-            </form>
-          )}
         </div>
 
         <aside className="lg:mt-14">
