@@ -119,10 +119,10 @@ function Checkout() {
 
             <button
               type="submit"
-              disabled={mutation.isPending || !!pending}
+              disabled={mutation.isPending || redirecting}
               className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-royal)] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[color-mix(in_oklab,var(--color-royal)_35%,transparent)] disabled:opacity-70"
             >
-              {mutation.isPending || pending ? (
+              {mutation.isPending || redirecting ? (
                 <><Loader2 className="h-4 w-4 animate-spin" /> Redirecting to PayFast…</>
               ) : (
                 <>Pay {service?.price} securely <ArrowRight className="h-4 w-4" /></>
@@ -134,14 +134,6 @@ function Checkout() {
             </p>
           </form>
 
-          {/* Hidden auto-submitting form → PayFast */}
-          {pending && (
-            <form ref={formRef} action={pending.process_url} method="POST" className="hidden">
-              {Object.entries(pending.fields).map(([k, v]) => (
-                <input key={k} type="hidden" name={k} value={v} />
-              ))}
-            </form>
-          )}
         </div>
 
         <aside className="lg:mt-14">
