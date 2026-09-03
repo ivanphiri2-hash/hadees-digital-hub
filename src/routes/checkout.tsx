@@ -4,8 +4,11 @@ import { useMemo, useState, type FormEvent } from "react";
 import { z } from "zod";
 import { ArrowRight, Lock, ShieldCheck, CreditCard, Loader2 } from "lucide-react";
 
+import { useServerFn } from "@tanstack/react-start";
+
 import { GradientOrbs, GlassCard } from "@/components/site/ui";
 import { findPricedService, PRICED_SERVICES } from "@/lib/company";
+import { createCheckout } from "@/lib/checkout.functions";
 import { paymentService, type CheckoutDetails } from "@/lib/payments/payment-service";
 
 
@@ -35,11 +38,48 @@ function Checkout() {
   const [error, setError] = useState<string | null>(null);
   const [redirecting, setRedirecting] = useState(false);
 
+  const startCheckout = useServerFn(createCheckout);
+
+  // Primary path: the server creates a pending order + CRM lead and returns a
+  // signed PayFast payload, so the ITN can reconcile the payment back to the
+  // order. Fallback: the hosted PayFast link, so checkout never dead-ends.
   const mutation = useMutation({
-    mutationFn: (data: CheckoutDetails) => paymentService.startCheckout(data),
-    onSuccess: (res) => {
+    mutationFn: async (data: CheckoutDetails) => {
+      try {
+        const res = await startCheckout({
+          data: {
+            service_slug: data.service_slug,
+            customer_name: data.customer_name,
+            customer_email: data.customer_email,
+            customer_phone: data.customer_phone ?? "",
+            notes: data.notes ?? "",
+          },
+        });
+        return { kind: "signed" as const, res };
+      } catch (e) {
+        console.error("Signed PayFast checkout unavailable, using hosted link", e);
+        const res = await paymentService.startCheckout(data);
+        return { kind: "link" as const, res };
+      }
+    },
+    onSuccess: (out) => {
       setRedirecting(true);
-      window.location.href = res.redirect_url;
+      if (out.kind === "link") {
+        window.location.href = out.res.redirect_url;
+        return;
+      }
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = out.res.process_url;
+      for (const [k, v] of Object.entries(out.res.fields)) {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = k;
+        input.value = v;
+        form.appendChild(input);
+      }
+      document.body.appendChild(form);
+      form.submit();
     },
     onError: (e: Error) => setError(e.message || "Something went wrong."),
   });
