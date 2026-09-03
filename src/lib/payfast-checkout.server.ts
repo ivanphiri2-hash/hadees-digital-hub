@@ -64,6 +64,47 @@ export async function createPayFastPayment(
     throw new Error("Could not create your order. Please try again.");
   }
 
+  // CRM: every checkout also becomes a Lead so the pipeline is never blind
+  // to abandoned carts. Non-fatal — never block a payment on CRM writes.
+  try {
+    const { data: existingLead } = await supabaseAdmin
+      .from("leads")
+      .select("id")
+      .eq("email", input.customer_email)
+      .eq("service_slug", service.slug)
+      .in("stage", ["new_lead", "contacted", "waiting_deposit"])
+      .maybeSingle();
+    if (!existingLead) {
+      await supabaseAdmin.from("leads").insert({
+        name: input.customer_name,
+        email: input.customer_email,
+        phone: input.customer_phone || null,
+        service_slug: service.slug,
+        service_name: service.name,
+        message: input.notes || null,
+        source: "website",
+        stage: "waiting_deposit",
+        value_cents: service.amount * 100,
+        notes: `Checkout started — order reference ${reference}.`,
+      });
+    }
+    await supabaseAdmin.from("notifications").insert({
+      audience: "staff",
+      type: "order",
+      title: "New checkout started",
+      body: `${input.customer_name} started checkout for ${service.name} (${reference}).`,
+      link: "/admin/orders",
+    });
+    await supabaseAdmin.from("activity_logs").insert({
+      actor_name: input.customer_name,
+      action: "order_created",
+      entity_type: "order",
+      meta: { reference, service: service.slug },
+    });
+  } catch (e) {
+    console.error("payfast: CRM capture failed (payment continues)", e);
+  }
+
   // Field ORDER matters — PayFast signs fields in posted order.
   const fields: Record<string, string> = {
     merchant_id: cfg.merchantId,
