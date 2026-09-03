@@ -5,7 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import {
   LayoutDashboard, Users, Briefcase, FolderKanban, Receipt, FileArchive,
   LifeBuoy, ScrollText, Settings, LogOut, CreditCard, ShoppingCart, FileText,
-  FileSignature, CalendarDays, BarChart3, UserCog, Search, MessageSquare,
+  FileSignature, CalendarDays, BarChart3, UserCog, Search, MessageSquare, Activity,
 } from "lucide-react";
 import { useAdminAuth } from "@/lib/admin-auth";
 import { globalSearch } from "@/lib/platform.functions";
@@ -27,6 +27,7 @@ export const ADMIN_NAV = [
   { to: "/admin/reports", label: "Reports", icon: BarChart3 },
   { to: "/admin/users", label: "Users", icon: UserCog },
   { to: "/admin/activity", label: "Activity", icon: ScrollText },
+  { to: "/admin/system", label: "System Health", icon: Activity },
   { to: "/admin/settings", label: "Settings", icon: Settings },
 ] as const;
 
