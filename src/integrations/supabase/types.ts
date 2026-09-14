@@ -47,6 +47,108 @@ export type Database = {
         }
         Relationships: []
       }
+      client_websites: {
+        Row: {
+          client_id: string | null
+          created_at: string
+          database_notes: string | null
+          demo_url: string | null
+          deployment_notes: string | null
+          deployment_provider: string | null
+          dns_notes: string | null
+          domain: string | null
+          domain_registrar: string | null
+          github_account: string | null
+          github_repo: string | null
+          hosting_provider: string | null
+          id: string
+          live_url: string | null
+          lovable_account_email: string | null
+          lovable_project_name: string | null
+          lovable_project_url: string | null
+          name: string
+          netlify_project: string | null
+          project_id: string | null
+          responsible_id: string | null
+          status: string
+          supabase_ref: string | null
+          technical_notes: string | null
+          updated_at: string
+          vercel_project: string | null
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string
+          database_notes?: string | null
+          demo_url?: string | null
+          deployment_notes?: string | null
+          deployment_provider?: string | null
+          dns_notes?: string | null
+          domain?: string | null
+          domain_registrar?: string | null
+          github_account?: string | null
+          github_repo?: string | null
+          hosting_provider?: string | null
+          id?: string
+          live_url?: string | null
+          lovable_account_email?: string | null
+          lovable_project_name?: string | null
+          lovable_project_url?: string | null
+          name: string
+          netlify_project?: string | null
+          project_id?: string | null
+          responsible_id?: string | null
+          status?: string
+          supabase_ref?: string | null
+          technical_notes?: string | null
+          updated_at?: string
+          vercel_project?: string | null
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string
+          database_notes?: string | null
+          demo_url?: string | null
+          deployment_notes?: string | null
+          deployment_provider?: string | null
+          dns_notes?: string | null
+          domain?: string | null
+          domain_registrar?: string | null
+          github_account?: string | null
+          github_repo?: string | null
+          hosting_provider?: string | null
+          id?: string
+          live_url?: string | null
+          lovable_account_email?: string | null
+          lovable_project_name?: string | null
+          lovable_project_url?: string | null
+          name?: string
+          netlify_project?: string | null
+          project_id?: string | null
+          responsible_id?: string | null
+          status?: string
+          supabase_ref?: string | null
+          technical_notes?: string | null
+          updated_at?: string
+          vercel_project?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_websites_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_websites_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clients: {
         Row: {
           address: string | null
@@ -242,6 +344,66 @@ export type Database = {
           },
         ]
       }
+      follow_ups: {
+        Row: {
+          assigned_to: string | null
+          client_id: string | null
+          created_at: string
+          created_by: string | null
+          due_date: string
+          due_time: string | null
+          id: string
+          lead_id: string | null
+          notes: string | null
+          reason: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          client_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          due_date: string
+          due_time?: string | null
+          id?: string
+          lead_id?: string | null
+          notes?: string | null
+          reason: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          client_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          due_date?: string
+          due_time?: string | null
+          id?: string
+          lead_id?: string | null
+          notes?: string | null
+          reason?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follow_ups_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "follow_ups_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       invoices: {
         Row: {
           amount_paid_cents: number
@@ -330,60 +492,81 @@ export type Database = {
       leads: {
         Row: {
           assigned_to: string | null
+          business_type: string | null
           client_id: string | null
           company: string | null
           created_at: string
           email: string | null
           id: string
+          last_contacted: string | null
+          location: string | null
           message: string | null
           name: string
           next_follow_up: string | null
           notes: string | null
           phone: string | null
+          province: string | null
           service_name: string | null
           service_slug: string | null
           source: Database["public"]["Enums"]["lead_source"]
           stage: Database["public"]["Enums"]["lead_stage"]
           updated_at: string
           value_cents: number
+          website_required: boolean
+          website_status: string | null
+          whatsapp: string | null
         }
         Insert: {
           assigned_to?: string | null
+          business_type?: string | null
           client_id?: string | null
           company?: string | null
           created_at?: string
           email?: string | null
           id?: string
+          last_contacted?: string | null
+          location?: string | null
           message?: string | null
           name: string
           next_follow_up?: string | null
           notes?: string | null
           phone?: string | null
+          province?: string | null
           service_name?: string | null
           service_slug?: string | null
           source?: Database["public"]["Enums"]["lead_source"]
           stage?: Database["public"]["Enums"]["lead_stage"]
           updated_at?: string
           value_cents?: number
+          website_required?: boolean
+          website_status?: string | null
+          whatsapp?: string | null
         }
         Update: {
           assigned_to?: string | null
+          business_type?: string | null
           client_id?: string | null
           company?: string | null
           created_at?: string
           email?: string | null
           id?: string
+          last_contacted?: string | null
+          location?: string | null
           message?: string | null
           name?: string
           next_follow_up?: string | null
           notes?: string | null
           phone?: string | null
+          province?: string | null
           service_name?: string | null
           service_slug?: string | null
           source?: Database["public"]["Enums"]["lead_source"]
           stage?: Database["public"]["Enums"]["lead_stage"]
           updated_at?: string
           value_cents?: number
+          website_required?: boolean
+          website_status?: string | null
+          whatsapp?: string | null
         }
         Relationships: [
           {
