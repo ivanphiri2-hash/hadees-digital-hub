@@ -48,6 +48,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
 import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
 import { Route as PaymentCancelRouteImport } from './routes/payment.cancel'
+import { Route as AdminWebsitesRouteImport } from './routes/admin.websites'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminSystemRouteImport } from './routes/admin.system'
 import { Route as AdminSupportRouteImport } from './routes/admin.support'
@@ -61,6 +62,7 @@ import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminInvoicesRouteImport } from './routes/admin.invoices'
+import { Route as AdminFollowupsRouteImport } from './routes/admin.followups'
 import { Route as AdminDocumentsRouteImport } from './routes/admin.documents'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AdminCalendarRouteImport } from './routes/admin.calendar'
@@ -265,6 +267,11 @@ const PaymentCancelRoute = PaymentCancelRouteImport.update({
   path: '/payment/cancel',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminWebsitesRoute = AdminWebsitesRouteImport.update({
+  id: '/websites',
+  path: '/websites',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -328,6 +335,11 @@ const AdminLeadsRoute = AdminLeadsRouteImport.update({
 const AdminInvoicesRoute = AdminInvoicesRouteImport.update({
   id: '/invoices',
   path: '/invoices',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminFollowupsRoute = AdminFollowupsRouteImport.update({
+  id: '/followups',
+  path: '/followups',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminDocumentsRoute = AdminDocumentsRouteImport.update({
@@ -418,6 +430,7 @@ export interface FileRoutesByFullPath {
   '/admin/calendar': typeof AdminCalendarRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/documents': typeof AdminDocumentsRoute
+  '/admin/followups': typeof AdminFollowupsRoute
   '/admin/invoices': typeof AdminInvoicesRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -431,6 +444,7 @@ export interface FileRoutesByFullPath {
   '/admin/support': typeof AdminSupportRoute
   '/admin/system': typeof AdminSystemRoute
   '/admin/users': typeof AdminUsersRoute
+  '/admin/websites': typeof AdminWebsitesRoute
   '/payment/cancel': typeof PaymentCancelRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
@@ -479,6 +493,7 @@ export interface FileRoutesByTo {
   '/admin/calendar': typeof AdminCalendarRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/documents': typeof AdminDocumentsRoute
+  '/admin/followups': typeof AdminFollowupsRoute
   '/admin/invoices': typeof AdminInvoicesRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -492,6 +507,7 @@ export interface FileRoutesByTo {
   '/admin/support': typeof AdminSupportRoute
   '/admin/system': typeof AdminSystemRoute
   '/admin/users': typeof AdminUsersRoute
+  '/admin/websites': typeof AdminWebsitesRoute
   '/payment/cancel': typeof PaymentCancelRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
@@ -543,6 +559,7 @@ export interface FileRoutesById {
   '/admin/calendar': typeof AdminCalendarRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/documents': typeof AdminDocumentsRoute
+  '/admin/followups': typeof AdminFollowupsRoute
   '/admin/invoices': typeof AdminInvoicesRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -556,6 +573,7 @@ export interface FileRoutesById {
   '/admin/support': typeof AdminSupportRoute
   '/admin/system': typeof AdminSystemRoute
   '/admin/users': typeof AdminUsersRoute
+  '/admin/websites': typeof AdminWebsitesRoute
   '/payment/cancel': typeof PaymentCancelRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
@@ -607,6 +625,7 @@ export interface FileRouteTypes {
     | '/admin/calendar'
     | '/admin/clients'
     | '/admin/documents'
+    | '/admin/followups'
     | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
@@ -620,6 +639,7 @@ export interface FileRouteTypes {
     | '/admin/support'
     | '/admin/system'
     | '/admin/users'
+    | '/admin/websites'
     | '/payment/cancel'
     | '/payment/cancelled'
     | '/payment/success'
@@ -668,6 +688,7 @@ export interface FileRouteTypes {
     | '/admin/calendar'
     | '/admin/clients'
     | '/admin/documents'
+    | '/admin/followups'
     | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
@@ -681,6 +702,7 @@ export interface FileRouteTypes {
     | '/admin/support'
     | '/admin/system'
     | '/admin/users'
+    | '/admin/websites'
     | '/payment/cancel'
     | '/payment/cancelled'
     | '/payment/success'
@@ -731,6 +753,7 @@ export interface FileRouteTypes {
     | '/admin/calendar'
     | '/admin/clients'
     | '/admin/documents'
+    | '/admin/followups'
     | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
@@ -744,6 +767,7 @@ export interface FileRouteTypes {
     | '/admin/support'
     | '/admin/system'
     | '/admin/users'
+    | '/admin/websites'
     | '/payment/cancel'
     | '/payment/cancelled'
     | '/payment/success'
@@ -1072,6 +1096,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PaymentCancelRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/websites': {
+      id: '/admin/websites'
+      path: '/websites'
+      fullPath: '/admin/websites'
+      preLoaderRoute: typeof AdminWebsitesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/users': {
       id: '/admin/users'
       path: '/users'
@@ -1163,6 +1194,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInvoicesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/followups': {
+      id: '/admin/followups'
+      path: '/followups'
+      fullPath: '/admin/followups'
+      preLoaderRoute: typeof AdminFollowupsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/documents': {
       id: '/admin/documents'
       path: '/documents'
@@ -1246,6 +1284,7 @@ interface AdminRouteChildren {
   AdminCalendarRoute: typeof AdminCalendarRoute
   AdminClientsRoute: typeof AdminClientsRoute
   AdminDocumentsRoute: typeof AdminDocumentsRoute
+  AdminFollowupsRoute: typeof AdminFollowupsRoute
   AdminInvoicesRoute: typeof AdminInvoicesRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
   AdminLoginRoute: typeof AdminLoginRoute
@@ -1259,6 +1298,7 @@ interface AdminRouteChildren {
   AdminSupportRoute: typeof AdminSupportRoute
   AdminSystemRoute: typeof AdminSystemRoute
   AdminUsersRoute: typeof AdminUsersRoute
+  AdminWebsitesRoute: typeof AdminWebsitesRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -1268,6 +1308,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminCalendarRoute: AdminCalendarRoute,
   AdminClientsRoute: AdminClientsRoute,
   AdminDocumentsRoute: AdminDocumentsRoute,
+  AdminFollowupsRoute: AdminFollowupsRoute,
   AdminInvoicesRoute: AdminInvoicesRoute,
   AdminLeadsRoute: AdminLeadsRoute,
   AdminLoginRoute: AdminLoginRoute,
@@ -1281,6 +1322,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminSupportRoute: AdminSupportRoute,
   AdminSystemRoute: AdminSystemRoute,
   AdminUsersRoute: AdminUsersRoute,
+  AdminWebsitesRoute: AdminWebsitesRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
