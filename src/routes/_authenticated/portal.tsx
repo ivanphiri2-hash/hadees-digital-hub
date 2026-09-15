@@ -1,8 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { FolderOpen, Receipt, FileText, LifeBuoy, LogOut } from "lucide-react";
+import { FolderOpen, Receipt, FileText, LifeBuoy, LogOut, Globe } from "lucide-react";
 import { getPortalData } from "@/lib/portal.functions";
+import { getMyWebsites } from "@/lib/crm.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { KpiCard, StatusPill, AdminPanel, money, shortDate } from "@/components/admin/shell";
 import { PortalMessages } from "@/components/portal/PortalMessages";
@@ -147,7 +148,37 @@ function Portal() {
         </AdminPanel>
       </div>
 
+      <PortalWebsites />
+
       <PortalMessages />
     </div>
+  );
+}
+
+/** Client-safe website summary — status and links only, never internal build details. */
+function PortalWebsites() {
+  const fetchSites = useServerFn(getMyWebsites);
+  const { data } = useQuery({ queryKey: ["portal", "websites"], queryFn: () => fetchSites({}) });
+  if (!data || data.length === 0) return null;
+
+  return (
+    <AdminPanel title="Your website">
+      <div className="grid gap-2">
+        {data.map((w) => (
+          <div key={w.id} className="rounded-xl border border-border/60 bg-black/20 px-3 py-2.5">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="flex items-center gap-2 text-sm font-semibold"><Globe className="h-4 w-4 text-[var(--color-royal-soft)]" />{w.name}</span>
+              <StatusPill status={w.status} />
+            </div>
+            <div className="mt-1 flex flex-wrap gap-3 text-[11px] text-muted-foreground">
+              {w.domain && <span>{w.domain}</span>}
+              {w.live_url && <a className="text-[var(--color-royal-soft)]" href={w.live_url} target="_blank" rel="noreferrer">View live site</a>}
+              {w.demo_url && <a className="text-[var(--color-royal-soft)]" href={w.demo_url} target="_blank" rel="noreferrer">View demo</a>}
+              <span>Updated {shortDate(w.updated_at)}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </AdminPanel>
   );
 }
