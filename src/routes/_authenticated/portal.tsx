@@ -37,6 +37,9 @@ function Portal() {
         <div>
           <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Client Portal</div>
           <h1 className="font-display text-3xl font-black">{data?.client?.company_name ?? data?.client?.full_name ?? "Welcome"}</h1>
+          {data?.client?.client_number && (
+            <div className="mt-1 text-xs text-muted-foreground">Client number <span className="font-semibold text-[var(--color-gold)]">{data.client.client_number}</span></div>
+          )}
         </div>
         <button onClick={() => void supabase.auth.signOut().then(() => navigate({ to: "/auth", search: {}, replace: true }))}
           className="inline-flex items-center gap-2 rounded-full border border-border/70 px-4 py-2 text-sm">
