@@ -88,6 +88,9 @@ function ClientsPage() {
           rows={rows}
           empty="No clients yet — convert a lead or take a PayFast order."
           cols={[
+            { key: "number", label: "No.", render: (c) => (
+              <span className="font-mono text-xs text-[var(--color-gold)]">{c.client_number ?? "—"}</span>
+            ) },
             { key: "name", label: "Client", render: (c) => (
               <button className="text-left" onClick={() => setSelected(c.id)}>
                 <div className="font-medium">{c.full_name}</div>
