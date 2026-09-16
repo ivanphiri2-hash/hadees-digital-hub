@@ -62,7 +62,7 @@ function ClientsPage() {
     const term = search.trim().toLowerCase();
     if (!term) return q.data ?? [];
     return (q.data ?? []).filter((c) =>
-      [c.full_name, c.company_name, c.email, c.phone, c.industry].some((v) => (v ?? "").toLowerCase().includes(term)));
+      [c.client_number, c.full_name, c.company_name, c.email, c.phone, c.industry].some((v) => (v ?? "").toLowerCase().includes(term)));
   }, [q.data, search]);
 
   return (
