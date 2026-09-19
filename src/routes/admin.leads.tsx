@@ -5,7 +5,9 @@ import { useMemo, useState } from "react";
 import { Download, Plus, UserPlus } from "lucide-react";
 import { AdminShell, AdminPanel, StatusPill, money, shortDate } from "@/components/admin/shell";
 import { DataTable, Toolbar, btnCls, btnGhost, downloadCsv, inputCls } from "@/components/admin/table";
-import { LEAD_STAGES, convertLeadToClient, createLead, listLeads, patchLead } from "@/lib/platform.functions";
+import { ConfirmDialog, ErrorBar, RowActions } from "@/components/admin/actions";
+import { LEAD_STAGES, LEAD_SOURCES, convertLeadToClient, createLead, listLeads, patchLead } from "@/lib/platform.functions";
+import { deleteLead } from "@/lib/crm-admin.functions";
 
 export const Route = createFileRoute("/admin/leads")({
   head: () => ({
@@ -22,6 +24,12 @@ type Lead = Awaited<ReturnType<typeof listLeads>>[number];
 
 interface LeadPatch {
   id: string;
+  name?: string;
+  company?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  service_name?: string | null;
+  source?: (typeof LEAD_SOURCES)[number];
   stage?: (typeof LEAD_STAGES)[number];
   notes?: string;
   next_follow_up?: string | null;
@@ -45,11 +53,14 @@ function LeadsPage() {
   const patch = useServerFn(patchLead);
   const create = useServerFn(createLead);
   const convert = useServerFn(convertLeadToClient);
+  const remove = useServerFn(deleteLead);
 
   const [search, setSearch] = useState("");
   const [stage, setStage] = useState("all");
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<Lead | null>(null);
+  const [viewOnly, setViewOnly] = useState(false);
+  const [toDelete, setToDelete] = useState<Lead | null>(null);
 
   const q = useQuery({ queryKey: ["admin", "leads"], queryFn: () => fetchLeads({}) });
   const invalidate = () => void qc.invalidateQueries({ queryKey: ["admin", "leads"] });
@@ -57,6 +68,10 @@ function LeadsPage() {
   const mPatch = useMutation({ mutationFn: (v: LeadPatch) => patch({ data: v }), onSuccess: invalidate });
   const mCreate = useMutation({ mutationFn: (v: NewLead) => create({ data: v }), onSuccess: () => { setOpen(false); invalidate(); } });
   const mConvert = useMutation({ mutationFn: (id: string) => convert({ data: { id } }), onSuccess: invalidate });
+  const mDelete = useMutation({
+    mutationFn: (id: string) => remove({ data: { id } }),
+    onSuccess: () => { setToDelete(null); setActive(null); invalidate(); },
+  });
 
   const rows = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -81,6 +96,7 @@ function LeadsPage() {
         }
       >
         {open && <NewLeadForm onSubmit={(v) => mCreate.mutate(v)} pending={mCreate.isPending} />}
+        <ErrorBar error={mPatch.error ?? mCreate.error ?? mConvert.error} />
 
         <Toolbar>
           <input className={inputCls} placeholder="Search name, company, email, phone…" value={search} onChange={(e) => setSearch(e.target.value)} />
@@ -95,7 +111,7 @@ function LeadsPage() {
           empty="No leads match this filter."
           cols={[
             { key: "name", label: "Lead", render: (l) => (
-              <button className="text-left" onClick={() => setActive(l)}>
+              <button className="text-left" onClick={() => { setViewOnly(true); setActive(l); }}>
                 <div className="font-medium">{l.name}</div>
                 <div className="text-[11px] text-muted-foreground">{l.company || "—"}</div>
               </button>
@@ -118,14 +134,40 @@ function LeadsPage() {
                 {LEAD_STAGES.map((s) => <option key={s} value={s}>{s.replace(/_/g, " ")}</option>)}
               </select>
             ) },
-            { key: "actions", label: "", render: (l) => l.client_id
+            { key: "convert", label: "", render: (l) => l.client_id
               ? <StatusPill status="client" />
               : <button className={btnGhost} disabled={mConvert.isPending} onClick={() => mConvert.mutate(l.id)}><UserPlus className="h-3.5 w-3.5" /> Convert</button> },
+            { key: "actions", label: "Actions", render: (l) => (
+              <RowActions
+                onView={() => { setViewOnly(true); setActive(l); }}
+                onEdit={() => { setViewOnly(false); setActive(l); }}
+                onDelete={() => setToDelete(l)}
+              />
+            ) },
           ]}
         />
       </AdminPanel>
 
-      {active && <LeadDrawer lead={active} onClose={() => setActive(null)} onSave={(v) => { mPatch.mutate(v); setActive(null); }} />}
+      {active && (
+        <LeadDrawer
+          lead={active}
+          readOnly={viewOnly}
+          onEdit={() => setViewOnly(false)}
+          onClose={() => setActive(null)}
+          onDelete={() => setToDelete(active)}
+          onSave={(v) => { mPatch.mutate(v); setActive(null); }}
+        />
+      )}
+
+      <ConfirmDialog
+        open={!!toDelete}
+        title="Delete this lead?"
+        message={`Are you sure you want to delete the lead "${toDelete?.name ?? ""}"? This action cannot be undone.`}
+        pending={mDelete.isPending}
+        error={mDelete.error instanceof Error ? mDelete.error.message : null}
+        onCancel={() => { mDelete.reset(); setToDelete(null); }}
+        onConfirm={() => toDelete && mDelete.mutate(toDelete.id)}
+      />
     </AdminShell>
   );
 }
@@ -156,41 +198,109 @@ function NewLeadForm({ onSubmit, pending }: { onSubmit: (v: NewLead) => void; pe
   );
 }
 
-function LeadDrawer({ lead, onClose, onSave }: { lead: Lead; onClose: () => void; onSave: (v: { id: string; notes: string; next_follow_up: string | null; value_cents: number }) => void }) {
-  const [notes, setNotes] = useState(lead.notes ?? "");
-  const [followUp, setFollowUp] = useState(lead.next_follow_up ?? "");
-  const [value, setValue] = useState(String((lead.value_cents ?? 0) / 100));
+function LeadDrawer({ lead, readOnly, onClose, onEdit, onDelete, onSave }: {
+  lead: Lead;
+  readOnly: boolean;
+  onClose: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
+  onSave: (v: LeadPatch) => void;
+}) {
+  const [f, setF] = useState({
+    name: lead.name ?? "",
+    company: lead.company ?? "",
+    email: lead.email ?? "",
+    phone: lead.phone ?? "",
+    service_name: lead.service_name ?? "",
+    source: (lead.source ?? "manual") as (typeof LEAD_SOURCES)[number],
+    stage: lead.stage,
+    notes: lead.notes ?? "",
+    followUp: lead.next_follow_up ?? "",
+    value: String((lead.value_cents ?? 0) / 100),
+  });
+
   return (
-    <AdminPanel title={`${lead.name} — lead detail`} action={<button className={btnGhost} onClick={onClose}>Close</button>}>
-      <div className="grid gap-3 sm:grid-cols-3">
-        <Field label="Company" value={lead.company || "—"} />
-        <Field label="Email" value={lead.email || "—"} />
-        <Field label="Phone" value={lead.phone || "—"} />
-        <Field label="Source" value={lead.source} />
-        <Field label="Stage" value={lead.stage.replace(/_/g, " ")} />
-        <Field label="Created" value={shortDate(lead.created_at)} />
-      </div>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        <label className="grid gap-1.5">
-          <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Follow-up date</span>
-          <input type="date" className={inputCls} value={followUp} onChange={(e) => setFollowUp(e.target.value)} />
-        </label>
-        <label className="grid gap-1.5">
-          <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Budget (ZAR)</span>
-          <input type="number" min="0" className={inputCls} value={value} onChange={(e) => setValue(e.target.value)} />
-        </label>
-      </div>
-      <label className="mt-3 grid gap-1.5">
-        <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Communication history / notes</span>
-        <textarea rows={5} className={inputCls} value={notes} onChange={(e) => setNotes(e.target.value)} />
-      </label>
-      <button
-        className={`${btnCls} mt-3`}
-        onClick={() => onSave({ id: lead.id, notes, next_follow_up: followUp || null, value_cents: Math.round((Number(value) || 0) * 100) })}
-      >
-        Save changes
-      </button>
+    <AdminPanel
+      title={`${lead.name} — ${readOnly ? "lead record" : "edit lead"}`}
+      action={
+        <div className="flex gap-2">
+          {readOnly && <button className={btnGhost} onClick={onEdit}>Edit</button>}
+          <button className={btnGhost} onClick={onDelete}>Delete</button>
+          <button className={btnGhost} onClick={onClose}>Close</button>
+        </div>
+      }
+    >
+      {readOnly ? (
+        <div className="grid gap-3 sm:grid-cols-3">
+          <Field label="Company" value={lead.company || "—"} />
+          <Field label="Email" value={lead.email || "—"} />
+          <Field label="Phone" value={lead.phone || "—"} />
+          <Field label="Service" value={lead.service_name || "—"} />
+          <Field label="Source" value={lead.source} />
+          <Field label="Stage" value={lead.stage.replace(/_/g, " ")} />
+          <Field label="Budget" value={money(lead.value_cents)} />
+          <Field label="Follow-up" value={shortDate(lead.next_follow_up)} />
+          <Field label="Created" value={shortDate(lead.created_at)} />
+          <div className="sm:col-span-3 rounded-xl border border-border/60 p-3">
+            <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Notes</div>
+            <p className="mt-1 whitespace-pre-wrap text-sm">{lead.notes || "—"}</p>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Labelled label="Full name"><input className={inputCls} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} /></Labelled>
+            <Labelled label="Company"><input className={inputCls} value={f.company} onChange={(e) => setF({ ...f, company: e.target.value })} /></Labelled>
+            <Labelled label="Email"><input className={inputCls} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} /></Labelled>
+            <Labelled label="Phone"><input className={inputCls} value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} /></Labelled>
+            <Labelled label="Service"><input className={inputCls} value={f.service_name} onChange={(e) => setF({ ...f, service_name: e.target.value })} /></Labelled>
+            <Labelled label="Source">
+              <select className={inputCls} value={f.source} onChange={(e) => setF({ ...f, source: e.target.value as typeof f.source })}>
+                {LEAD_SOURCES.map((s) => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </Labelled>
+            <Labelled label="Stage">
+              <select className={inputCls} value={f.stage} onChange={(e) => setF({ ...f, stage: e.target.value as typeof f.stage })}>
+                {LEAD_STAGES.map((s) => <option key={s} value={s}>{s.replace(/_/g, " ")}</option>)}
+              </select>
+            </Labelled>
+            <Labelled label="Follow-up date"><input type="date" className={inputCls} value={f.followUp} onChange={(e) => setF({ ...f, followUp: e.target.value })} /></Labelled>
+            <Labelled label="Budget (ZAR)"><input type="number" min="0" className={inputCls} value={f.value} onChange={(e) => setF({ ...f, value: e.target.value })} /></Labelled>
+          </div>
+          <label className="mt-3 grid gap-1.5">
+            <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Communication history / notes</span>
+            <textarea rows={5} className={inputCls} value={f.notes} onChange={(e) => setF({ ...f, notes: e.target.value })} />
+          </label>
+          <button
+            className={`${btnCls} mt-3`}
+            onClick={() => onSave({
+              id: lead.id,
+              name: f.name,
+              company: f.company || null,
+              email: f.email || null,
+              phone: f.phone || null,
+              service_name: f.service_name || null,
+              source: f.source,
+              stage: f.stage,
+              notes: f.notes,
+              next_follow_up: f.followUp || null,
+              value_cents: Math.round((Number(f.value) || 0) * 100),
+            })}
+          >
+            Save changes
+          </button>
+        </>
+      )}
     </AdminPanel>
+  );
+}
+
+function Labelled({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <label className="grid gap-1.5">
+      <span className="text-[10px] uppercase tracking-widest text-muted-foreground">{label}</span>
+      {children}
+    </label>
   );
 }
 
