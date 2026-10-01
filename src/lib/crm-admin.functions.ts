@@ -16,7 +16,8 @@ import { z } from "zod";
 const uuid = z.string().uuid();
 
 async function log(
-  ctx: { supabase: { from: (t: string) => { insert: (v: unknown) => Promise<unknown> } }; userId: string },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ctx: { supabase: any; userId: string },
   action: string, entity_type: string, entity_id: string, meta: Record<string, unknown> = {},
 ) {
   await ctx.supabase.from("activity_logs").insert({ actor_id: ctx.userId, action, entity_type, entity_id, meta });
@@ -50,7 +51,7 @@ export const getClientRelations = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const s = context.supabase;
     const count = async (table: string) => {
-      const { count: n } = await s.from(table).select("id", { count: "exact", head: true }).eq("client_id", data.id);
+      const { count: n } = await (s as any).from(table).select("id", { count: "exact", head: true }).eq("client_id", data.id);
       return n ?? 0;
     };
     const [projects, invoices, payments, receipts, documents, tickets, websites, quotations] = await Promise.all([
@@ -83,7 +84,7 @@ export const deleteClientSafe = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const s = context.supabase;
     const countOf = async (table: string) => {
-      const { count } = await s.from(table).select("id", { count: "exact", head: true }).eq("client_id", data.id);
+      const { count } = await (s as any).from(table).select("id", { count: "exact", head: true }).eq("client_id", data.id);
       return count ?? 0;
     };
     const invoices = await countOf("invoices");
