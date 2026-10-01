@@ -10,6 +10,8 @@ import {
   recordPayment, setInvoiceStatus, setQuotationStatus,
 } from "@/lib/platform.functions";
 import { COMPANY } from "@/lib/company";
+import { deletePayment, patchPayment } from "@/lib/crm-admin.functions";
+import { ConfirmDialog, ErrorBar, RowActions } from "@/components/admin/actions";
 
 export const Route = createFileRoute("/admin/billing")({
   head: () => ({
@@ -29,6 +31,8 @@ interface LineItem { description: string; qty: number; unit_cents: number }
 
 function BillingPage() {
   const qc = useQueryClient();
+  const [payEdit, setPayEdit] = useState<PayEdit | null>(null);
+  const [payDelete, setPayDelete] = useState<string | null>(null);
   const fetchBilling = useServerFn(listBilling);
   const fetchClients = useServerFn(listClients);
   const mkInvoice = useServerFn(createInvoice);
@@ -145,6 +149,7 @@ function BillingPage() {
           />
         )}
 
+        {tab === "payments" && <PaymentTools edit={payEdit} setEdit={setPayEdit} del={payDelete} setDel={setPayDelete} />}
         {tab === "payments" && (
           <DataTable rows={d?.payments ?? []} empty="No payments recorded." cols={[
             { key: "d", label: "Date", render: (p) => <span className="text-xs">{shortDate(p.paid_at ?? p.created_at)}</span> },
@@ -152,6 +157,12 @@ function BillingPage() {
             { key: "m", label: "Method", render: (p) => <span className="text-xs capitalize">{p.method}</span> },
             { key: "r", label: "Reference", render: (p) => <span className="font-mono text-[11px]">{p.reference || p.pf_payment_id || "—"}</span> },
             { key: "s", label: "Status", render: (p) => <StatusPill status={p.status} /> },
+            { key: "x", label: "Actions", render: (p) => (
+              <RowActions
+                onEdit={() => setPayEdit({ id: p.id, amount: String(p.amount_cents / 100), method: p.method, status: p.status, reference: p.reference ?? "" })}
+                onDelete={() => setPayDelete(p.id)}
+              />
+            ) },
           ]} />
         )}
 
@@ -238,5 +249,58 @@ function DocForm({ kind, clients, onSubmit, pending }: {
         <button className={btnCls} disabled={pending}>Create {kind}</button>
       </div>
     </form>
+  );
+}
+
+interface PayEdit { id: string; amount: string; method: string; status: string; reference: string }
+
+/** CRM bookkeeping corrections only — never contacts PayFast. */
+function PaymentTools({ edit, setEdit, del, setDel }: {
+  edit: PayEdit | null; setEdit: (v: PayEdit | null) => void;
+  del: string | null; setDel: (v: string | null) => void;
+}) {
+  const qc = useQueryClient();
+  const save = useServerFn(patchPayment);
+  const remove = useServerFn(deletePayment);
+  const refresh = () => void qc.invalidateQueries({ queryKey: ["admin", "billing"] });
+  const mSave = useMutation({
+    mutationFn: (v: PayEdit) => save({ data: {
+      id: v.id, amount_cents: Math.round((Number(v.amount) || 0) * 100),
+      method: v.method as "eft", status: v.status as "paid", reference: v.reference || null,
+    } }),
+    onSuccess: () => { setEdit(null); refresh(); },
+  });
+  const mDel = useMutation({ mutationFn: (id: string) => remove({ data: { id } }), onSuccess: () => { setDel(null); refresh(); } });
+  return (
+    <>
+      <ErrorBar error={mSave.error ? new Error("Unable to update this record. No changes were saved.") : null} />
+      {edit && (
+        <form className="mb-4 grid gap-3 rounded-xl border border-border/60 bg-white/[0.02] p-4 sm:grid-cols-4"
+          onSubmit={(e) => { e.preventDefault(); mSave.mutate(edit); }}>
+          <div className="sm:col-span-4 text-[10px] uppercase tracking-widest text-muted-foreground">Edit payment record (does not affect PayFast)</div>
+          <input type="number" min="0" step="0.01" className={inputCls} value={edit.amount} onChange={(e) => setEdit({ ...edit, amount: e.target.value })} />
+          <select className={inputCls} value={edit.method} onChange={(e) => setEdit({ ...edit, method: e.target.value })}>
+            {["eft", "cash", "card", "payfast", "other"].map((m) => <option key={m} value={m}>{m}</option>)}
+          </select>
+          <select className={inputCls} value={edit.status} onChange={(e) => setEdit({ ...edit, status: e.target.value })}>
+            {["pending", "processing", "paid", "failed", "cancelled", "refunded"].map((m) => <option key={m} value={m}>{m}</option>)}
+          </select>
+          <input className={inputCls} placeholder="Reference" value={edit.reference} onChange={(e) => setEdit({ ...edit, reference: e.target.value })} />
+          <div className="sm:col-span-4 flex gap-2">
+            <button className={btnCls} disabled={mSave.isPending}>Save changes</button>
+            <button type="button" className={btnGhost} onClick={() => setEdit(null)}>Cancel</button>
+          </div>
+        </form>
+      )}
+      <ConfirmDialog
+        open={!!del}
+        title="Delete this payment record?"
+        message="Are you sure you want to delete this payment record? Its receipt is removed and the invoice balance is recalculated. PayFast is not affected. This action cannot be undone."
+        pending={mDel.isPending}
+        error={mDel.error ? "Unable to delete this record. The record has not been deleted." : null}
+        onCancel={() => { mDel.reset(); setDel(null); }}
+        onConfirm={() => del && mDel.mutate(del)}
+      />
+    </>
   );
 }
