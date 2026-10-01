@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { Download, Plus, ExternalLink } from "lucide-react";
 import { AdminShell, AdminPanel, StatusPill, shortDate } from "@/components/admin/shell";
 import { DataTable, Toolbar, btnCls, btnGhost, downloadCsv, inputCls } from "@/components/admin/table";
+import { ConfirmDialog, RowActions } from "@/components/admin/actions";
 import { deleteWebsite, listWebsites, upsertWebsite, WEBSITE_STATUSES } from "@/lib/crm.functions";
 
 export const Route = createFileRoute("/admin/websites")({
@@ -44,7 +45,8 @@ function WebsitesPage() {
       save({ data: { ...v, client_id: v.client_id || null } as never }),
     onSuccess: () => { setEditing(null); invalidate(); },
   });
-  const mDelete = useMutation({ mutationFn: (id: string) => remove({ data: { id } }), onSuccess: invalidate });
+  const [toDelete, setToDelete] = useState<{ id: string; name: string } | null>(null);
+  const mDelete = useMutation({ mutationFn: (id: string) => remove({ data: { id } }), onSuccess: () => { setToDelete(null); invalidate(); } });
 
   const clientName = (id: string | null) => {
     const c = (q.data?.clients ?? []).find((x) => x.id === id);
@@ -118,11 +120,24 @@ function WebsitesPage() {
             ) },
             { key: "updated", label: "Updated", render: (w) => <span className="text-xs">{shortDate(w.updated_at)}</span> },
             { key: "actions", label: "", render: (w) => (
-              <button className={btnGhost} onClick={() => { if (confirm("Delete this website record?")) mDelete.mutate(w.id); }}>Delete</button>
+              <RowActions
+                onView={() => setEditing({ ...BLANK, ...Object.fromEntries(Object.entries(w).map(([k, v]) => [k, v ?? ""])) } as never)}
+                onEdit={() => setEditing({ ...BLANK, ...Object.fromEntries(Object.entries(w).map(([k, v]) => [k, v ?? ""])) } as never)}
+                onDelete={() => setToDelete({ id: w.id, name: w.name })}
+              />
             ) },
           ]}
         />
       </AdminPanel>
+      <ConfirmDialog
+        open={!!toDelete}
+        title="Delete this record?"
+        message={`Are you sure you want to delete the website record "${toDelete?.name ?? ""}"? This action cannot be undone.`}
+        pending={mDelete.isPending}
+        error={mDelete.error ? "Unable to delete this record. The record has not been deleted." : null}
+        onCancel={() => { mDelete.reset(); setToDelete(null); }}
+        onConfirm={() => toDelete && mDelete.mutate(toDelete.id)}
+      />
     </AdminShell>
   );
 }

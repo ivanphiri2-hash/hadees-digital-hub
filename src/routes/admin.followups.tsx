@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { Download, Plus } from "lucide-react";
 import { AdminShell, AdminPanel, KpiCard, StatusPill, shortDate } from "@/components/admin/shell";
 import { DataTable, Toolbar, btnCls, btnGhost, downloadCsv, inputCls } from "@/components/admin/table";
+import { ConfirmDialog, ErrorBar, RowActions } from "@/components/admin/actions";
 import { deleteFollowUp, FOLLOW_UP_STATUSES, listFollowUps, upsertFollowUp } from "@/lib/crm.functions";
 
 export const Route = createFileRoute("/admin/followups")({
@@ -27,6 +28,8 @@ function FollowUpsPage() {
   const remove = useServerFn(deleteFollowUp);
 
   const [open, setOpen] = useState(false);
+  const [edit, setEdit] = useState<Record<string, unknown> | null>(null);
+  const [toDelete, setToDelete] = useState<string | null>(null);
   const [filter, setFilter] = useState("");
 
   const q = useQuery({ queryKey: ["admin", "followups"], queryFn: () => fetchAll({}) });
@@ -34,9 +37,9 @@ function FollowUpsPage() {
 
   const mSave = useMutation({
     mutationFn: (v: Record<string, unknown>) => save({ data: v as never }),
-    onSuccess: () => { setOpen(false); invalidate(); },
+    onSuccess: () => { setOpen(false); setEdit(null); invalidate(); },
   });
-  const mDelete = useMutation({ mutationFn: (id: string) => remove({ data: { id } }), onSuccess: invalidate });
+  const mDelete = useMutation({ mutationFn: (id: string) => remove({ data: { id } }), onSuccess: () => { setToDelete(null); invalidate(); } });
 
   const all = q.data?.followUps ?? [];
   const t = today();
@@ -88,6 +91,30 @@ function FollowUpsPage() {
           />
         )}
 
+        <ErrorBar error={mSave.error ? new Error("Unable to update this record. No changes were saved.") : null} />
+        {edit && (
+          <form
+            className="mb-4 grid gap-3 rounded-xl border border-border/60 bg-white/[0.02] p-4 sm:grid-cols-3"
+            onSubmit={(e) => {
+              e.preventDefault();
+              mSave.mutate({ ...edit, lead_id: edit.lead_id || null, client_id: edit.client_id || null, due_time: edit.due_time || null, notes: edit.notes || null });
+            }}
+          >
+            <div className="sm:col-span-3 text-[10px] uppercase tracking-widest text-muted-foreground">Edit follow-up</div>
+            <input required className={inputCls} value={String(edit.reason ?? "")} onChange={(e) => setEdit({ ...edit, reason: e.target.value })} placeholder="Reason" />
+            <input required type="date" className={inputCls} value={String(edit.due_date ?? "")} onChange={(e) => setEdit({ ...edit, due_date: e.target.value })} />
+            <input type="time" className={inputCls} value={String(edit.due_time ?? "")} onChange={(e) => setEdit({ ...edit, due_time: e.target.value })} />
+            <select className={inputCls} value={String(edit.status)} onChange={(e) => setEdit({ ...edit, status: e.target.value })}>
+              {FOLLOW_UP_STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
+            <textarea className={`${inputCls} sm:col-span-3`} rows={2} value={String(edit.notes ?? "")} onChange={(e) => setEdit({ ...edit, notes: e.target.value })} placeholder="Notes" />
+            <div className="sm:col-span-3 flex gap-2">
+              <button className={btnCls} disabled={mSave.isPending}>Save changes</button>
+              <button type="button" className={btnGhost} onClick={() => setEdit(null)}>Cancel</button>
+            </div>
+          </form>
+        )}
+
         <Toolbar>
           <select className={inputCls} value={filter} onChange={(e) => setFilter(e.target.value)}>
             <option value="">All</option>
@@ -114,11 +141,23 @@ function FollowUpsPage() {
               </div>
             ) },
             { key: "actions", label: "", render: (f) => (
-              <button className={btnGhost} onClick={() => { if (confirm("Delete this follow-up?")) mDelete.mutate(f.id); }}>Delete</button>
+              <RowActions
+                onEdit={() => setEdit({ id: f.id, lead_id: f.lead_id ?? "", client_id: f.client_id ?? "", due_date: f.due_date, due_time: f.due_time ? String(f.due_time).slice(0, 5) : "", reason: f.reason, notes: f.notes ?? "", status: f.status })}
+                onDelete={() => setToDelete(f.id)}
+              />
             ) },
           ]}
         />
       </AdminPanel>
+      <ConfirmDialog
+        open={!!toDelete}
+        title="Delete this record?"
+        message="Are you sure you want to delete this follow-up? This action cannot be undone."
+        pending={mDelete.isPending}
+        error={mDelete.error ? "Unable to delete this record. The record has not been deleted." : null}
+        onCancel={() => { mDelete.reset(); setToDelete(null); }}
+        onConfirm={() => toDelete && mDelete.mutate(toDelete)}
+      />
     </AdminShell>
   );
 }
