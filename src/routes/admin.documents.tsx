@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useMemo, useState } from "react";
 import { AdminShell, AdminPanel, StatusPill, shortDate } from "@/components/admin/shell";
 import { DataTable, Toolbar, btnGhost, inputCls } from "@/components/admin/table";
-import { getDocumentUrl, listDocuments } from "@/lib/platform.functions";
+import { deleteDocument, getDocumentUrl, listDocuments } from "@/lib/platform.functions";
+import { ConfirmDialog, RowActions } from "@/components/admin/actions";
 
 export const Route = createFileRoute("/admin/documents")({
   head: () => ({
@@ -24,6 +25,13 @@ function DocumentsPage() {
   const signUrl = useServerFn(getDocumentUrl);
   const [category, setCategory] = useState("all");
   const [search, setSearch] = useState("");
+  const qc = useQueryClient();
+  const remove = useServerFn(deleteDocument);
+  const [toDelete, setToDelete] = useState<{ id: string; path: string; name: string } | null>(null);
+  const mDel = useMutation({
+    mutationFn: (v: { id: string; path: string }) => remove({ data: v }),
+    onSuccess: () => { setToDelete(null); void qc.invalidateQueries({ queryKey: ["admin", "documents"] }); },
+  });
 
   const q = useQuery({ queryKey: ["admin", "documents"], queryFn: () => fetchDocs({}) });
 
@@ -59,10 +67,24 @@ function DocumentsPage() {
             { key: "cl", label: "Client", render: (d) => <span className="text-xs">{d.clients?.company_name || d.clients?.full_name || "—"}</span> },
             { key: "v", label: "Version", render: (d) => <span className="text-xs">v{d.version}</span> },
             { key: "d", label: "Uploaded", render: (d) => <span className="text-xs">{shortDate(d.created_at)}</span> },
-            { key: "a", label: "", render: (d) => <button className={btnGhost} onClick={() => void open(d.storage_path)}>Open</button> },
+            { key: "a", label: "", render: (d) => (
+              <span className="flex gap-1.5">
+                <button className={btnGhost} onClick={() => void open(d.storage_path)}>Open</button>
+                <RowActions onDelete={() => setToDelete({ id: d.id, path: d.storage_path, name: d.name })} />
+              </span>
+            ) },
           ]}
         />
       </AdminPanel>
+      <ConfirmDialog
+        open={!!toDelete}
+        title="Delete this document?"
+        message={`Are you sure you want to delete "${toDelete?.name ?? ""}"? The file is removed from secure storage. This action cannot be undone.`}
+        pending={mDel.isPending}
+        error={mDel.error ? "Unable to delete this record. The record has not been deleted." : null}
+        onCancel={() => { mDel.reset(); setToDelete(null); }}
+        onConfirm={() => toDelete && mDel.mutate({ id: toDelete.id, path: toDelete.path })}
+      />
     </AdminShell>
   );
 }
