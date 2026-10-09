@@ -37,7 +37,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: { error: Error; reset?: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => { reportLovableError(error, { boundary: "tanstack_root_error_component" }); }, [error]);
@@ -47,7 +47,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <h1 className="font-display text-2xl font-bold">This page didn't load</h1>
         <p className="mt-2 text-sm text-muted-foreground">Something went wrong on our end. Try refreshing or head back home.</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button onClick={() => { router.invalidate(); reset(); }} className="inline-flex items-center justify-center rounded-full bg-[var(--color-royal)] px-5 py-2.5 text-sm font-semibold text-white">Try again</button>
+          <button onClick={() => { router.invalidate(); reset?.(); }} className="inline-flex items-center justify-center rounded-full bg-[var(--color-royal)] px-5 py-2.5 text-sm font-semibold text-white">Try again</button>
           <a href="/" className="inline-flex items-center justify-center rounded-full border border-border/70 px-5 py-2.5 text-sm font-semibold">Go home</a>
         </div>
       </div>
