@@ -8,3 +8,7 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Public case studies use a dedicated publication table with database-enforced consent and verification, never direct CRM/document exposure; this isolates confidential operational data.
+- Admin SEO generation uses an authenticated server function and server-only Lovable AI helpers; output stays a reviewable draft and never automatically overwrites indexed metadata.
+- Extend existing nationwide service routes with eligibility guidance instead of generating duplicate city pages; this preserves established URLs and useful content.

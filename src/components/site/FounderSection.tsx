@@ -2,7 +2,7 @@
 import { Link } from "@tanstack/react-router";
 import { BadgeCheck, Building2, Mail, MessageCircle, Phone, ShieldCheck } from "lucide-react";
 import { COMPANY, FOUNDER } from "@/lib/company";
-import founderPhoto from "@/assets/founder-ivan-phiri.jpg";
+import founderPhoto from "@/assets/founder-ivan-national.jpg.asset.json";
 
 const trust = [
   { icon: Building2, label: "Registered company", body: `${COMPANY.legalName}, ${COMPANY.city}, South Africa` },
@@ -31,7 +31,7 @@ export function FounderSection() {
             <div className="absolute -inset-3 rounded-3xl bg-[var(--color-royal)]/15 blur-2xl" aria-hidden />
             <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-card/60 shadow-2xl">
               <img
-                src={founderPhoto}
+                src={founderPhoto.url}
                 alt={`${FOUNDER.name}, ${FOUNDER.title} of ${COMPANY.legalName}`}
                 width={1024}
                 height={1280}
