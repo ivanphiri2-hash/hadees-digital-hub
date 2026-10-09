@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -117,16 +118,18 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isPrivate = /^\/(admin|portal)(\/|$)/.test(pathname) && pathname !== "/admin/login";
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <div className="flex min-h-screen flex-col">
-          <SiteHeader />
+          {!isPrivate && <SiteHeader />}
           <main className="flex-1">
             <Outlet />
           </main>
-          <SiteFooter />
-          <WhatsAppFab />
+          {!isPrivate && <SiteFooter />}
+          {!isPrivate && <WhatsAppFab />}
         </div>
       </ThemeProvider>
     </QueryClientProvider>
