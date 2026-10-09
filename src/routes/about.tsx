@@ -8,9 +8,11 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About — Hadees Trading (Pty) Ltd" },
-      { name: "description", content: "Hadees Trading (Pty) Ltd is a Mahikeng-based enterprise services firm — websites, compliance, tenders and AI automation for South African business." },
+      { name: "description", content: "Established in 2025, Hadees Trading serves eligible businesses across South Africa digitally from its operating base in Mahikeng, North West." },
       { property: "og:title", content: "About Hadees Trading" },
       { property: "og:description", content: "Our story, mission, values and process." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { property: "og:url", content: "/about" },
     ],
     links: [{ rel: "canonical", href: "/about" }],
@@ -45,7 +47,7 @@ function About() {
             An <span className="gradient-text">enterprise partner</span> built for South African founders.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-muted-foreground">
-            Hadees Trading (Pty) Ltd was founded in {COMPANY.city} in {COMPANY.established} with a single mission: give South African SMEs the same operational firepower as the country's largest corporates — at fair, published prices.
+            Hadees Trading (Pty) Ltd was established in {COMPANY.established} and operates from {COMPANY.city}, North West, South Africa. We serve entrepreneurs, construction companies, startups and SMEs nationwide through eligible digital-first services. Requirements for in-person work or third-party approvals are confirmed for each engagement; we do not claim branches elsewhere.
           </p>
         </div>
       </section>

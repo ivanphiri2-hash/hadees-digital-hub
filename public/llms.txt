@@ -1,11 +1,12 @@
 # Hadees Trading (Pty) Ltd
 
-> Enterprise digital infrastructure for South African business — websites, CIPC & tender compliance, CRM, client portal and enterprise AI automation, delivered from Mahikeng.
+> South Africa-wide digital-first business services for eligible entrepreneurs, construction companies, startups and SMEs. Established in 2025, operating from Mahikeng, North West. Remote delivery eligibility and scope are confirmed per engagement; no other physical branches are claimed.
 
 ## Pages
 
 - [Home](/): Overview of Hadees Trading's services and platform.
 - [About](/about): Company story, mission, values and timeline.
+- [Portfolio](/portfolio): Verified completed work shared only with client permission.
 - [Services](/services): Full services marketplace with ZAR pricing across 7 categories.
 - [Pricing](/pricing): Transparent fixed pricing for every service, PayFast checkout.
 - [Construction Services](/construction-services): NHBRC & CIDB registration assistance, health & safety files.

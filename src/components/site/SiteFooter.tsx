@@ -8,6 +8,7 @@ const cols = [
     title: "Company",
     links: [
       { label: "About", to: "/about" },
+      { label: "Portfolio", to: "/portfolio" },
       { label: "Contact", to: "/contact" },
       { label: "Industries", to: "/industries" },
     ],
@@ -92,7 +93,7 @@ export function SiteFooter() {
             © {new Date().getFullYear()} {COMPANY.legalName}. Est. {COMPANY.established}. All rights reserved.
           </p>
           <p className="text-xs text-muted-foreground">
-            Proudly built in {COMPANY.city} · Serving South Africa & SADC.
+            Based in {COMPANY.city}, North West · Digital-first services across South Africa.
           </p>
         </div>
       </div>

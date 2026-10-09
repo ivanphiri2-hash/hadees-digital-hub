@@ -5,7 +5,7 @@ import { Section, GlassCard, GradientOrbs, Stat, CTAButton, BigCTA } from "@/com
 import { WEBSITE_PACKAGES, SERVICES, COMPANY } from "@/lib/company";
 
 const FAQS = [
-  { q: "Where is Hadees Trading based?", a: `We're based in ${COMPANY.city}, South Africa, and serve clients nationally as well as across SADC.` },
+  { q: "Where is Hadees Trading based?", a: `Our operating base is ${COMPANY.city}, North West, South Africa. We assist eligible clients across South Africa through digital-first services. Any in-person or regulator-specific requirements are confirmed before work starts.` },
   { q: "Do I have to pay VAT on your prices?", a: "All published prices are in South African Rand (ZAR). Where VAT applies, it will be shown clearly on your quote." },
   { q: "Can you help if I'm not yet registered as a company?", a: "Yes. Company registration is R950 and takes about 24–72 hours through CIPC." },
   { q: "Do you help with tenders and CIDB / CSD?", a: "Yes — we assist with CSD registration, CIDB, tender documentation, submissions and post-award compliance." },
@@ -27,9 +27,11 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Enterprise digital infrastructure for SA business" },
-      { name: "description", content: "Websites, business registration, tender assistance, compliance, CRM and enterprise AI — one partner for SA SMEs. Est. 2025, based in Mahikeng." },
+      { name: "description", content: "Digital-first websites, business registration assistance, construction support and compliance for entrepreneurs and SMEs across South Africa. Based in Mahikeng." },
       { property: "og:title", content: "Hadees Trading — Enterprise digital infrastructure for SA" },
-      { property: "og:description", content: "Websites, CIPC registration, tenders, compliance and enterprise AI, delivered from Mahikeng, South Africa." },
+      { property: "og:description", content: "South Africa-wide digital-first business services, with a genuine operating base in Mahikeng, North West." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { property: "og:url", content: "/" },
     ],
     links: [{ rel: "canonical", href: "/" }],
@@ -49,14 +51,14 @@ function Home() {
         <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-14 sm:px-6 sm:pt-20 lg:px-8 lg:pt-28">
           <div className="mx-auto max-w-4xl text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/50 px-3 py-1 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground animate-rise">
-              <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" /> Est. 2025 · Mahikeng, South Africa
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" /> Est. 2025 · South Africa
             </div>
             <h1 className="mt-6 text-balance font-display text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl md:text-7xl animate-rise">
               Enterprise digital infrastructure for{" "}
               <span className="gradient-text">South African business.</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg animate-rise">
-              Websites, compliance, tenders and AI automation — engineered under one roof. Hadees Trading gives SMEs the operating stack of a Fortune 500.
+              Digital-first business registration assistance, construction support, professional websites, compliance and digital solutions for entrepreneurs, startups and SMEs across South Africa. Remote delivery where eligible; scope confirmed before we begin.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3 animate-rise">
               <CTAButton to="/packages" variant="primary">See Website Packages <ArrowRight className="ml-1.5 h-4 w-4" /></CTAButton>
@@ -139,7 +141,7 @@ function Home() {
             { icon: Zap, title: "Speed to launch", body: "Starter websites live in a week. Registrations submitted within 24 hours." },
             { icon: Bot, title: "AI, not gimmick", body: "27 production AI agents handle documents, tenders, invoices and client comms." },
             { icon: Building2, title: "Enterprise-grade", body: "Architecture built to scale from one founder to a national workforce." },
-            { icon: Users, title: "Local specialists", body: "Rooted in Mahikeng, serving South Africa & SADC with on-the-ground expertise." },
+            { icon: Users, title: "National service, genuine roots", body: "Based in Mahikeng, North West. Serving eligible clients across South Africa digitally, without claiming offices elsewhere." },
             { icon: Award, title: "Fixed, honest pricing", body: "Published prices in ZAR. No consulting-firm surprises." },
           ].map(({ icon: Icon, title, body }) => (
             <GlassCard key={title}>
@@ -233,26 +235,8 @@ function Home() {
         </div>
       </Section>
 
-      {/* TESTIMONIALS */}
-      <Section eyebrow="Testimonials" title={<>What clients say.</>}>
-        <div className="grid gap-5 md:grid-cols-3">
-          {[
-            { quote: "Registration, website and CIPC compliance — all sorted in under a week. This is what SA SMEs have been missing.", name: "Thabo M.", role: "Founder, Construction SME" },
-            { quote: "Hadees Trading built us a proper tender-ready operation. We won our first municipal contract 60 days after onboarding.", name: "Refilwe K.", role: "Director, Services (Pty) Ltd" },
-            { quote: "The IVAN automations handle our invoices, quotes and follow-ups. It's like hiring three people for the price of one.", name: "Sipho N.", role: "Operations Manager" },
-          ].map((t) => (
-            <GlassCard key={t.name}>
-              <div className="flex gap-0.5 text-[var(--color-gold)]">
-                {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
-              </div>
-              <p className="mt-3 text-sm text-foreground/90">"{t.quote}"</p>
-              <div className="mt-4 text-xs">
-                <div className="font-semibold">{t.name}</div>
-                <div className="text-muted-foreground">{t.role}</div>
-              </div>
-            </GlassCard>
-          ))}
-        </div>
+      <Section eyebrow="Delivery evidence" title={<>Verified work. Approved for sharing.</>} intro="Completed engagements are shared only with client permission and confirmed scope and outcomes.">
+        <div className="text-center"><CTAButton to="/portfolio" variant="ghost">View our portfolio <ArrowRight className="ml-1.5 h-4 w-4" /></CTAButton></div>
       </Section>
 
       {/* FAQ */}
