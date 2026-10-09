@@ -115,10 +115,10 @@ export function AdminShell({ title, subtitle, children }: { title: string; subti
   }
 
   return (
-    <div className="mx-auto grid max-w-[1500px] gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[240px_1fr] lg:px-8">
-      <aside className="lg:sticky lg:top-24 lg:h-[calc(100vh-8rem)]">
-        <div className="glass flex h-full flex-col rounded-2xl p-4">
-          <div className="mb-4 px-2">
+    <div className="mx-auto grid max-w-[1500px] items-start gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:px-8">
+      <aside className="min-w-0 lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)]">
+        <div className="glass flex h-full max-h-[70vh] flex-col overflow-hidden rounded-2xl p-4 lg:max-h-none">
+          <div className="mb-4 shrink-0 px-2">
             <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Control Centre</div>
             <div className="font-display text-lg font-bold">{user.name}</div>
             <div className="truncate text-xs text-muted-foreground">{user.email}</div>
@@ -128,7 +128,7 @@ export function AdminShell({ title, subtitle, children }: { title: string; subti
               ))}
             </div>
           </div>
-          <nav className="grid gap-1">
+          <nav className="grid min-h-0 flex-1 content-start gap-1 overflow-y-auto pr-1">
             {ADMIN_NAV.map((t) => {
               const active = t.to === "/admin" ? pathname === "/admin" : pathname.startsWith(t.to);
               return (
@@ -146,7 +146,7 @@ export function AdminShell({ title, subtitle, children }: { title: string; subti
         </div>
       </aside>
 
-      <main className="grid content-start gap-6">
+      <main className="grid min-w-0 content-start gap-6">
         <header className="grid gap-4">
           <GlobalSearch />
           <div>
