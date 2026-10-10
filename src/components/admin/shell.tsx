@@ -6,7 +6,7 @@ import {
   LayoutDashboard, Users, Briefcase, FolderKanban, Receipt, FileArchive,
   LifeBuoy, ScrollText, Settings, LogOut, CreditCard, ShoppingCart, FileText,
   FileSignature, CalendarDays, BarChart3, UserCog, Search, MessageSquare, Activity,
-  Globe, CalendarClock,
+  Globe, CalendarClock, Sparkles,
 } from "lucide-react";
 import { useAdminAuth } from "@/lib/admin-auth";
 import { globalSearch } from "@/lib/platform.functions";
@@ -17,6 +17,8 @@ export const ADMIN_NAV = [
   { to: "/admin/clients", label: "Clients", icon: Briefcase },
   { to: "/admin/projects", label: "Projects", icon: FolderKanban },
   { to: "/admin/websites", label: "Websites", icon: Globe },
+  { to: "/admin/case-studies", label: "Case studies", icon: FileText },
+  { to: "/admin/seo", label: "SEO Writer", icon: Sparkles },
   { to: "/admin/followups", label: "Follow-ups", icon: CalendarClock },
   { to: "/admin/orders", label: "Orders", icon: ShoppingCart },
   { to: "/admin/payments", label: "Payments", icon: CreditCard },

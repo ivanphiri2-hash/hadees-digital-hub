@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section, GlassCard, BigCTA } from "@/components/site/ui";
 import { REGISTRATION_PRICING } from "@/lib/company";
 import { Check } from "lucide-react";
+import { NationalDelivery } from "@/components/site/NationalDelivery";
 
 export const Route = createFileRoute("/business-registration")({
   head: () => ({
@@ -11,6 +12,8 @@ export const Route = createFileRoute("/business-registration")({
       { property: "og:title", content: "Business Registration — Hadees Trading" },
       { property: "og:description", content: "CIPC, COIDA, NHBRC, CIDB, CSD, tax, B-BBEE — all handled." },
       { property: "og:url", content: "/business-registration" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "/business-registration" }],
   }),
@@ -66,11 +69,13 @@ function BizReg() {
       </Section>
 
       <BigCTA
+        
         title="Ready to register?"
         subtitle="Send us your ID, contact details and business name — we'll take it from there."
         primary={{ label: "Start registration", to: "/contact" }}
         secondary={{ label: "View compliance", to: "/compliance" }}
       />
+      <NationalDelivery service="registration" />
     </>
   );
 }

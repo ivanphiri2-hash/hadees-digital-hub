@@ -31,6 +31,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as MobileAppRouteImport } from './routes/mobile-app'
 import { Route as PackagesRouteImport } from './routes/packages'
 import { Route as PopiaRouteImport } from './routes/popia'
+import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PsiraRegistrationRouteImport } from './routes/psira-registration'
@@ -180,6 +181,11 @@ const PackagesRoute = PackagesRouteImport.update({
 const PopiaRoute = PopiaRouteImport.update({
   id: '/popia',
   path: '/popia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortfolioRoute = PortfolioRouteImport.update({
+  id: '/portfolio',
+  path: '/portfolio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -411,6 +417,7 @@ export interface FileRoutesByFullPath {
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
   '/popia': typeof PopiaRoute
+  '/portfolio': typeof PortfolioRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/psira-registration': typeof PsiraRegistrationRoute
@@ -474,6 +481,7 @@ export interface FileRoutesByTo {
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
   '/popia': typeof PopiaRoute
+  '/portfolio': typeof PortfolioRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/psira-registration': typeof PsiraRegistrationRoute
@@ -540,6 +548,7 @@ export interface FileRoutesById {
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
   '/popia': typeof PopiaRoute
+  '/portfolio': typeof PortfolioRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/psira-registration': typeof PsiraRegistrationRoute
@@ -606,6 +615,7 @@ export interface FileRouteTypes {
     | '/mobile-app'
     | '/packages'
     | '/popia'
+    | '/portfolio'
     | '/pricing'
     | '/privacy'
     | '/psira-registration'
@@ -669,6 +679,7 @@ export interface FileRouteTypes {
     | '/mobile-app'
     | '/packages'
     | '/popia'
+    | '/portfolio'
     | '/pricing'
     | '/privacy'
     | '/psira-registration'
@@ -734,6 +745,7 @@ export interface FileRouteTypes {
     | '/mobile-app'
     | '/packages'
     | '/popia'
+    | '/portfolio'
     | '/pricing'
     | '/privacy'
     | '/psira-registration'
@@ -800,6 +812,7 @@ export interface RootRouteChildren {
   MobileAppRoute: typeof MobileAppRoute
   PackagesRoute: typeof PackagesRoute
   PopiaRoute: typeof PopiaRoute
+  PortfolioRoute: typeof PortfolioRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   PsiraRegistrationRoute: typeof PsiraRegistrationRoute
@@ -975,6 +988,13 @@ declare module '@tanstack/react-router' {
       path: '/popia'
       fullPath: '/popia'
       preLoaderRoute: typeof PopiaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portfolio': {
+      id: '/portfolio'
+      path: '/portfolio'
+      fullPath: '/portfolio'
+      preLoaderRoute: typeof PortfolioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -1351,6 +1371,7 @@ const rootRouteChildren: RootRouteChildren = {
   MobileAppRoute: MobileAppRoute,
   PackagesRoute: PackagesRoute,
   PopiaRoute: PopiaRoute,
+  PortfolioRoute: PortfolioRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   PsiraRegistrationRoute: PsiraRegistrationRoute,

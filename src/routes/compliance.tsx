@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Section, GlassCard, BigCTA } from "@/components/site/ui";
 import { ShieldCheck } from "lucide-react";
+import { NationalDelivery } from "@/components/site/NationalDelivery";
 
 export const Route = createFileRoute("/compliance")({
   head: () => ({
@@ -10,6 +11,8 @@ export const Route = createFileRoute("/compliance")({
       { property: "og:title", content: "Compliance — Hadees Trading" },
       { property: "og:description", content: "One dashboard for your company health across every SA regulator." },
       { property: "og:url", content: "/compliance" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "/compliance" }],
   }),
@@ -68,6 +71,7 @@ function Compliance() {
         subtitle="We monitor every renewal and file every return — before penalties hit."
         primary={{ label: "Get compliance managed", to: "/contact" }}
       />
+      <NationalDelivery service="compliance" />
     </>
   );
 }
