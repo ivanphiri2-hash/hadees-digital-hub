@@ -31,6 +31,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as MobileAppRouteImport } from './routes/mobile-app'
 import { Route as PackagesRouteImport } from './routes/packages'
 import { Route as PopiaRouteImport } from './routes/popia'
+import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PsiraRegistrationRouteImport } from './routes/psira-registration'
@@ -49,6 +50,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminActivityRouteImport } from './routes/admin.activity'
 import { Route as AdminBillingRouteImport } from './routes/admin.billing'
 import { Route as AdminCalendarRouteImport } from './routes/admin.calendar'
+import { Route as AdminCaseStudiesRouteImport } from './routes/admin.case-studies'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AdminDocumentsRouteImport } from './routes/admin.documents'
 import { Route as AdminFollowupsRouteImport } from './routes/admin.followups'
@@ -61,6 +63,7 @@ import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminProjectsRouteImport } from './routes/admin.projects'
 import { Route as AdminQuotationsRouteImport } from './routes/admin.quotations'
 import { Route as AdminReportsRouteImport } from './routes/admin.reports'
+import { Route as AdminSeoRouteImport } from './routes/admin.seo'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminSupportRouteImport } from './routes/admin.support'
 import { Route as AdminSystemRouteImport } from './routes/admin.system'
@@ -182,6 +185,11 @@ const PopiaRoute = PopiaRouteImport.update({
   path: '/popia',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortfolioRoute = PortfolioRouteImport.update({
+  id: '/portfolio',
+  path: '/portfolio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
@@ -272,6 +280,11 @@ const AdminCalendarRoute = AdminCalendarRouteImport.update({
   path: '/calendar',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCaseStudiesRoute = AdminCaseStudiesRouteImport.update({
+  id: '/case-studies',
+  path: '/case-studies',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminClientsRoute = AdminClientsRouteImport.update({
   id: '/clients',
   path: '/clients',
@@ -330,6 +343,11 @@ const AdminQuotationsRoute = AdminQuotationsRouteImport.update({
 const AdminReportsRoute = AdminReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSeoRoute = AdminSeoRouteImport.update({
+  id: '/seo',
+  path: '/seo',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
@@ -411,6 +429,7 @@ export interface FileRoutesByFullPath {
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
   '/popia': typeof PopiaRoute
+  '/portfolio': typeof PortfolioRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/psira-registration': typeof PsiraRegistrationRoute
@@ -428,6 +447,7 @@ export interface FileRoutesByFullPath {
   '/admin/activity': typeof AdminActivityRoute
   '/admin/billing': typeof AdminBillingRoute
   '/admin/calendar': typeof AdminCalendarRoute
+  '/admin/case-studies': typeof AdminCaseStudiesRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/documents': typeof AdminDocumentsRoute
   '/admin/followups': typeof AdminFollowupsRoute
@@ -440,6 +460,7 @@ export interface FileRoutesByFullPath {
   '/admin/projects': typeof AdminProjectsRoute
   '/admin/quotations': typeof AdminQuotationsRoute
   '/admin/reports': typeof AdminReportsRoute
+  '/admin/seo': typeof AdminSeoRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/support': typeof AdminSupportRoute
   '/admin/system': typeof AdminSystemRoute
@@ -474,6 +495,7 @@ export interface FileRoutesByTo {
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
   '/popia': typeof PopiaRoute
+  '/portfolio': typeof PortfolioRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/psira-registration': typeof PsiraRegistrationRoute
@@ -491,6 +513,7 @@ export interface FileRoutesByTo {
   '/admin/activity': typeof AdminActivityRoute
   '/admin/billing': typeof AdminBillingRoute
   '/admin/calendar': typeof AdminCalendarRoute
+  '/admin/case-studies': typeof AdminCaseStudiesRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/documents': typeof AdminDocumentsRoute
   '/admin/followups': typeof AdminFollowupsRoute
@@ -503,6 +526,7 @@ export interface FileRoutesByTo {
   '/admin/projects': typeof AdminProjectsRoute
   '/admin/quotations': typeof AdminQuotationsRoute
   '/admin/reports': typeof AdminReportsRoute
+  '/admin/seo': typeof AdminSeoRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/support': typeof AdminSupportRoute
   '/admin/system': typeof AdminSystemRoute
@@ -540,6 +564,7 @@ export interface FileRoutesById {
   '/mobile-app': typeof MobileAppRoute
   '/packages': typeof PackagesRoute
   '/popia': typeof PopiaRoute
+  '/portfolio': typeof PortfolioRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/psira-registration': typeof PsiraRegistrationRoute
@@ -557,6 +582,7 @@ export interface FileRoutesById {
   '/admin/activity': typeof AdminActivityRoute
   '/admin/billing': typeof AdminBillingRoute
   '/admin/calendar': typeof AdminCalendarRoute
+  '/admin/case-studies': typeof AdminCaseStudiesRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/documents': typeof AdminDocumentsRoute
   '/admin/followups': typeof AdminFollowupsRoute
@@ -569,6 +595,7 @@ export interface FileRoutesById {
   '/admin/projects': typeof AdminProjectsRoute
   '/admin/quotations': typeof AdminQuotationsRoute
   '/admin/reports': typeof AdminReportsRoute
+  '/admin/seo': typeof AdminSeoRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/support': typeof AdminSupportRoute
   '/admin/system': typeof AdminSystemRoute
@@ -606,6 +633,7 @@ export interface FileRouteTypes {
     | '/mobile-app'
     | '/packages'
     | '/popia'
+    | '/portfolio'
     | '/pricing'
     | '/privacy'
     | '/psira-registration'
@@ -623,6 +651,7 @@ export interface FileRouteTypes {
     | '/admin/activity'
     | '/admin/billing'
     | '/admin/calendar'
+    | '/admin/case-studies'
     | '/admin/clients'
     | '/admin/documents'
     | '/admin/followups'
@@ -635,6 +664,7 @@ export interface FileRouteTypes {
     | '/admin/projects'
     | '/admin/quotations'
     | '/admin/reports'
+    | '/admin/seo'
     | '/admin/settings'
     | '/admin/support'
     | '/admin/system'
@@ -669,6 +699,7 @@ export interface FileRouteTypes {
     | '/mobile-app'
     | '/packages'
     | '/popia'
+    | '/portfolio'
     | '/pricing'
     | '/privacy'
     | '/psira-registration'
@@ -686,6 +717,7 @@ export interface FileRouteTypes {
     | '/admin/activity'
     | '/admin/billing'
     | '/admin/calendar'
+    | '/admin/case-studies'
     | '/admin/clients'
     | '/admin/documents'
     | '/admin/followups'
@@ -698,6 +730,7 @@ export interface FileRouteTypes {
     | '/admin/projects'
     | '/admin/quotations'
     | '/admin/reports'
+    | '/admin/seo'
     | '/admin/settings'
     | '/admin/support'
     | '/admin/system'
@@ -734,6 +767,7 @@ export interface FileRouteTypes {
     | '/mobile-app'
     | '/packages'
     | '/popia'
+    | '/portfolio'
     | '/pricing'
     | '/privacy'
     | '/psira-registration'
@@ -751,6 +785,7 @@ export interface FileRouteTypes {
     | '/admin/activity'
     | '/admin/billing'
     | '/admin/calendar'
+    | '/admin/case-studies'
     | '/admin/clients'
     | '/admin/documents'
     | '/admin/followups'
@@ -763,6 +798,7 @@ export interface FileRouteTypes {
     | '/admin/projects'
     | '/admin/quotations'
     | '/admin/reports'
+    | '/admin/seo'
     | '/admin/settings'
     | '/admin/support'
     | '/admin/system'
@@ -800,6 +836,7 @@ export interface RootRouteChildren {
   MobileAppRoute: typeof MobileAppRoute
   PackagesRoute: typeof PackagesRoute
   PopiaRoute: typeof PopiaRoute
+  PortfolioRoute: typeof PortfolioRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   PsiraRegistrationRoute: typeof PsiraRegistrationRoute
@@ -977,6 +1014,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PopiaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portfolio': {
+      id: '/portfolio'
+      path: '/portfolio'
+      fullPath: '/portfolio'
+      preLoaderRoute: typeof PortfolioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pricing': {
       id: '/pricing'
       path: '/pricing'
@@ -1103,6 +1147,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCalendarRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/case-studies': {
+      id: '/admin/case-studies'
+      path: '/case-studies'
+      fullPath: '/admin/case-studies'
+      preLoaderRoute: typeof AdminCaseStudiesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/clients': {
       id: '/admin/clients'
       path: '/clients'
@@ -1185,6 +1236,13 @@ declare module '@tanstack/react-router' {
       path: '/reports'
       fullPath: '/admin/reports'
       preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/seo': {
+      id: '/admin/seo'
+      path: '/seo'
+      fullPath: '/admin/seo'
+      preLoaderRoute: typeof AdminSeoRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/settings': {
@@ -1282,6 +1340,7 @@ interface AdminRouteChildren {
   AdminActivityRoute: typeof AdminActivityRoute
   AdminBillingRoute: typeof AdminBillingRoute
   AdminCalendarRoute: typeof AdminCalendarRoute
+  AdminCaseStudiesRoute: typeof AdminCaseStudiesRoute
   AdminClientsRoute: typeof AdminClientsRoute
   AdminDocumentsRoute: typeof AdminDocumentsRoute
   AdminFollowupsRoute: typeof AdminFollowupsRoute
@@ -1294,6 +1353,7 @@ interface AdminRouteChildren {
   AdminProjectsRoute: typeof AdminProjectsRoute
   AdminQuotationsRoute: typeof AdminQuotationsRoute
   AdminReportsRoute: typeof AdminReportsRoute
+  AdminSeoRoute: typeof AdminSeoRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSupportRoute: typeof AdminSupportRoute
   AdminSystemRoute: typeof AdminSystemRoute
@@ -1306,6 +1366,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminActivityRoute: AdminActivityRoute,
   AdminBillingRoute: AdminBillingRoute,
   AdminCalendarRoute: AdminCalendarRoute,
+  AdminCaseStudiesRoute: AdminCaseStudiesRoute,
   AdminClientsRoute: AdminClientsRoute,
   AdminDocumentsRoute: AdminDocumentsRoute,
   AdminFollowupsRoute: AdminFollowupsRoute,
@@ -1318,6 +1379,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminProjectsRoute: AdminProjectsRoute,
   AdminQuotationsRoute: AdminQuotationsRoute,
   AdminReportsRoute: AdminReportsRoute,
+  AdminSeoRoute: AdminSeoRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminSupportRoute: AdminSupportRoute,
   AdminSystemRoute: AdminSystemRoute,
@@ -1351,6 +1413,7 @@ const rootRouteChildren: RootRouteChildren = {
   MobileAppRoute: MobileAppRoute,
   PackagesRoute: PackagesRoute,
   PopiaRoute: PopiaRoute,
+  PortfolioRoute: PortfolioRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   PsiraRegistrationRoute: PsiraRegistrationRoute,
