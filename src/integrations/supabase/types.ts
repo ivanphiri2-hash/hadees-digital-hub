@@ -47,6 +47,57 @@ export type Database = {
         }
         Relationships: []
       }
+      case_studies: {
+        Row: {
+          challenge: string
+          client_identity: string
+          completion_date: string | null
+          created_at: string
+          evidence: Json
+          id: string
+          outcome: string
+          permission_confirmed: boolean
+          privacy_reviewed: boolean
+          published: boolean
+          scope_verified: boolean
+          title: string
+          updated_at: string
+          work_performed: string
+        }
+        Insert: {
+          challenge?: string
+          client_identity?: string
+          completion_date?: string | null
+          created_at?: string
+          evidence?: Json
+          id?: string
+          outcome?: string
+          permission_confirmed?: boolean
+          privacy_reviewed?: boolean
+          published?: boolean
+          scope_verified?: boolean
+          title?: string
+          updated_at?: string
+          work_performed?: string
+        }
+        Update: {
+          challenge?: string
+          client_identity?: string
+          completion_date?: string | null
+          created_at?: string
+          evidence?: Json
+          id?: string
+          outcome?: string
+          permission_confirmed?: boolean
+          privacy_reviewed?: boolean
+          published?: boolean
+          scope_verified?: boolean
+          title?: string
+          updated_at?: string
+          work_performed?: string
+        }
+        Relationships: []
+      }
       client_websites: {
         Row: {
           client_id: string | null
