@@ -26,7 +26,7 @@ const faqJsonLd = {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Enterprise digital infrastructure for SA business" },
+      { title: "Hadees Trading | Business Services Across South Africa" },
       { name: "description", content: "Digital-first websites, business registration assistance, construction support and compliance for entrepreneurs and SMEs across South Africa. Based in Mahikeng." },
       { property: "og:title", content: "Hadees Trading — Enterprise digital infrastructure for SA" },
       { property: "og:description", content: "South Africa-wide digital-first business services, with a genuine operating base in Mahikeng, North West." },
@@ -54,11 +54,11 @@ function Home() {
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" /> Est. 2025 · South Africa
             </div>
             <h1 className="mt-6 text-balance font-display text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl md:text-7xl animate-rise">
-              Enterprise digital infrastructure for{" "}
-              <span className="gradient-text">South African business.</span>
+              HADEES TRADING{" "}
+              <span className="gradient-text">(PTY) LTD</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg animate-rise">
-              Digital-first business registration assistance, construction support, professional websites, compliance and digital solutions for entrepreneurs, startups and SMEs across South Africa. Remote delivery where eligible; scope confirmed before we begin.
+              Helping South African entrepreneurs, construction companies, startups and SMEs register, build their online presence and manage business requirements. Based in Mahikeng, serving eligible clients nationwide with digital-first delivery and an agreed scope.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3 animate-rise">
               <CTAButton to="/packages" variant="primary">See Website Packages <ArrowRight className="ml-1.5 h-4 w-4" /></CTAButton>
@@ -134,13 +134,13 @@ function Home() {
       </Section>
 
       {/* WHY CHOOSE US */}
-      <Section eyebrow="Why Choose Us" title={<>One partner. Every layer of your operation.</>} intro="From your first CIPC certificate to your 27-agent AI operating system, we own the full stack — so you don't have to stitch vendors together.">
+      <Section eyebrow="Why Choose Us" title={<>Clear scope. Connected support. South African focus.</>} intro="Get registration assistance, professional websites, construction support and compliance guidance from one team, with requirements agreed before work begins.">
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {[
-            { icon: ShieldCheck, title: "Compliance-first", body: "CIPC, SARS, COIDA, NHBRC, CIDB, B-BBEE and POPIA baked into every deliverable." },
-            { icon: Zap, title: "Speed to launch", body: "Starter websites live in a week. Registrations submitted within 24 hours." },
-            { icon: Bot, title: "AI, not gimmick", body: "27 production AI agents handle documents, tenders, invoices and client comms." },
-            { icon: Building2, title: "Enterprise-grade", body: "Architecture built to scale from one founder to a national workforce." },
+            { icon: ShieldCheck, title: "Requirements before promises", body: "We confirm documents, eligibility and the assistance required. Regulator approvals and inspections are not guaranteed." },
+            { icon: Zap, title: "A clear delivery plan", body: "Agree your deliverables, required inputs and timeline before the engagement begins." },
+            { icon: Bot, title: "Connected client support", body: "Your linked client account brings projects, invoices, payment records and requests into one place." },
+            { icon: Building2, title: "Support for growing businesses", body: "Start with the services your business needs now, from company registration assistance to a professional website." },
             { icon: Users, title: "National service, genuine roots", body: "Based in Mahikeng, North West. Serving eligible clients across South Africa digitally, without claiming offices elsewhere." },
             { icon: Award, title: "Fixed, honest pricing", body: "Published prices in ZAR. No consulting-firm surprises." },
           ].map(({ icon: Icon, title, body }) => (

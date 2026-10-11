@@ -1,8 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { useServerFn } from "@tanstack/react-start";
 import { FolderOpen, Receipt, FileText, LifeBuoy, LogOut, Globe } from "lucide-react";
-import { getPortalData } from "@/lib/portal.functions";
+import { getPortalData, createMyTicket } from "@/lib/portal.functions";
 import { getMyWebsites } from "@/lib/crm.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { KpiCard, StatusPill, AdminPanel, money, shortDate } from "@/components/admin/shell";
@@ -16,6 +18,8 @@ export const Route = createFileRoute("/_authenticated/portal")({
       { name: "robots", content: "noindex, nofollow" },
       { property: "og:title", content: "Client Portal — Hadees Trading" },
       { property: "og:description", content: "Your projects, invoices and documents in one secure place." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Portal,
@@ -24,9 +28,10 @@ export const Route = createFileRoute("/_authenticated/portal")({
 function Portal() {
   const navigate = useNavigate();
   const fetchPortal = useServerFn(getPortalData);
-  const { data, isLoading } = useQuery({ queryKey: ["portal"], queryFn: () => fetchPortal({}) });
+  const { data, isLoading, error, refetch } = useQuery({ queryKey: ["portal"], queryFn: () => fetchPortal({}) });
 
   if (isLoading) return <div className="grid min-h-[60vh] place-items-center text-sm text-muted-foreground">Loading your portal…</div>;
+  if (error) return <div className="mx-auto grid max-w-xl gap-4 px-4 py-10"><p role="alert">{error.message}</p><Button onClick={() => void refetch()}>Try again</Button></div>;
 
   const outstanding = (data?.invoices ?? []).filter((i) => i.status !== "paid" && i.status !== "void")
     .reduce((s, i) => s + (i.total_cents - i.amount_paid_cents), 0);
@@ -41,10 +46,9 @@ function Portal() {
             <div className="mt-1 text-xs text-muted-foreground">Client number <span className="font-semibold text-[var(--color-gold)]">{data.client.client_number}</span></div>
           )}
         </div>
-        <button onClick={() => void supabase.auth.signOut().then(() => navigate({ to: "/auth", search: {}, replace: true }))}
-          className="inline-flex items-center gap-2 rounded-full border border-border/70 px-4 py-2 text-sm">
+        <Button variant="outline" onClick={() => void supabase.auth.signOut().then(() => navigate({ to: "/auth", search: {}, replace: true }))}>
           <LogOut className="h-4 w-4" /> Sign out
-        </button>
+        </Button>
       </header>
 
       {!data?.client && (
@@ -151,11 +155,43 @@ function Portal() {
         </AdminPanel>
       </div>
 
+      <AdminPanel title="Payment history">
+        <div className="grid gap-3">
+          {!data?.payments.length && <p className="text-sm text-muted-foreground">No payment records yet.</p>}
+          {data?.payments.map((payment) => <div key={payment.id} className="flex flex-wrap items-center justify-between gap-3 border-b border-border py-3">
+            <div><p className="text-sm font-semibold">{money(payment.amount_cents)}</p><p className="text-xs text-muted-foreground">{payment.reference ?? payment.method} · {shortDate(payment.paid_at ?? payment.created_at)}</p></div>
+            <StatusPill status={payment.status} />
+          </div>)}
+        </div>
+      </AdminPanel>
+      {data?.client && <PortalRequest />}
+
       <PortalWebsites />
 
       <PortalMessages />
     </div>
   );
+}
+
+function PortalRequest() {
+  const submit = useServerFn(createMyTicket);
+  const queryClient = useQueryClient();
+  const [subject, setSubject] = useState("");
+  const [body, setBody] = useState("");
+  const [pending, setPending] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  return <AdminPanel title="Submit a request"><form className="grid gap-4" onSubmit={async (event) => {
+    event.preventDefault(); setPending(true); setMessage(""); setError("");
+    try { await submit({ data: { subject, body, priority: "normal" } }); setSubject(""); setBody(""); setMessage("Your request was submitted."); await queryClient.invalidateQueries({ queryKey: ["portal"] }); }
+    catch (problem) { setError(problem instanceof Error ? problem.message : "Unable to submit your request. Please try again."); }
+    finally { setPending(false); }
+  }}>
+    <label className="grid gap-2 text-sm">Subject<input required minLength={3} maxLength={160} value={subject} onChange={(event) => setSubject(event.target.value)} className="rounded-md border border-input bg-background px-3 py-2" /></label>
+    <label className="grid gap-2 text-sm">Request details<textarea required minLength={5} maxLength={4000} rows={4} value={body} onChange={(event) => setBody(event.target.value)} className="rounded-md border border-input bg-background px-3 py-2" /></label>
+    <div><Button disabled={pending}>{pending ? "Submitting…" : "Submit request"}</Button></div>
+    {error && <p role="alert" className="text-sm text-destructive">{error}</p>}{message && <p role="status" className="text-sm text-muted-foreground">{message}</p>}
+  </form></AdminPanel>;
 }
 
 /** Client-safe website summary — status and links only, never internal build details. */
