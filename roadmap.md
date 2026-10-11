@@ -1,4 +1,9 @@
 # National brand update
+- [ ] Publish updated site; verify whether hadeestrading.co.za is connected.
+- [ ] Confirm existing Cloud sign-in, admin dashboard and client portal; extend only missing requested functionality.
+- [ ] Publish approved anonymous completed projects — blocked pending client permission, scope, outcomes and dates.
+- [ ] Run SEO writer for four established service pages and apply reviewed metadata and FAQ copy.
+- [ ] Refine homepage and crawlable company/service information without changing pricing or URLs.
 - [x] Update national positioning while keeping Mahikeng accurate and existing service URLs.
 - [x] Use the supplied genuine founder photo.
 - [x] Add admin-managed verified case studies with permission checks and public portfolio.
