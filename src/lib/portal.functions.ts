@@ -9,23 +9,27 @@ export const getPortalData = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
-    const { data: client } = await supabase
-      .from("clients").select("*").eq("user_id", userId).maybeSingle();
+    const { data: client, error: clientError } = await supabase
+      .from("clients").select("id,client_number,full_name,company_name,email,phone,whatsapp,address,status").eq("user_id", userId).maybeSingle();
+    if (clientError) throw new Error("Unable to load your account. Please try again.");
 
     if (!client) {
       return { client: null, projects: [], invoices: [], quotations: [], receipts: [], payments: [], documents: [], tickets: [], notifications: [] };
     }
 
     const [projects, invoices, quotations, receipts, payments, documents, tickets, notifications] = await Promise.all([
-      supabase.from("projects").select("*").eq("client_id", client.id).order("created_at", { ascending: false }),
-      supabase.from("invoices").select("*").eq("client_id", client.id).order("created_at", { ascending: false }),
-      supabase.from("quotations").select("*").eq("client_id", client.id).order("created_at", { ascending: false }),
+      supabase.from("projects").select("id,name,status,progress,due_date").eq("client_id", client.id).order("created_at", { ascending: false }),
+      supabase.from("invoices").select("id,number,title,total_cents,amount_paid_cents,status,due_date").eq("client_id", client.id).order("created_at", { ascending: false }),
+      supabase.from("quotations").select("id,number,title,total_cents,status").eq("client_id", client.id).order("created_at", { ascending: false }),
       supabase.from("receipts").select("*").eq("client_id", client.id).order("created_at", { ascending: false }),
-      supabase.from("payments").select("*").eq("client_id", client.id).order("created_at", { ascending: false }),
+      supabase.from("payments").select("id,amount_cents,currency,method,status,reference,paid_at,created_at").eq("client_id", client.id).order("created_at", { ascending: false }),
       supabase.from("documents").select("*").eq("client_id", client.id).order("created_at", { ascending: false }),
       supabase.from("support_tickets").select("*").eq("client_id", client.id).order("created_at", { ascending: false }),
       supabase.from("notifications").select("*").eq("user_id", userId).order("created_at", { ascending: false }).limit(30),
     ]);
+    if ([projects, invoices, quotations, receipts, payments, documents, tickets, notifications].some((result) => result.error)) {
+      throw new Error("Unable to load your records. Please try again; your records have not changed.");
+    }
 
     return {
       client,

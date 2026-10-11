@@ -59,14 +59,22 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 const orgJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": "/#organization",
   name: COMPANY.legalName,
+  legalName: COMPANY.legalName,
   url: "/",
   email: COMPANY.email,
   telephone: COMPANY.phoneIntl,
   foundingDate: COMPANY.established,
+  founder: { "@type": "Person", name: "Ivan Tshepiso Phiri", jobTitle: "Founder & Director" },
+  description: "Digital-first business registration assistance, construction business support, website development and compliance assistance for eligible clients across South Africa, operating from Mahikeng.",
+  areaServed: { "@type": "Country", name: COMPANY.country },
+  contactPoint: { "@type": "ContactPoint", telephone: COMPANY.phoneIntl, email: COMPANY.email, contactType: "customer service", areaServed: "ZA" },
+  knowsAbout: ["Business registration assistance", "Construction business support", "Website development", "Compliance assistance", "Digital solutions"],
   address: {
     "@type": "PostalAddress",
     addressLocality: COMPANY.city,
+    addressRegion: "North West",
     addressCountry: "ZA",
   },
 };
