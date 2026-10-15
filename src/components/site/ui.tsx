@@ -25,7 +25,7 @@ export function Section({
         <div className="mx-auto mb-12 max-w-3xl text-center">
           {eyebrow && (
             <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/50 px-3 py-1 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
-              <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" /> {eyebrow}
+              {eyebrow}
             </div>
           )}
           {title && <Heading className="text-balance text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">{title}</Heading>}
@@ -49,7 +49,6 @@ export function GradientOrbs() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
       <div className="orb animate-float" style={{ width: 460, height: 460, background: "var(--color-royal)", top: -120, left: -80 }} />
-      <div className="orb animate-float" style={{ width: 380, height: 380, background: "var(--color-gold)", top: 60, right: -100, animationDelay: "-3s" }} />
       <div className="orb animate-float" style={{ width: 320, height: 320, background: "var(--color-navy)", bottom: -120, left: "40%", animationDelay: "-6s" }} />
     </div>
   );
@@ -104,7 +103,6 @@ export function BigCTA({ title, subtitle, primary, secondary }: { title: string;
   return (
     <section className="relative mx-auto my-24 max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="relative overflow-hidden rounded-3xl border border-border/60 gradient-navy p-10 sm:p-16">
-        <div className="orb" style={{ width: 320, height: 320, background: "var(--color-gold)", top: -80, right: -60 }} />
         <div className="orb" style={{ width: 360, height: 360, background: "var(--color-royal)", bottom: -120, left: -80 }} />
         <div className="relative mx-auto max-w-3xl text-center text-white">
           <h3 className="text-balance font-display text-3xl font-bold sm:text-5xl">{title}</h3>

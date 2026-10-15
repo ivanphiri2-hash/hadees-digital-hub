@@ -10,7 +10,7 @@ export const INTEGRATIONS = {
   supabasePublishableKey: env.VITE_SUPABASE_PUBLISHABLE_KEY ?? "",
   googleMapsKey: env.VITE_GOOGLE_MAPS_KEY ?? "",
   payfastMerchantId: env.VITE_PAYFAST_MERCHANT_ID ?? "",
-  whatsappNumber: env.VITE_WHATSAPP_NUMBER ?? "27837535798",
+  whatsappNumber: "27632702826",
 } as const;
 
 export const hasBackend = () => Boolean(INTEGRATIONS.supabaseUrl && INTEGRATIONS.supabasePublishableKey);
