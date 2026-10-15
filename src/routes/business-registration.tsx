@@ -1,3 +1,5 @@
+import { ServiceFaq } from "@/components/site/ServiceFaq";
+import { reviewedServiceSeo, serviceSearchScripts } from "@/lib/reviewed-service-seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section, GlassCard, BigCTA } from "@/components/site/ui";
 import { REGISTRATION_PRICING } from "@/lib/company";
@@ -7,14 +9,15 @@ import { NationalDelivery } from "@/components/site/NationalDelivery";
 export const Route = createFileRoute("/business-registration")({
   head: () => ({
     meta: [
-      { title: "Business Registration & Compliance Pricing — Hadees Trading" },
-      { name: "description", content: "Fixed prices in ZAR: Company Registration R950, COIDA R3,500, NHBRC R4,500, B-BBEE R350, tax clearance and more." },
-      { property: "og:title", content: "Business Registration — Hadees Trading" },
-      { property: "og:description", content: "CIPC, COIDA, NHBRC, CIDB, CSD, tax, B-BBEE — all handled." },
+      { title: reviewedServiceSeo["/business-registration"].title },
+      { name: "description", content: reviewedServiceSeo["/business-registration"].description },
+      { property: "og:title", content: reviewedServiceSeo["/business-registration"].title },
+      { property: "og:description", content: reviewedServiceSeo["/business-registration"].description },
       { property: "og:url", content: "/business-registration" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    scripts: serviceSearchScripts("/business-registration"),
     links: [{ rel: "canonical", href: "/business-registration" }],
   }),
   component: BizReg,
@@ -75,6 +78,7 @@ function BizReg() {
         primary={{ label: "Start registration", to: "/contact" }}
         secondary={{ label: "View compliance", to: "/compliance" }}
       />
+      <ServiceFaq path="/business-registration" />
       <NationalDelivery service="registration" />
     </>
   );

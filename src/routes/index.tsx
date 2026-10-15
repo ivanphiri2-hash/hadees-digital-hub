@@ -71,67 +71,8 @@ function Home() {
             </div>
           </div>
 
-          {/* Product mock */}
-          <div className="mx-auto mt-14 max-w-5xl">
-            <div className="glass relative overflow-hidden rounded-3xl p-2 shadow-2xl">
-              <div className="rounded-2xl bg-gradient-to-br from-[var(--color-navy)] to-[color-mix(in_oklab,var(--color-navy)_50%,var(--color-ink))] p-6">
-                <div className="mb-4 flex items-center gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-red-400/60" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/60" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-green-400/60" />
-                  <span className="ml-3 text-[10px] uppercase tracking-widest text-white/50">IVAN OS · Command Console</span>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-3">
-                  {[
-                    { label: "Pipeline value", value: "R 4.82M", tone: "royal" },
-                    { label: "Active tenders", value: "27", tone: "gold" },
-                    { label: "Compliance score", value: "98%", tone: "green" },
-                  ].map((k) => (
-                    <div key={k.label} className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                      <div className="text-[10px] uppercase tracking-widest text-white/50">{k.label}</div>
-                      <div className={`mt-1 font-display text-2xl font-bold ${k.tone === "gold" ? "text-[var(--color-gold)]" : k.tone === "royal" ? "text-[var(--color-royal-soft)]" : "text-emerald-400"}`}>{k.value}</div>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-4 grid gap-3 sm:grid-cols-5">
-                  <div className="sm:col-span-3 rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                    <div className="text-[10px] uppercase tracking-widest text-white/50">Revenue trajectory</div>
-                    <svg viewBox="0 0 400 120" className="mt-2 h-24 w-full">
-                      <defs>
-                        <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
-                          <stop offset="0" stopColor="#2563EB" stopOpacity="0.5" />
-                          <stop offset="1" stopColor="#2563EB" stopOpacity="0" />
-                        </linearGradient>
-                      </defs>
-                      <path d="M0 90 L40 70 L80 78 L120 55 L160 62 L200 40 L240 48 L280 30 L320 34 L360 18 L400 22 L400 120 L0 120 Z" fill="url(#g)" />
-                      <path d="M0 90 L40 70 L80 78 L120 55 L160 62 L200 40 L240 48 L280 30 L320 34 L360 18 L400 22" fill="none" stroke="#3B82F6" strokeWidth="2" />
-                    </svg>
-                  </div>
-                  <div className="sm:col-span-2 rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                    <div className="text-[10px] uppercase tracking-widest text-white/50">AI Agents online</div>
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {Array.from({ length: 27 }).map((_, i) => (
-                        <span key={i} className="h-2.5 w-2.5 rounded-full bg-[var(--color-gold)]/70" />
-                      ))}
-                    </div>
-                    <div className="mt-3 text-2xl font-bold text-white">27 <span className="text-xs font-normal text-white/60">agents deployed</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
-
-      {/* STATS */}
-      <Section eyebrow="Company Statistics" title={<>Built to move South African business forward.</>}>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Stat value={27} label="AI Agents in IVAN OS" />
-          <Stat value={14} label="Enterprise Services" />
-          <Stat value={98} suffix="%" label="Compliance Success Rate" />
-          <Stat value={24} suffix="/7" label="Automation Uptime" />
-        </div>
-      </Section>
 
       {/* WHY CHOOSE US */}
       <Section eyebrow="Why Choose Us" title={<>Clear scope. Connected support. South African focus.</>} intro="Get registration assistance, professional websites, construction support and compliance guidance from one team, with requirements agreed before work begins.">

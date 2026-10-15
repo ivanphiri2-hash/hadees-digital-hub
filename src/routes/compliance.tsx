@@ -1,3 +1,5 @@
+import { ServiceFaq } from "@/components/site/ServiceFaq";
+import { reviewedServiceSeo, serviceSearchScripts } from "@/lib/reviewed-service-seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { Section, GlassCard, BigCTA } from "@/components/site/ui";
 import { ShieldCheck } from "lucide-react";
@@ -6,14 +8,15 @@ import { NationalDelivery } from "@/components/site/NationalDelivery";
 export const Route = createFileRoute("/compliance")({
   head: () => ({
     meta: [
-      { title: "Compliance — CIPC, SARS, COIDA, B-BBEE, POPIA" },
-      { name: "description", content: "Enterprise compliance management for South African business: CIPC, SARS, COIDA, CIDB, B-BBEE, NHBRC and POPIA — monitored all year." },
-      { property: "og:title", content: "Compliance — Hadees Trading" },
-      { property: "og:description", content: "One dashboard for your company health across every SA regulator." },
+      { title: reviewedServiceSeo["/compliance"].title },
+      { name: "description", content: reviewedServiceSeo["/compliance"].description },
+      { property: "og:title", content: reviewedServiceSeo["/compliance"].title },
+      { property: "og:description", content: reviewedServiceSeo["/compliance"].description },
       { property: "og:url", content: "/compliance" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    scripts: serviceSearchScripts("/compliance"),
     links: [{ rel: "canonical", href: "/compliance" }],
   }),
   component: Compliance,
@@ -71,6 +74,7 @@ function Compliance() {
         subtitle="We monitor every renewal and file every return — before penalties hit."
         primary={{ label: "Get compliance managed", to: "/contact" }}
       />
+      <ServiceFaq path="/compliance" />
       <NationalDelivery service="compliance" />
     </>
   );
