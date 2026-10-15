@@ -1,4 +1,5 @@
 # National brand update
+- [ ] Update official phone and WhatsApp enquiry links to 0632702826; remove orange background circles and publish final updates.
 - [ ] Connect hadeestrading.co.za — blocked: paid plan required; connection card dismissed.
 - [x] Confirm existing Cloud sign-in and admin architecture; add portal payment history and request submission.
 - [ ] Verify client request submission end-to-end — blocked: no client records linked to sign-in accounts.

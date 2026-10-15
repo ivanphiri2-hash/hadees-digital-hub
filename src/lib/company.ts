@@ -5,10 +5,10 @@ export const COMPANY = {
   established: "2025",
   city: "Mahikeng",
   country: "South Africa",
-  phone: "0837535798",
-  phoneIntl: "+27837535798",
+  phone: "0632702826",
+  phoneIntl: "+27632702826",
   email: "admin@hadeestrading.co.za",
-  whatsapp: "27837535798",
+  whatsapp: "27632702826",
   address: "Mahikeng, North West, South Africa",
 } as const;
 

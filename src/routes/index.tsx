@@ -32,10 +32,26 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "South Africa-wide digital-first business services, with a genuine operating base in Mahikeng, North West." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: "https://hadees-digital-forge.lovable.app/" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
-    scripts: [{ type: "application/ld+json", children: JSON.stringify(faqJsonLd) }],
+    links: [{ rel: "canonical", href: "https://hadees-digital-forge.lovable.app/" }],
+    scripts: [
+      { type: "application/ld+json", children: JSON.stringify(faqJsonLd) },
+      { type: "application/ld+json", children: JSON.stringify({
+        "@context": "https://schema.org", "@type": "OfferCatalog", name: "HADEES TRADING business services",
+        itemListElement: [
+          ["Business registration assistance", "/business-registration"],
+          ["Construction business support", "/construction-services"],
+          ["Professional website development", "/website-design"],
+          ["Business compliance assistance", "/compliance"],
+        ].map(([name, path]) => ({ "@type": "Offer", itemOffered: {
+          "@type": "Service", name, url: `https://hadees-digital-forge.lovable.app${path}`,
+          provider: { "@type": "Organization", name: COMPANY.legalName, telephone: COMPANY.phoneIntl,
+            address: { "@type": "PostalAddress", addressLocality: "Mahikeng", addressRegion: "North West", addressCountry: "ZA" } },
+          areaServed: { "@type": "Country", name: "South Africa" },
+        } })),
+      }) },
+    ],
   }),
   component: Home,
 });
@@ -51,7 +67,7 @@ function Home() {
         <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-14 sm:px-6 sm:pt-20 lg:px-8 lg:pt-28">
           <div className="mx-auto max-w-4xl text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/50 px-3 py-1 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground animate-rise">
-              <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" /> Est. 2025 · South Africa
+              Est. 2025 · South Africa
             </div>
             <h1 className="mt-6 text-balance font-display text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl md:text-7xl animate-rise">
               HADEES TRADING{" "}
@@ -134,7 +150,6 @@ function Home() {
                   <h3 className="font-display text-base font-bold">{s.name}</h3>
                   <p className="mt-1 text-sm text-muted-foreground">{s.desc}</p>
                 </div>
-                <span className="h-2 w-2 rounded-full bg-[var(--color-gold)]" />
               </div>
             </GlassCard>
           ))}
