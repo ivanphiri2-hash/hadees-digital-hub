@@ -1,3 +1,5 @@
+import { ServiceFaq } from "@/components/site/ServiceFaq";
+import { reviewedServiceSeo, serviceSearchScripts } from "@/lib/reviewed-service-seo";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { Section, BigCTA } from "@/components/site/ui";
@@ -10,20 +12,17 @@ const CAT = findCategory("construction")!;
 export const Route = createFileRoute("/construction-services")({
   head: () => ({
     meta: [
-      { title: "NHBRC & CIDB Registration Assistance — Contractors" },
-      {
-        name: "description",
-        content:
-          "NHBRC registration assistance, CIDB registration and upgrade assistance, health & safety files and full construction compliance packages for South African contractors.",
-      },
-      { property: "og:title", content: "Construction & Contractor Services — Hadees Trading" },
-      { property: "og:description", content: "NHBRC and CIDB registration assistance, health & safety files and contractor compliance packages." },
+      { title: reviewedServiceSeo["/construction-services"].title },
+      { name: "description", content: reviewedServiceSeo["/construction-services"].description },
+      { property: "og:title", content: reviewedServiceSeo["/construction-services"].title },
+      { property: "og:description", content: reviewedServiceSeo["/construction-services"].description },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/construction-services" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "/construction-services" }],
     scripts: [
+      ...serviceSearchScripts("/construction-services"),
       {
         type: "application/ld+json",
         children: JSON.stringify({
@@ -69,6 +68,7 @@ function Page() {
         primary={{ label: "Talk to a specialist", to: "/contact" }}
         secondary={{ label: "See all pricing", to: "/pricing" }}
       />
+      <ServiceFaq path="/construction-services" />
       <NationalDelivery service="construction" />
     </>
   );

@@ -1,3 +1,5 @@
+import { ServiceFaq } from "@/components/site/ServiceFaq";
+import { reviewedServiceSeo, serviceSearchScripts } from "@/lib/reviewed-service-seo";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { Section, BigCTA } from "@/components/site/ui";
@@ -10,20 +12,17 @@ const CAT = findCategory("website-design")!;
 export const Route = createFileRoute("/website-design")({
   head: () => ({
     meta: [
-      { title: "Website Design South Africa — From R1,500" },
-      {
-        name: "description",
-        content:
-          "Professional website design in South Africa from R1,500. Mobile-friendly, SEO-ready websites with WhatsApp integration, lead capture and PayFast-ready checkout.",
-      },
-      { property: "og:title", content: "Website Design South Africa — Hadees Trading" },
-      { property: "og:description", content: "Fast, SEO-ready websites from R1,500 built to convert visitors into customers." },
+      { title: reviewedServiceSeo["/website-design"].title },
+      { name: "description", content: reviewedServiceSeo["/website-design"].description },
+      { property: "og:title", content: reviewedServiceSeo["/website-design"].title },
+      { property: "og:description", content: reviewedServiceSeo["/website-design"].description },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/website-design" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "/website-design" }],
     scripts: [
+      ...serviceSearchScripts("/website-design"),
       {
         type: "application/ld+json",
         children: JSON.stringify({
@@ -68,6 +67,7 @@ function Page() {
         primary={{ label: "Start my website", to: "/contact" }}
         secondary={{ label: "Compare packages", to: "/packages" }}
       />
+      <ServiceFaq path="/website-design" />
       <NationalDelivery service="websites" />
     </>
   );
