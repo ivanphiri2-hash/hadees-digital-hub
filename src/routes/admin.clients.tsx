@@ -9,6 +9,8 @@ import { ConfirmDialog, ErrorBar, RowActions } from "@/components/admin/actions"
 import { getClientDetail, listClients, setClientStatus, upsertClient } from "@/lib/platform.functions";
 import { archiveClient, deleteClientSafe, findClientDuplicates, getClientRelations } from "@/lib/crm-admin.functions";
 import { useAdminAuth } from "@/lib/admin-auth";
+import { linkClientAccount } from "@/lib/client-accounts.functions";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/admin/clients")({
   head: () => ({
@@ -50,6 +52,7 @@ function ClientsPage() {
   const archive = useServerFn(archiveClient);
   const remove = useServerFn(deleteClientSafe);
   const relations = useServerFn(getClientRelations);
+  const linkAccount = useServerFn(linkClientAccount);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("active_only");
@@ -75,6 +78,7 @@ function ClientsPage() {
   };
 
   const mSave = useMutation({ mutationFn: (v: ClientInput) => save({ data: v }), onSuccess: () => { setEditing(null); invalidate(); } });
+  const mLink = useMutation({ mutationFn: (clientId: string) => linkAccount({ data: { clientId } }), onSuccess: invalidate });
   const mStatus = useMutation({ mutationFn: (v: { id: string; status: (typeof STATUSES)[number] }) => setStatus({ data: v }), onSuccess: invalidate });
   const mArchive = useMutation({ mutationFn: (v: { id: string; archived: boolean }) => archive({ data: v }), onSuccess: invalidate });
   const mDelete = useMutation({
@@ -123,7 +127,8 @@ function ClientsPage() {
           </div>
         }
       >
-        <ErrorBar error={mSave.error ?? mStatus.error ?? mArchive.error} />
+        <ErrorBar error={mSave.error ?? mStatus.error ?? mArchive.error ?? mLink.error} />
+        {mLink.isSuccess && <p role="status" className="mb-3 text-sm">Client login linked successfully.</p>}
 
         {editing && (
           <ClientForm
@@ -174,6 +179,7 @@ function ClientsPage() {
                   onEdit={() => setEditing(toInput(c))}
                   onDelete={user?.isAdmin ? () => setToDelete(c) : undefined}
                 />
+                {user?.isAdmin && <Button variant="outline" size="sm" disabled={Boolean(c.user_id) || mLink.isPending} onClick={() => mLink.mutate(c.id)}>{c.user_id ? "Login linked" : "Link client login"}</Button>}
                 <button
                   className={btnGhost}
                   onClick={() => mArchive.mutate({ id: c.id, archived: c.status !== "archived" })}
