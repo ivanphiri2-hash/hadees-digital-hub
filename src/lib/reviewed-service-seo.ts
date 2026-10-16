@@ -2,8 +2,8 @@ import { COMPANY } from "./company";
 
 export const reviewedServiceSeo = {
   "/business-registration": {
-    title: "HADEES TRADING (PTY) LTD | CIPC Registration Assistance",
-    description: "Get company registration, CIPC annual returns and amendment assistance from HADEES TRADING (PTY) LTD in Mahikeng, serving eligible clients digitally nationwide.",
+    title: "Company Registration Help | HADEES TRADING (PTY) LTD",
+    description: "HADEES TRADING (PTY) LTD assists with company registration, CIPC annual returns and amendments from Mahikeng, serving eligible clients nationwide digitally.",
     faqs: [
       { question: "What business registration services does HADEES TRADING offer?", answer: "HADEES TRADING (PTY) LTD assists with company registration, CIPC annual returns and amendments. Established in 2025, the business serves eligible entrepreneurs, construction companies, startups and SMEs." },
       { question: "Can clients outside Mahikeng access assistance?", answer: "Yes. HADEES TRADING is based in Mahikeng, North West, South Africa, and serves eligible clients nationwide digitally. Contact admin@hadeestrading.co.za or +27632702826 to discuss your requirements." },
@@ -13,7 +13,7 @@ export const reviewedServiceSeo = {
   },
   "/construction-services": {
     title: "Construction Compliance | HADEES TRADING (PTY) LTD",
-    description: "Get NHBRC and CIDB registration assistance, contractor compliance and health and safety file preparation from HADEES TRADING (PTY) LTD in Mahikeng.",
+    description: "HADEES TRADING (PTY) LTD offers NHBRC and CIDB registration assistance, contractor compliance support and health and safety files from Mahikeng.",
     faqs: [
       { question: "What construction services does HADEES TRADING (PTY) LTD offer?", answer: "Services include NHBRC and CIDB registration assistance, contractor compliance support, and health and safety file preparation." },
       { question: "Can clients outside Mahikeng access these services?", answer: "Yes. Based in Mahikeng, North West, HADEES TRADING (PTY) LTD serves eligible clients nationwide digitally. Remote document assistance depends on the scope of the work." },
@@ -23,7 +23,7 @@ export const reviewedServiceSeo = {
   },
   "/website-design": {
     title: "Website Design South Africa | HADEES TRADING (PTY) LTD",
-    description: "HADEES TRADING (PTY) LTD offers professional website development from Mahikeng, serving eligible clients across South Africa through a digital process.",
+    description: "HADEES TRADING (PTY) LTD offers website development from Mahikeng for eligible clients across South Africa, with remote briefing, reviews and handover.",
     faqs: [
       { question: "Who is this website development service for?", answer: "The service is aimed at entrepreneurs, construction companies, startups and SMEs. HADEES TRADING (PTY) LTD is based in Mahikeng, North West, and serves eligible clients nationwide digitally." },
       { question: "Can the website development process be handled remotely?", answer: "Yes. Briefing, content collection, design reviews and handover can be completed remotely." },
@@ -33,7 +33,7 @@ export const reviewedServiceSeo = {
   },
   "/compliance": {
     title: "Business Compliance Support | HADEES TRADING (PTY) LTD",
-    description: "HADEES TRADING (PTY) LTD offers business compliance assistance from Mahikeng, serving eligible clients digitally across South Africa. Confirm your scope.",
+    description: "HADEES TRADING (PTY) LTD offers business compliance assistance from Mahikeng, with digital support for eligible entrepreneurs and SMEs nationwide.",
     faqs: [
       { question: "What business compliance assistance does HADEES TRADING offer?", answer: "HADEES TRADING assists with CIPC annual returns and amendments, SARS tax registration and clearance guidance, COIDA registration and renewals, and CIDB, NHBRC, B-BBEE and POPIA documentation guidance." },
       { question: "Can clients outside Mahikeng receive assistance?", answer: "Yes. Based in Mahikeng, North West, HADEES TRADING serves eligible clients nationwide digitally. Requirements and the scope of remote delivery are confirmed for the requested assistance." },

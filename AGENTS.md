@@ -14,3 +14,4 @@
 - Extend existing nationwide service routes with eligibility guidance instead of generating duplicate city pages; this preserves established URLs and useful content.
 - Public service metadata and visible FAQs use a reviewed static copy module; AI drafts become indexed content only through explicit review and publication.
 - Portal reads resolve the signed-in client server-side and project only client-safe fields; staff notes and payment payloads never enter portal responses.
+- Client login linking requires administrator authorization, a matching confirmed account email and no staff roles; reuse existing client records rather than creating a second auth system.

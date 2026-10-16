@@ -27,6 +27,7 @@ export const Route = createFileRoute("/_authenticated/portal")({
 
 function Portal() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const fetchPortal = useServerFn(getPortalData);
   const { data, isLoading, error, refetch } = useQuery({ queryKey: ["portal"], queryFn: () => fetchPortal({}) });
 
@@ -46,7 +47,12 @@ function Portal() {
             <div className="mt-1 text-xs text-muted-foreground">Client number <span className="font-semibold text-[var(--color-gold)]">{data.client.client_number}</span></div>
           )}
         </div>
-        <Button variant="outline" onClick={() => void supabase.auth.signOut().then(() => navigate({ to: "/auth", search: {}, replace: true }))}>
+        <Button variant="outline" onClick={async () => {
+          await queryClient.cancelQueries();
+          queryClient.clear();
+          await supabase.auth.signOut();
+          await navigate({ to: "/auth", search: {}, replace: true });
+        }}>
           <LogOut className="h-4 w-4" /> Sign out
         </Button>
       </header>
