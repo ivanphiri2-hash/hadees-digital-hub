@@ -1,6 +1,7 @@
 # National brand update
-- [ ] Run four fresh SEO drafts, review and publish existing service pages.
-- [ ] Add secure separate-client account linking in existing Clients view; real account awaits client email.
+- [x] Run four fresh SEO drafts and apply reviewed metadata; request publication of existing service pages.
+- [x] Add secure separate-client account linking in existing Clients view.
+- [ ] Link a real separate client account — blocked: client email and confirmed sign-in required.
 - [x] Update official phone and WhatsApp enquiry links to 0632702826; remove orange background circles; verify final updates.
 - [x] Request publication of final updates to the existing Lovable address; custom domain remains unconnected.
 - [ ] Connect hadeestrading.co.za — blocked: paid plan required; connection card dismissed.
