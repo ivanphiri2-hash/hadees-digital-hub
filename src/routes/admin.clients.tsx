@@ -9,7 +9,7 @@ import { ConfirmDialog, ErrorBar, RowActions } from "@/components/admin/actions"
 import { getClientDetail, listClients, setClientStatus, upsertClient } from "@/lib/platform.functions";
 import { archiveClient, deleteClientSafe, findClientDuplicates, getClientRelations } from "@/lib/crm-admin.functions";
 import { useAdminAuth } from "@/lib/admin-auth";
-import { linkClientAccount } from "@/lib/client-accounts.functions";
+import { createClientLogin, linkClientAccount } from "@/lib/client-accounts.functions";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/admin/clients")({
@@ -53,12 +53,14 @@ function ClientsPage() {
   const remove = useServerFn(deleteClientSafe);
   const relations = useServerFn(getClientRelations);
   const linkAccount = useServerFn(linkClientAccount);
+  const createLogin = useServerFn(createClientLogin);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("active_only");
   const [editing, setEditing] = useState<ClientInput | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [toDelete, setToDelete] = useState<Client | null>(null);
+  const [createdLogin, setCreatedLogin] = useState<{ email: string; tempPassword: string } | null>(null);
 
   const q = useQuery({ queryKey: ["admin", "clients"], queryFn: () => fetchClients({}) });
   const detail = useQuery({
@@ -79,6 +81,7 @@ function ClientsPage() {
 
   const mSave = useMutation({ mutationFn: (v: ClientInput) => save({ data: v }), onSuccess: () => { setEditing(null); invalidate(); } });
   const mLink = useMutation({ mutationFn: (clientId: string) => linkAccount({ data: { clientId } }), onSuccess: invalidate });
+  const mCreateLogin = useMutation({ mutationFn: (clientId: string) => createLogin({ data: { clientId } }), onSuccess: invalidate });
   const mStatus = useMutation({ mutationFn: (v: { id: string; status: (typeof STATUSES)[number] }) => setStatus({ data: v }), onSuccess: invalidate });
   const mArchive = useMutation({ mutationFn: (v: { id: string; archived: boolean }) => archive({ data: v }), onSuccess: invalidate });
   const mDelete = useMutation({
@@ -127,8 +130,17 @@ function ClientsPage() {
           </div>
         }
       >
-        <ErrorBar error={mSave.error ?? mStatus.error ?? mArchive.error ?? mLink.error} />
+        <ErrorBar error={mSave.error ?? mStatus.error ?? mArchive.error ?? mLink.error ?? mCreateLogin.error} />
         {mLink.isSuccess && <p role="status" className="mb-3 text-sm">Client login linked successfully.</p>}
+        {createdLogin && (
+          <div role="status" className="mb-3 rounded-lg border border-border bg-background p-3 text-sm">
+            <p className="font-medium">Login created for {createdLogin.email}</p>
+            <p className="mt-1">
+              Temporary password: <code className="rounded bg-muted px-1.5 py-0.5 font-mono">{createdLogin.tempPassword}</code> — shown once. Share it privately with the client and ask them to change it after their first sign-in.
+            </p>
+            <button className={btnGhost + " mt-2"} onClick={() => setCreatedLogin(null)}>Dismiss</button>
+          </div>
+        )}
 
         {editing && (
           <ClientForm
@@ -180,6 +192,7 @@ function ClientsPage() {
                   onDelete={user?.isAdmin ? () => setToDelete(c) : undefined}
                 />
                 {user?.isAdmin && <Button variant="outline" size="sm" disabled={Boolean(c.user_id) || mLink.isPending} onClick={() => mLink.mutate(c.id)}>{c.user_id ? "Login linked" : "Link client login"}</Button>}
+                {user?.isAdmin && !c.user_id && <Button variant="outline" size="sm" disabled={mCreateLogin.isPending} onClick={() => mCreateLogin.mutate(c.id)}>Create login</Button>}
                 <button
                   className={btnGhost}
                   onClick={() => mArchive.mutate({ id: c.id, archived: c.status !== "archived" })}

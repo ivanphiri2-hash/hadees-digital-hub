@@ -30,3 +30,42 @@ export const linkClientAccount = createServerFn({ method: "POST" })
     if (result.error) throw new Error("Unable to link the login. No client changes were saved.");
     return { ok: true as const };
   });
+
+export const createClientLogin = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((raw: unknown) => z.object({ clientId: z.string().uuid() }).parse(raw))
+  .handler(async ({ context, data }) => {
+    const permission = await context.supabase.rpc("is_admin", { _user_id: context.userId });
+    if (permission.error || permission.data !== true) throw new Error("Only administrators can create client logins.");
+    const client = await context.supabase.from("clients").select("id,full_name,email,user_id").eq("id", data.clientId).single();
+    if (client.error || !client.data) throw new Error("Unable to load this client.");
+    if (client.data.user_id) throw new Error("This client already has a linked login.");
+    const email = client.data.email.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) throw new Error("This client record has no valid email address to create a login for.");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const existing = await supabaseAdmin.from("profiles").select("id,email").ilike("email", email).limit(2);
+    if (existing.error) throw new Error("Unable to check for an existing client login.");
+    if (existing.data?.length) throw new Error("A login with this email already exists. Use Link client login instead.");
+    const alphabet = "abcdefghjkmnpqrstuvwxyz23456789";
+    const bytes = crypto.getRandomValues(new Uint8Array(18));
+    const password = "Ht-" + Array.from(bytes, (b) => alphabet[b % alphabet.length]).join("");
+    const created = await supabaseAdmin.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+      user_metadata: { full_name: client.data.full_name ?? "" },
+    });
+    if (created.error || !created.data.user) throw new Error("Unable to create the client login. No account was created.");
+    const profile = await supabaseAdmin.from("profiles").insert({ id: created.data.user.id, email, full_name: client.data.full_name ?? null }).select("id").single();
+    if (profile.error) {
+      await supabaseAdmin.auth.admin.deleteUser(created.data.user.id);
+      throw new Error("Unable to save the client login profile. No account was kept.");
+    }
+    const linked = await context.supabase.from("clients").update({ user_id: created.data.user.id }).eq("id", client.data.id).is("user_id", null).select("id").single();
+    if (linked.error) {
+      await supabaseAdmin.from("profiles").delete().eq("id", created.data.user.id);
+      await supabaseAdmin.auth.admin.deleteUser(created.data.user.id);
+      throw new Error("Unable to connect the login to this client. No changes were kept.");
+    }
+    return { ok: true as const, email, tempPassword: password };
+  });
