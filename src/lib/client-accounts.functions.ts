@@ -56,7 +56,7 @@ export const createClientLogin = createServerFn({ method: "POST" })
       user_metadata: { full_name: client.data.full_name ?? "" },
     });
     if (created.error || !created.data.user) throw new Error("Unable to create the client login. No account was created.");
-    const profile = await supabaseAdmin.from("profiles").insert({ id: created.data.user.id, email, full_name: client.data.full_name ?? null }).select("id").single();
+    const profile = await supabaseAdmin.from("profiles").upsert({ id: created.data.user.id, email, full_name: client.data.full_name ?? null }, { onConflict: "id" }).select("id").single();
     if (profile.error) {
       await supabaseAdmin.auth.admin.deleteUser(created.data.user.id);
       throw new Error("Unable to save the client login profile. No account was kept.");
