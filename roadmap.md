@@ -1,13 +1,14 @@
 # National brand update
 - [x] Run four fresh SEO drafts and apply reviewed metadata; request publication of existing service pages.
 - [x] Add secure separate-client account linking in existing Clients view.
-- [ ] Link a real separate client account — blocked: client email and confirmed sign-in required.
+- [x] Created and linked confirmed portal logins for HT-001, HT-002, HT-004, HT-005; HT-001 portal verified.
 - [x] Update official phone and WhatsApp enquiry links to 0632702826; remove orange background circles; verify final updates.
 - [x] Request publication of final updates to the existing Lovable address; custom domain remains unconnected.
 - [ ] Connect hadeestrading.co.za — blocked: paid plan required; connection card dismissed.
 - [x] Confirm existing Cloud sign-in and admin architecture; add portal payment history and request submission.
 - [ ] Verify client request submission end-to-end — blocked: no client records linked to sign-in accounts.
-- [ ] Publish approved anonymous completed projects — blocked pending client permission, scope, outcomes and dates.
+- [x] Published two anonymised completed website case studies (user confirmed permission).
+- [ ] Google Business listing — blocked: Google account connection declined; opening hours not provided.
 - [x] Run SEO writer for four established service pages and apply reviewed metadata and FAQ copy.
 - [x] Refine homepage and crawlable company/service information without changing pricing or URLs.
 - [x] Update national positioning while keeping Mahikeng accurate and existing service URLs.
